@@ -35,7 +35,7 @@ import jk.framework.rest.bithumb.entity.BithumbInfoBalance;
  * @author : jongkyu
  */
 @ResponseBody
-@RequestMapping("/bithumb/privateapi")
+@RequestMapping("/api/bithumb/privateapi")
 @Controller
 public class BithumbPrivateRest {
 	private static final Logger logger = LoggerFactory.getLogger(BithumbPrivateRest.class);

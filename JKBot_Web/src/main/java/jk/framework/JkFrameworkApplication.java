@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("api.properties")
+@PropertySource("config.properties")
 public class JkFrameworkApplication {
 
 	public static void main(String[] args) {

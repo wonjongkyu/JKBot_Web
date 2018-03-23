@@ -33,7 +33,7 @@ import jk.framework.rest.bithumb.entity.BithumbTickerResultEntity;
  * @author : jongkyu
  */
 @ResponseBody
-@RequestMapping("/bithumb/publicapi")
+@RequestMapping("/api/bithumb/publicapi")
 @Controller
 public class BithumbPublicRest {
 	private static final Logger logger = LoggerFactory.getLogger(BithumbPublicRest.class);
