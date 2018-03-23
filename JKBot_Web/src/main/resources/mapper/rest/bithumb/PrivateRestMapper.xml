@@ -13,7 +13,13 @@
 	</select>
 	
 	<insert id="save" parameterType="TestEntity">
-		INSERT /* BookmarkMapper.xml, insert */
+		<!--  작업해야 함 -->
+		INSERT INTO test_book_backup(bookID, bookName, originPrice, registDate)
+		VALUES
+		<foreach item="testBook" index="index" collection="list" open="" separator="," close="">
+			(#{testBook.bookID}, #{testBook.bookName}, #{testBook.originPrice}, NOW())
+		</foreach>	
+		
 		INTO BOARD (
 			bno
 			,userName
