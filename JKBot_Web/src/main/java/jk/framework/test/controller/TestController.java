@@ -3,6 +3,7 @@ package jk.framework.test.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,10 @@ import jk.framework.test.service.TestService;
 @Controller
 public class TestController {
 	
+	// bithumb apiKey
+    @Value("${bithumb.apiConnectKey}")
+    private String apiConnectKey ;
+	
 	@Autowired
 	TestService testService;
 	
@@ -28,6 +33,7 @@ public class TestController {
 	
 	@RequestMapping("/test")
 	public String test(Model model) {
+		System.out.println( apiConnectKey );
 		model.addAttribute("test", "test입니다.");
 		return "test";
 	}
