@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<ruleset name="CSE Ruleset" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+    <description>
+        This ruleset checks my code for bad stuff
+    </description>
+    
+    <exclude-pattern>.*/KISA_SEED_CBC.*</exclude-pattern>
+
+    <rule ref="rulesets/java/basic.xml">
+    </rule>
+    
+    <rule ref="rulesets/java/braces.xml">
+    </rule>
+    
+    <rule ref="rulesets/java/clone.xml">
+    </rule>
+    
+    <rule ref="rulesets/java/codesize.xml">
+    </rule>
+    
+    <!--
+    <rule ref="rulesets/java/comments.xml">
+    </rule>
+    -->
+
+    <rule ref="rulesets/java/controversial.xml">
+        <exclude name="AtLeastOneConstructor" />
+        <exclude name="OnlyOneReturn" />
+        <exclude name="DataflowAnomalyAnalysis" />
+    </rule>
+
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LawOfDemeter"/>
+    </rule>
+    <rule ref="rulesets/java/coupling.xml/LoosePackageCoupling">
+        <properties>
+            <property name="packages">
+                <value>com.hyundaicard</value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/design.xml">
+    </rule>
+
+    <rule ref="rulesets/java/empty.xml">
+    </rule>
+
+    <rule ref="rulesets/java/finalizers.xml">
+    </rule>
+
+    <rule ref="rulesets/java/imports.xml">
+    </rule>
+
+    <rule ref="rulesets/java/junit.xml">
+    </rule>
+
+    <rule ref="rulesets/java/logging-java.xml">
+    </rule>
+
+    <rule ref="rulesets/java/metrics.xml">
+    </rule>
+
+    <rule ref="rulesets/java/migrating.xml">
+    </rule>
+
+    <!--
+    <rule ref="rulesets/java/naming.xml">
+    </rule>
+    -->
+
+    <rule ref="rulesets/java/optimizations.xml">
+        <exclude name="LocalVariableCouldBeFinal" />
+        <exclude name="MethodArgumentCouldBeFinal" />
+        <exclude name="RedundantFieldInitializer" />
+    </rule>
+
+    <!--
+    <rule ref="rulesets/java/optimizations.xml/LocalVariableCouldBeFinal">
+    </rule>
+    -->
+
+    <!--
+    <rule ref="rulesets/java/optimizations.xml/MethodArgumentCouldBeFinal">
+    </rule>
+    -->
+
+    <!--
+    <rule ref="rulesets/java/optimizations.xml/RedundantFieldInitializer">
+    </rule>
+    -->
+
+    <rule ref="rulesets/java/strictexception.xml">
+    </rule>
+
+    <rule ref="rulesets/java/strings.xml">
+    </rule>
+
+    <rule ref="rulesets/java/sunsecure.xml">
+    </rule>
+
+    <rule ref="rulesets/java/typeresolution.xml">
+    </rule>
+
+    <rule ref="rulesets/java/unnecessary.xml">
+    </rule>
+
+    <rule ref="rulesets/java/unusedcode.xml">
+    </rule>
+
+</ruleset>
