@@ -9,6 +9,7 @@ package jk.framework.rest.bithumb.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 
 import jk.framework.common.util.http.Api_Client;
 import jk.framework.rest.bithumb.entity.BithumbTickerResultEntity;
+import jk.framework.rest.bithumb.service.BithumbPublicRestService;
 
 
 /**
@@ -35,8 +37,8 @@ import jk.framework.rest.bithumb.entity.BithumbTickerResultEntity;
 @ResponseBody
 @RequestMapping("/api/bithumb/publicapi")
 @Controller
-public class BithumbPublicRest {
-	private static final Logger logger = LoggerFactory.getLogger(BithumbPublicRest.class);
+public class BithumbPublicRestController {
+	private static final Logger logger = LoggerFactory.getLogger(BithumbPublicRestController.class);
     
     @Value("${bithumb.apiUrl}")
     private String apiUrl ;
@@ -44,10 +46,14 @@ public class BithumbPublicRest {
     private String apiConnectKey ;
     @Value("${bithumb.apiSecretKey}")
     private String apiSecretKey;
+    
+    
+	@Autowired
+	BithumbPublicRestService publicService;
 	 
 	@RequestMapping(value = "/ticker/{currency}", method = RequestMethod.GET)
 	public BithumbTickerResultEntity getTicker(@PathVariable String currency) {
-		BithumbTickerResultEntity bithumbVO = null;
+		BithumbTickerResultEntity entity = null;
 		Api_Client api = new Api_Client(apiUrl, apiConnectKey, apiSecretKey);
 		
 		try {
@@ -55,13 +61,14 @@ public class BithumbPublicRest {
 		    System.out.println(result);
 		    
 		    Gson gson = new Gson();
-			bithumbVO = gson.fromJson(result, BithumbTickerResultEntity.class);
-			System.out.println(bithumbVO.getData().getBTC().getClosing_price());
+		    entity = gson.fromJson(result, BithumbTickerResultEntity.class);
+		    publicService.save(entity);
+			System.out.println(entity.getData().getBTC().getClosing_price());
 			
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-		return bithumbVO;
+		return entity;
 	}
 	
 }
