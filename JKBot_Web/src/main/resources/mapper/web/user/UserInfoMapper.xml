@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.user.mapper.UserInfoMapper">
+ 	
+	<select id="selectAll" resultType="UserInfoEntity">
+		SELECT 
+			USER_ID
+		   ,USER_PWD 
+		FROM jk_user_info 
+	</select>
+ 		
+ 	<select id="selectOne" parameterType="UserInfoEntity" resultType="UserInfoEntity">
+		SELECT 
+			USER_ID
+		   ,USER_PWD 
+		FROM jk_user_info 
+	</select>
+	
+	<insert id="insert" parameterType="java.util.List">
+		<!--  작업해야 함 -->
+		INSERT INTO JK_COIN_PRICE (
+			 EXCHANGE_NAME
+			,CURRENCY_NAME
+			,OPENING_PRICE
+			,DATE
+		) VALUES 
+			<foreach item="data" index="index" collection="list" open="" separator="," close="">
+				(#{data.currency_name}, #{data.currency_name}, #{data.currency_name}, NOW())
+			</foreach>	
+	</insert>
+ 
+	
+	<delete id="delete" parameterType="UserInfoEntity">
+		DELETE * 
+		FROM jk_coin_price 
+	</delete>
+	
+	<update id="update" parameterType="UserInfoEntity">
+		UPDATE INTO
+		jk_user_info VALUE ('',) 
+	</update>
+</mapper>
