@@ -1,0 +1,7 @@
+﻿거래소 테이블
+거래소 - 코인 매핑 테이블
+회원정보 - 코인 매핑 테이블
+
+
+USER_INFO = USER_BALANCE 
+USER_ID로 매핑
