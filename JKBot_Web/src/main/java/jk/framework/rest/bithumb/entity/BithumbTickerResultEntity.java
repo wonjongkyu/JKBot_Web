@@ -32,12 +32,12 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper=false)
 public class BithumbTickerResultEntity extends RestCommonVO{
 	@JsonProperty("data")
-	private Data data;
+	private BithumbTickerResultData data;
 	@JsonProperty("date")
 	private String date;
 	
 	@Setter
-	public static class Data {
+	public static class BithumbTickerResultData {
 		@JsonProperty("BTC")
 		private BithumbTickerEntity BTC;	// 비트코인
 		@JsonProperty("ETH")

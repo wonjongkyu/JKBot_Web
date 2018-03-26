@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jk.framework.rest.bithumb.entity.BithumbTickerResultEntity;
+import jk.framework.rest.bithumb.entity.BithumbTickerResultEntity.BithumbTickerResultData.BithumbTickerEntity;
 import jk.framework.rest.bithumb.mapper.BithumbPrivateRestMapper;
 
 @Service
@@ -45,7 +46,8 @@ public class BithumbPrivateRestService {
 	}
 	
 	public void save(BithumbTickerResultEntity entity){
-		mapper.save(entity);
+		List<BithumbTickerEntity> list = null;
+		mapper.save(list);
 	}
 	
 	public BithumbTickerResultEntity findOne(BithumbTickerResultEntity entity){

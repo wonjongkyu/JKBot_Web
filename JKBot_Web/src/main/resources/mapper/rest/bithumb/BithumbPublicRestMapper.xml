@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.rest.bithumb.mapper.BithumbPublicRestMapper">
+	<select id="findByBno2" parameterType="Integer" resultType="BithumbTickerResultEntity">
+		SELECT * FROM jk_coin_price WHERE bno = #{bno}
+	</select>
+	
+	<select id="findAll" resultType="BithumbTickerResultEntity">
+		SELECT * 
+		FROM jk_coin_price 
+	</select>
+	
+	<insert id="save" parameterType="java.util.List">
+		<!--  작업해야 함 -->
+		INSERT INTO JK_COIN_PRICE (
+			 EXCHANGE_NAME
+			,CURRENCY_NAME
+			,OPENING_PRICE
+			,CLOSING_PRICE
+			,MIN_PRICE
+			,MAX_PRICE
+			,AVERAGE_PRICE
+			,UNITS_TRADED
+			,VOLUME_1DAY
+			,VOLUME_7DAY
+			,BUY_PRICE
+			,SELL_PRICE
+		) VALUES 
+		<foreach item="data" index="index" collection="list" open="" separator="," close="">
+		   ( #{data.currency_name}
+			,#{data.opening_price}
+			,#{data.closing_price}
+			,#{data.min_price}
+			,#{data.max_price}
+			,#{data.average_price}
+			,#{data.units_traded}
+			,#{data.volume_1day}
+			,#{data.volume_7day}
+			,#{data.buy_price}
+			,#{data.sell_price}
+			,NOW() )
+		</foreach>	
+	</insert>
+	
+	<select id="findOne" parameterType="BithumbTickerResultEntity" resultType="BithumbTickerResultEntity">
+		SELECT * 
+		FROM jk_coin_price 
+		limit 1
+	</select>
+	
+	<delete id="delete" parameterType="BithumbTickerResultEntity">
+		DELETE * 
+		FROM jk_coin_price 
+	</delete>
+</mapper>

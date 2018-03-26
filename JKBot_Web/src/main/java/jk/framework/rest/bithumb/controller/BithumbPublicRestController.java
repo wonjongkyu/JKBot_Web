@@ -62,7 +62,8 @@ public class BithumbPublicRestController {
 		    
 		    Gson gson = new Gson();
 		    entity = gson.fromJson(result, BithumbTickerResultEntity.class);
-		    publicService.save(entity);
+		    // DB에 시세 저장
+		    // publicService.save(entity);
 			System.out.println(entity.getData().getBTC().getClosing_price());
 			
 		} catch (Exception e) {
