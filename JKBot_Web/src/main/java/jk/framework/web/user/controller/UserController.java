@@ -50,7 +50,7 @@ public class UserController {
 		UserInfoEntity entity = new UserInfoEntity();
 		entity = userInfoService.selectOne(entity);
 		
-		/* 가입된 회원인 경우,
+		/* 가입된 회원인 경우, 
 		 * 회원ID를 통해 계좌정보를 가져온다.
 		 */
 		if(entity != null) {
