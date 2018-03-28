@@ -7,7 +7,7 @@
 	<select id="selectAll" resultType="UserInfoEntity">
 		SELECT 
 			USER_ID
-		   ,USER_PWD 
+		   ,USER_PWD
 		FROM jk_user_info 
 	</select>
  		

@@ -1,0 +1,16 @@
+jk.framework.rest
+	- 거래소에 restAPI를 호출하기 위한 패키지
+	
+
+jk.framework.web.user
+	- 회원정보를 가져오기 위한 패키지
+	- 회원 보유자산을 가져오기 위한 패키지
+	
+jk.framework.web.coin
+	- 코인 정보
+	- 코인시세도 포함할지..
+	
+jk.framework.web.exchange
+	- 거래소 정보
+	- 거래소에서 취급하는 코인정보
+	
