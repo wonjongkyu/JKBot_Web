@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jk.framework.web.user.entity.UserBalanceEntity;
 import jk.framework.web.user.entity.UserInfoEntity;
-import jk.framework.web.user.service.UserBalanceService;
 import jk.framework.web.user.service.UserInfoService;
 
 
@@ -25,9 +23,6 @@ public class UserController {
 	
 	@Autowired
 	UserInfoService userInfoService;
-	
-	@Autowired
-	UserBalanceService userBalanceService;
 	
 	/**
 	 * <pre>
@@ -52,20 +47,17 @@ public class UserController {
 	public UserInfoEntity getUserBalance(@PathVariable String currency) {
 		
 		// 특정 사용자 조회
-		UserInfoEntity infoEntity = new UserInfoEntity();
-		infoEntity = userInfoService.selectOne(infoEntity);
+		UserInfoEntity entity = new UserInfoEntity();
+		entity = userInfoService.selectOne(entity);
 		
 		/* 가입된 회원인 경우,
-		 * 회원ID를 통해 계좌 정보를 가져온다. (jk_user_balance)
+		 * 회원ID를 통해 계좌정보를 가져온다.
 		 */
-		if(infoEntity != null) {
-			UserBalanceEntity balanceEntity = new UserBalanceEntity();
-			balanceEntity.setUserId(infoEntity.getUserId());
+		if(entity != null) {
 			
-			balanceEntity = userBalanceService.selectOne(balanceEntity);
 		}
 		
-		return null; // entity;
+		return entity;
 		
 		/*BithumbInfoAccountEntity entity = null;
 
