@@ -48,22 +48,28 @@ public class UserController {
 	 * @return
 	 */ 	
 	@ResponseBody
-	@RequestMapping(value = "/balance/{id}", method = RequestMethod.GET)
-	public UserInfoEntity getUserBalance(@PathVariable String currency) {
+	@RequestMapping(value = "/balance/{userId}", method = RequestMethod.GET)
+	public List<UserInfoEntity> getUserBalance(@PathVariable String userId) {
 		
-		// 특정 사용자 조회
-		UserInfoEntity infoEntity = new UserInfoEntity();
-		infoEntity = userInfoService.selectOne(infoEntity);
-		
-		/* 가입된 회원인 경우,
-		 * 회원ID를 통해 계좌 정보를 가져온다. (jk_user_balance)
-		 */
-		if(infoEntity != null) {
-			UserBalanceEntity balanceEntity = new UserBalanceEntity();
-			balanceEntity.setUserId(infoEntity.getUserId());
-			
-			balanceEntity = userBalanceService.selectOne(balanceEntity);
+		// 모든 회원의 계좌 정보를 조회해옴
+		if("ALL".equals(userId)) {
+			// 모든 사용자 조회
+			List<UserInfoEntity> entityList = userInfoService.getAllList();
+			return entityList;
+		}else {
+			// 특정 사용자 조회
+			UserInfoEntity infoEntity = new UserInfoEntity();
+			infoEntity.setUserId(userId);
+			infoEntity = userInfoService.getUserInfo(infoEntity);
+			if(infoEntity != null) {
+				UserBalanceEntity balanceEntity = new UserBalanceEntity();
+				balanceEntity.setUserId(userId);
+				
+				balanceEntity = userBalanceService.selectOne(balanceEntity);
+				System.out.println("logger");
+			}
 		}
+		
 		
 		return null; // entity;
 		
@@ -85,31 +91,5 @@ public class UserController {
 		    e.printStackTrace();
 		}
 		return entity;*/
-	}
-	
-	/**
-	 * <pre>
-	 * 1. 개요 : 모든 사용자의 계좌를 조회
-	 * 2. 처리내용 : 
-	 * </pre>
-	 * @Method Name : getAllUserBalance
-	 * @date : 2018. 3. 27.
-	 * @author : jongkyu
-	 * @history : 
-	 *	-----------------------------------------------------------------------
-	 *	변경일				작성자						변경내용  
-	 *	----------- ------------------- ---------------------------------------
-	 *	2018. 3. 27.		jongkyu				최초 작성 
-	 *	-----------------------------------------------------------------------
-	 * 
-	 * @param currency
-	 * @return
-	 */ 	
-	@ResponseBody
-	@RequestMapping(value = "/balance/{id}", method = RequestMethod.GET)
-	public List<UserInfoEntity> getAllUserBalance(@PathVariable String currency) {
-		// 모든 사용자 조회
-		List<UserInfoEntity> entityList = userInfoService.selectAll();
-		return entityList;
 	}
 }

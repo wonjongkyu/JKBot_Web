@@ -4,11 +4,17 @@
 	
 <mapper namespace="jk.framework.web.user.mapper.UserBalanceMapper">
  	
- 	<select id="selectOne" parameterType=UserBalanceEntity resultType="UserBalanceEntity">
+ 	<select id="selectOne" parameterType="UserBalanceEntity" resultType="UserBalanceEntity">
 		SELECT 
 			USER_ID
-		   ,USER_PWD 
-		FROM jk_user_info 
+		   ,EXCHANGE_NAME
+		   ,COIN_SYMBOL_NAME
+		   ,TOTAL_CURRENCY
+		   ,IN_USE_CURRENCY
+		   ,AVAILABLE_CURRENCY
+		   ,XOIN_LAST
+		FROM jk_user_balance 
+		WHERE USER_ID = #{userId}
 	</select>
 	
 	<update id="update" parameterType="UserBalanceEntity">

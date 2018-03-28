@@ -36,26 +36,26 @@ public class UserInfoService {
 	public void insert(UserInfoEntity entity) {
 		mapper.insert(entity);
 	}
-	
+ 	
 	/**
 	 * <pre>
-	 * 1. 개요 : 모든 사용자 조회
+	 * 1. 개요 : 모든 사용자 정보 가져오기
 	 * 2. 처리내용 : 
 	 * </pre>
-	 * @Method Name : selectAll
-	 * @date : 2018. 3. 27.
+	 * @Method Name : getAllList
+	 * @date : 2018. 3. 29.
 	 * @author : jongkyu
 	 * @history : 
 	 *	-----------------------------------------------------------------------
 	 *	변경일				작성자						변경내용  
 	 *	----------- ------------------- ---------------------------------------
-	 *	2018. 3. 27.		jongkyu				최초 작성 
+	 *	2018. 3. 29.		jongkyu				최초 작성 
 	 *	-----------------------------------------------------------------------
 	 * 
 	 * @return
 	 */ 	
-	public List<UserInfoEntity> selectAll(){
-		return mapper.selectAll();
+	public List<UserInfoEntity> getAllList(){
+		return mapper.getAllList();
 	}
 	
 	/**
@@ -76,8 +76,8 @@ public class UserInfoService {
 	 * @param entity
 	 * @return
 	 */ 	
-	public UserInfoEntity selectOne(UserInfoEntity entity){
-		return mapper.selectOne(entity);
+	public UserInfoEntity getUserInfo(UserInfoEntity entity){
+		return mapper.getUserInfo(entity);
 	}
 	 
 	/**
@@ -118,8 +118,8 @@ public class UserInfoService {
 	 * 
 	 * @param entity
 	 */ 	
-	public void update(UserInfoEntity entity) {
-		mapper.update(entity);
+	public void updateUserInfo(UserInfoEntity entity) {
+		mapper.updateUserInfo(entity);
 	}
 	
 }

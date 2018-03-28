@@ -4,18 +4,19 @@
 	
 <mapper namespace="jk.framework.web.user.mapper.UserInfoMapper">
  	
-	<select id="selectAll" resultType="UserInfoEntity">
+	<select id="getAllList" resultType="UserInfoEntity">
 		SELECT 
 			USER_ID
 		   ,USER_PWD
 		FROM jk_user_info 
 	</select>
  		
- 	<select id="selectOne" parameterType="UserInfoEntity" resultType="UserInfoEntity">
+ 	<select id="getUserInfo" parameterType="UserInfoEntity" resultType="UserInfoEntity">
 		SELECT 
 			USER_ID
 		   ,USER_PWD 
 		FROM jk_user_info 
+		WHERE USER_ID = #{userId}
 	</select>
 	
 	<insert id="insert" parameterType="java.util.List">
@@ -37,8 +38,8 @@
 		FROM jk_coin_price 
 	</delete>
 	
-	<update id="update" parameterType="UserInfoEntity">
+	<update id="updateUserInfo" parameterType="UserInfoEntity">
 		UPDATE INTO
-		jk_user_info VALUE ('',) 
+		jk_user_info VALUE ('') 
 	</update>
 </mapper>
