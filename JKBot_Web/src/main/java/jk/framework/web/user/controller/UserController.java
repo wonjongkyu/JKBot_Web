@@ -1,15 +1,21 @@
 package jk.framework.web.user.controller;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import jk.framework.web.user.entity.UserBalanceEntity;
 import jk.framework.web.user.entity.UserInfoEntity;
@@ -47,15 +53,43 @@ public class UserController {
 	 * @param currency
 	 * @return
 	 */ 	
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public ModelAndView userMypage(Model model) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/user/myPage");
+		return mav;
+	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : 사용자 ID를 통해 사용자 계좌를 조회한다.
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : getUserBalance
+	 * @date : 2018. 3. 27.
+	 * @author : jongkyu
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2018. 3. 27.		jongkyu				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param currency
+	 * @return
+	 */ 	
 	@ResponseBody
 	@RequestMapping(value = "/balance/{userId}", method = RequestMethod.GET)
-	public List<UserInfoEntity> getUserBalance(@PathVariable String userId) {
+	public List<UserBalanceEntity> getUserBalance(@PathVariable String userId) {
+		
+		List<UserBalanceEntity> resultList = new ArrayList<UserBalanceEntity>();
 		
 		// 모든 회원의 계좌 정보를 조회해옴
 		if("ALL".equals(userId)) {
 			// 모든 사용자 조회
 			List<UserInfoEntity> entityList = userInfoService.getAllList();
-			return entityList;
+			return null;
+			// return entityList;
 		}else {
 			// 특정 사용자 조회
 			UserInfoEntity infoEntity = new UserInfoEntity();
@@ -64,32 +98,11 @@ public class UserController {
 			if(infoEntity != null) {
 				UserBalanceEntity balanceEntity = new UserBalanceEntity();
 				balanceEntity.setUserId(userId);
-				
 				balanceEntity = userBalanceService.selectOne(balanceEntity);
-				System.out.println("logger");
+				resultList.add(balanceEntity);
 			}
 		}
 		
-		
-		return null; // entity;
-		
-		/*BithumbInfoAccountEntity entity = null;
-
-		Api_Client api = new Api_Client(apiUrl, apiConnectKey, apiSecretKey);
-		
-		HashMap<String, String> rgParams = new HashMap<String, String>();
-		rgParams.put("currency", currency);
-		
-		try {
-		    String result = api.callApi("/info/account/", rgParams);
-		    System.out.println(result);
-		    
-		    Gson gson = new Gson();
-		    entity = gson.fromJson(result, BithumbInfoAccountEntity.class);
-			
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-		return entity;*/
+		return resultList; // entity;
 	}
 }
