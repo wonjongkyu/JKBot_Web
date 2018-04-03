@@ -1,10 +1,7 @@
 package jk.framework.web.user.controller;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +53,9 @@ public class UserController {
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public ModelAndView userMypage(Model model) {
 		ModelAndView mav = new ModelAndView();
+		
+		List<UserBalanceEntity> entityList = this.getUserBalance("wonjongkyu");
+		mav.addObject("entityList", entityList);
 		mav.setViewName("/user/myPage");
 		return mav;
 	}

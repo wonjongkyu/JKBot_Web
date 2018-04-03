@@ -47,16 +47,17 @@
 
 <body>
 	<div id="wrapper">
-	    <header id="header">
-	        <tiles:insertAttribute name="header" />
-	    </header>
-	
 	    <section id="sidemenu">
 	        <tiles:insertAttribute name="left" />
 	    </section>
 		             
 	    <section id="siteContent">
-	        <tiles:insertAttribute name="body" />
+	    	<div id="page-wrapper" class="gray-bg">
+	    		<tiles:insertAttribute name="header" />
+	    		<div class="wrapper wrapper-content  animated fadeInRight">
+	        		<tiles:insertAttribute name="body" />
+	        	</div>
+	        </div>
 	    </section>
 	
 	    <footer id="footer">
