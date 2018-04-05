@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <script src="<c:url value='js/views/user/mypage.js'/>"></script>
  
 <!--  DashBoard 현재 시세 -->
@@ -39,24 +40,28 @@
 	                        </tr>
                         </thead>
                         <tbody>
-                        	<c:choose>
-                        		<c:when test="${entityList != null}">
-                        			<c:forEach var="item" items="${entityList}" varStatus="status">
-			                        <tr>
-			                            <td>${status.count}</td>
-			                            <td>${item.exchagneName}</td>
-			                            <td>${item.totalCurrency}</td>
-			                            <td>${item.inUserCurrency}</td>
-			                            <td>${item.availableCurrency}</td>
-			                        </tr>
-			                   	 	</c:forEach>
-                        		</c:when>
-                        	</c:choose>
-	                        <c:otherwise>
-	                       		<tr>
-	                       			<td role="5">조회 결과가 없습니다.</td>
-	                       		</tr>
-	                        </c:otherwise>
+                        <c:choose>
+                        	<c:when test="${entityList ne null }">
+	                        	<c:forEach items="${entityList}" var="list" varStatus="status">
+	                        		<c:if test ="${list.coinSymbolName eq 'KRW'}">
+									  	<tr>
+									  		<td>${status.count}</td>
+									  		<%-- <td><c:out value="${list.userId}"/></td> --%>
+									  		<td><c:out value="${list.exchangeName}"/></td>
+										  	<td><c:out value="${list.totalCurrency}"/></td>
+										  	<td><c:out value="${list.inUserCurrency}"/></td>
+										  	<td><c:out value="${list.availableCurrency}"/></td>
+									  	</tr>
+								  	</c:if>  
+								</c:forEach> 
+                        	</c:when>
+                        	<c:otherwise>
+                        		<tr>
+                        			<td colspan="5">조회 결과가 없습니다. </td>
+                        		</tr>
+                        	</c:otherwise>
+                        </c:choose>
+                      
                         </tbody>
                     </table>
 
@@ -65,7 +70,3 @@
         </div>
 
 </div>
-        
-        
-        
-       

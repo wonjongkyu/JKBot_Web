@@ -1,5 +1,4 @@
 <%@ page pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="row border-bottom">
 	<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">

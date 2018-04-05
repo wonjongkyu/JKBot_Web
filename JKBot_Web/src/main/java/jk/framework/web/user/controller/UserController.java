@@ -51,13 +51,12 @@ public class UserController {
 	 * @return
 	 */ 	
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
-	public ModelAndView userMypage(Model model) {
+	public String userMypage(Model model) {
 		ModelAndView mav = new ModelAndView();
 		
 		List<UserBalanceEntity> entityList = this.getUserBalance("wonjongkyu");
-		mav.addObject("entityList", entityList);
-		mav.setViewName("/user/myPage");
-		return mav;
+		model.addAttribute("entityList", entityList);
+		return "/user/myPage";
 	}
 	
 	/**
@@ -78,7 +77,6 @@ public class UserController {
 	 * @param currency
 	 * @return
 	 */ 	
-	@ResponseBody
 	@RequestMapping(value = "/balance/{userId}", method = RequestMethod.GET)
 	public List<UserBalanceEntity> getUserBalance(@PathVariable String userId) {
 		
