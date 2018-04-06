@@ -15,6 +15,9 @@
 		   ,XOIN_LAST
 		FROM jk_user_balance 
 		WHERE USER_ID = #{userId}
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbolName)">
+			AND COIN_SYMBOL_NAME = #{coinSymbolName}
+		</if>		
 	</select>
 	
 	<update id="update" parameterType="UserBalanceEntity">

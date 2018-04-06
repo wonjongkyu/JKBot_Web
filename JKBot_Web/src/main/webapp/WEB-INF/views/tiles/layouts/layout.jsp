@@ -22,23 +22,29 @@
     <link href="<c:url value='/css/plugins/jqGrid/ui.jqgrid.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
     
-     <!-- Mainly scripts -->
-	 <script src="<c:url value='/js/jquery-3.1.1.min.js'/>"></script>
-	 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
-	 <script src="<c:url value='/js/plugins/metisMenu/jquery.metisMenu.js'/>"></script>
-	 <script src="<c:url value='/js/plugins/slimscroll/jquery.slimscroll.min.js'/>"></script>
+    <!-- Mainly scripts -->
+	<script src="<c:url value='/js/jquery-3.1.1.min.js'/>"></script>
+	<script src="<c:url value='/js/bootstrap.min.js'/>"></script>
+	<script src="<c:url value='/js/plugins/metisMenu/jquery.metisMenu.js'/>"></script>
+	<script src="<c:url value='/js/plugins/slimscroll/jquery.slimscroll.min.js'/>"></script>
 	
-	 <!-- Peity -->
-	 <script src="<c:url value='/js/plugins/peity/jquery.peity.min.js'/>"></script>
+	<!-- Peity -->
+	<script src="<c:url value='/js/plugins/peity/jquery.peity.min.js'/>"></script>
 	
-	 <!-- jqGrid -->
-	 <script src="<c:url value='/js/plugins/jqGrid/i18n/grid.locale-en.js'/>"></script>
-	 <script src="<c:url value='/js/plugins/jqGrid/jquery.jqGrid.min.js'/>"></script>
+	<!-- jqGrid -->
+	<script src="<c:url value='/js/plugins/jqGrid/i18n/grid.locale-en.js'/>"></script>
+	<script src="<c:url value='/js/plugins/jqGrid/jquery.jqGrid.min.js'/>"></script>
 	
-	 <!-- Custom and plugin javascript -->
-	 <script src="<c:url value='/js/inspinia.js'/>"></script>
-	 <script src="<c:url value='/js/plugins/pace/pace.min.js'/>"></script>
-	 <script src="<c:url value='/js/plugins/jquery-ui/jquery-ui.min.js'/>"></script>
+	<!-- Custom and plugin javascript -->
+	<script src="<c:url value='/js/inspinia.js'/>"></script>
+	<script src="<c:url value='/js/plugins/pace/pace.min.js'/>"></script>
+	<script src="<c:url value='/js/plugins/jquery-ui/jquery-ui.min.js'/>"></script>
+	 
+	 
+	<link href="<c:url value='/css/plugins/chosen/bootstrap-chosen.css'/>" rel="stylesheet" >
+	<!-- Chosen --> 
+   	<script src="<c:url value='/js/plugins/chosen/chosen.jquery.js'/>"></script> 
+	 
 	 
 	<!-- contextpath 가져와서 변수 정의 하고.. -->
 	<c:set var="contextPath" value="<%= request.getContextPath()%>"></c:set>  
