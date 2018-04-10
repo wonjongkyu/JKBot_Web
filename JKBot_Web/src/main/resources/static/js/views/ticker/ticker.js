@@ -6,10 +6,32 @@
 		});*/
 		getBithumbTicker();
 		setInterval(function(){
-			
-			getBithumbTicker();
-		}, 5000);
+			test();
+			// getBithumbTicker();
+		}, 100000);
 	});
+	
+	function test() {
+		var data = {}
+		
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/binance/api/v1/ticker/24hr",
+			// data : JSON.stringify(data),
+			dataType : 'json',
+			timeout : 5000,
+			success : function(data) {
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	}
 	
 	
 	function getBithumbTicker() {
