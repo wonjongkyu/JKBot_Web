@@ -48,54 +48,49 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(callSuper=false)
 public class BinanceTickerResultEntity extends RestCommonVO{
-	@JsonProperty("data")
-	private List<BinanceTickerData> list;
+	@JsonProperty("tradeType")
+	private String tradeType;			// 거래 단위
 	
-	@Getter
-	@Setter
-	public static class BinanceTickerData {
-		@JsonProperty("symbol")
-		private String symbol;				// 코인종류
-		@JsonProperty("priceChange")
-		private String priceChange;			// 가격 변동
-		@JsonProperty("priceChangePercent")
-		private String priceChangePercent;	// 가격 변동폭
-		@JsonProperty("weightedAvgPrice")
-		private String weightedAvgPrice;	// 평균 가격
-		@JsonProperty("prevClosePrice")
-		private String prevClosePrice;		// 전일 종가
-		@JsonProperty("lastPrice")
-		private String lastPrice;			// 거래완료 마지막 가격
-		@JsonProperty("lastQty")
-		private String lastQty;				// 거래완료 마지막 수량
-		@JsonProperty("bidPrice")
-		private String bidPrice;			// 체결 가격
-		@JsonProperty("bidQty")
-		private String bidQty;				// 체결 수량
-		@JsonProperty("askPrice")
-		private String askPrice;			// 
-		@JsonProperty("askQty")
-		private String askQty;				// 
-		@JsonProperty("openPrice")
-		private String openPrice;			// 현재 가격
-		@JsonProperty("highPrice")
-		private String highPrice;			// 최고 가격
-		@JsonProperty("lowPrice")
-		private String lowPrice;			// 최저 가격
-		@JsonProperty("volume")
-		private String volume;				// 시총
-		@JsonProperty("quoteVolume")
-		private String quoteVolume;			// 
-		@JsonProperty("openTime")
-		private String openTime;			// 
-		@JsonProperty("closeTime")
-		private String closeTime;			// 
-		@JsonProperty("firstId")
-		private String firstId;				// 
-		@JsonProperty("lastId")
-		private String lastId;				// 
-		@JsonProperty("count")
-		private String count;				// 
-	}
-		
+	@JsonProperty("symbol")
+	private String symbol;				// 코인종류
+	@JsonProperty("priceChange")
+	private String priceChange;			// 가격 변동
+	@JsonProperty("priceChangePercent")
+	private String priceChangePercent;	// 가격 변동폭
+	@JsonProperty("weightedAvgPrice")
+	private String weightedAvgPrice;	// 평균 가격
+	@JsonProperty("prevClosePrice")
+	private String prevClosePrice;		// 전일 종가
+	@JsonProperty("lastPrice")
+	private String lastPrice;			// 직전 체결 가격
+	@JsonProperty("lastQty")
+	private String lastQty;				// 직전 체결 수량
+	@JsonProperty("bidPrice")
+	private String bidPrice;			// 매수 가격
+	@JsonProperty("bidQty")
+	private String bidQty;				// 매수 수량
+	@JsonProperty("askPrice")
+	private String askPrice;			// 매도 가격
+	@JsonProperty("askQty")
+	private String askQty;				// 매도 수량
+	@JsonProperty("openPrice")
+	private String openPrice;			// 시가
+	@JsonProperty("highPrice")
+	private String highPrice;			// 고가
+	@JsonProperty("lowPrice")
+	private String lowPrice;			// 저가
+	@JsonProperty("volume")
+	private String volume;				// 시총
+	@JsonProperty("quoteVolume")
+	private String quoteVolume;			// 
+	@JsonProperty("openTime")
+	private String openTime;			// 시가 시각
+	@JsonProperty("closeTime")
+	private String closeTime;			// 종가 시각
+	@JsonProperty("firstId")
+	private String firstId;				// 
+	@JsonProperty("lastId")
+	private String lastId;				// 
+	@JsonProperty("count")
+	private String count;				// 
 }

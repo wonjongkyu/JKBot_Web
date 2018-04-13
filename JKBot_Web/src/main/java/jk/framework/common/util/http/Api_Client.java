@@ -2,10 +2,18 @@ package jk.framework.common.util.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+
+import jk.framework.common.util.etc.Util;
+import jk.framework.common.util.lib.HttpRequest;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,9 +22,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jk.framework.common.util.etc.Util;
-import jk.framework.common.util.lib.HttpRequest;
 
 
 @SuppressWarnings("unused")
@@ -70,7 +75,6 @@ public class Api_Client {
 		    HttpRequest request = null;
 	
 		    // POST/GET 설정
-		    System.out.println(strMemod.toUpperCase());
 		    if (strMemod.toUpperCase().equals("POST")) {
 	
 			request = new HttpRequest(strHost, "POST");
@@ -139,24 +143,21 @@ public class Api_Client {
 	    	
 		String strData = Util.mapToQueryString(rgData).replace("?", "");
 		String nNonce = usecTime();
-		
-		strData = strData.substring(0, strData.length()-1);
-	
-	
-		System.out.println("1 : " + strData);
-		
-		strData = encodeURIComponent(strData);
-		
 		HashMap<String, String> array = new HashMap<String, String>();
-	
+		String str = endpoint + ";" + nNonce;
 		
-		String str = endpoint + ";"	+ strData + ";" + nNonce;
+		if(!strData.isEmpty()) {
+			strData = strData.substring(0, strData.length()-1);
+			strData = encodeURIComponent(strData);
+			str += ";"	+ strData;
+		}
+		
 		//String str = "/info/balance;order_currency=BTC&payment_currency=KRW&endpoint=%2Finfo%2Fbalance;272184496";
 		
 		// public일때는 제외
 		System.out.println(str);
 		String encoded = "";
-		if(str.contains("/privateapi")){
+		if(str.contains("/bithumb/pri")){
 			encoded = asHex(hmacSha512(str, apiSecret));
 		}
 		
@@ -200,14 +201,28 @@ public class Api_Client {
 	public static String asHex(byte[] bytes){
 	    return new String(Base64.encodeBase64(bytes));
 	}
-	
-	@SuppressWarnings("unchecked")
-    public String callApi(String endpoint, HashMap<String, String> params) {
-		return callApi(endpoint,params,"POST");
-	}
 
+    /**
+     * <pre>
+     * 1. 개요 : 빗썸 API 전용
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : callApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
     @SuppressWarnings("unchecked")
-    public String callApi(String endpoint, HashMap<String, String> params, String reqType) {
+    public String callApi(String endpoint, HashMap<String, String> params) {
 		String rgResultDecode = "";
 		HashMap<String, String> rgParams = new HashMap<String, String>();
 		rgParams.put("endpoint", endpoint);
@@ -219,7 +234,7 @@ public class Api_Client {
 		String api_host = api_url + endpoint;
 		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
 	
-		rgResultDecode = request(api_host, reqType, rgParams, httpHeaders);
+		rgResultDecode = request(api_host, "POST", rgParams, httpHeaders);
 	
 		if (!rgResultDecode.startsWith("error")) {
 		    // json 파싱
@@ -234,6 +249,96 @@ public class Api_Client {
 			e.printStackTrace();
 		    }
 		}
+		return rgResultDecode;
+    }
+    
+    /**
+     * <pre>
+     * 1. 개요 : 바이낸스 API 전용
+     * 2. 처리내용 : GET 방식으로 변경
+     * </pre>
+     * @Method Name : callBinanceApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		jongkyu.won				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callBinanceApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+ 
+		String api_host = api_url + endpoint;
+		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+	
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+	
+		// 예외처리 필요함 { "code": -1121, "msg":"Invalid symbol." }
+		/*if (rgResultDecode.startsWith("error")) {
+		    // json 파싱
+		    HashMap<String, String> result;
+		    try {
+				result = new ObjectMapper().readValue(rgResultDecode, HashMap.class);
+		
+				System.out.println("==== 결과 출력 ====");
+				System.out.println(result.get("msg"));
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
+		}*/
+		return rgResultDecode;
+    }
+    
+    /**
+     * <pre>
+     * 1. 개요 : 업비트 API 전용
+     * 2. 처리내용 : GET 방식으로 변경
+     * </pre>
+     * @Method Name : callBinanceApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		jongkyu.won				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callUpbitApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+ 
+		String api_host = api_url + endpoint;
+		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+	
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+	
+		// 예외처리 필요함 { "code": -1121, "msg":"Invalid symbol." }
+		/*if (!rgResultDecode.startsWith("code")) {
+		    // json 파싱
+		    HashMap<String, String> result;
+		    try {
+				result = new ObjectMapper().readValue(rgResultDecode, HashMap.class);
+		
+				System.out.println("==== 결과 출력 ====");
+				System.out.println(result.get("msg"));
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
+		}*/
 		return rgResultDecode;
     }
 }
