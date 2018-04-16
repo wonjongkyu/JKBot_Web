@@ -34,6 +34,7 @@ public class UpbitPublicRestService {
 			    Gson gson = new Gson();
 			    entity = gson.fromJson(result, new TypeToken<List<UpbitTickerResultEntity>>(){}.getType()); 
 			    for (UpbitTickerResultEntity upbitTickerResultEntity : entity) {
+			    	upbitTickerResultEntity.setTradeType(str);
 			    	resultEntity.add(upbitTickerResultEntity);
 				}
 			} catch (Exception e) {

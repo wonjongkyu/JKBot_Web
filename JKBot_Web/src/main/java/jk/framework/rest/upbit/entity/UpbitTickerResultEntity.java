@@ -35,10 +35,11 @@ import lombok.Setter;
 ]
  */
 @Data
-@Getter
+
 @Setter
 @EqualsAndHashCode(callSuper=false)
 public class UpbitTickerResultEntity extends RestCommonVO{
+	private String tradeType;				// 종목코드 정제
 	@JsonProperty("code")
 	private String code;					// 종목코드
 	@JsonProperty("candleDateTime")

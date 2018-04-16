@@ -1,5 +1,3 @@
-	
-
 /*
  *	업비트 	코인네스트
  * 	BTC		btc
@@ -20,46 +18,14 @@ var coinnestCoinArray = ['btc','bch','eth','btg','qtum','etc','omg','neo'];
 var upbitCoinArray = ['BTC','BCC','ETH','BTG','QTUM','ETC','OMG','NEO'];
 
 $(document).ready(function() {
-	// getCoinnest();
-	// getUpbit();
-	// test();
 	getCompareCoinprice();
 	setInterval(function(){
 		getCompareCoinprice();
-		// getCoinnest();
-		// getUpbit();
-	}, 60000);
+	}, 20000);
 });
 
 /*
- * 테스트용 function
- */
-function test(){
-	var data = {}
-	
-	$.ajax({
-		type : "GET",
-		contentType : "application/json",
-		url : "/upbit/publicapi/ticker/test",
-		// data : JSON.stringify(data),
-		dataType : 'json',
-		timeout : 60000,
-		success : function(data) {
-			console.log(data);
-		},
-		error : function(e) {
-			console.log("ERROR: ", e);
-			display(e);
-		},
-		done : function(e) {
-			console.log("DONE");
-		}
-	});
-}
-
-
-/*
- * 바이낸스 가격 가져오는 function
+ * 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareCoinprice() {
 	var data = {}
@@ -67,12 +33,46 @@ function getCompareCoinprice() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/binance/api/v1/ticker/24hr",
+		url : "/price/priceCompare",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 60000,
 		success : function(data) {
-			console.log(data);
+			var result = data;
+			
+			var resultJsonArray = new Array();
+			var resultHtml = "";
+			$("#priceTbody").html('');
+			$.each(result, function(){
+				var name = this.closing_price;
+				var resultVO = new Object();
+				resultVO.coinSymbol = this.coinSymbol;
+				resultVO.priceKrwA = this.priceKrwA;
+				resultVO.priceKrwB = this.priceKrwB;
+				resultVO.priceBtcB = this.priceBtcB;
+				resultVO.priceUsdtB = this.priceUsdtB;
+				resultVO.priceGapKrw = this.priceGapKrw;
+				resultVO.priceGapPercent = this.priceGapPercent;
+				resultVO.status = this.status;
+				resultHtml += "<tr>";
+				resultHtml += "<td>-</td>";
+				resultHtml += "<td>" + this.coinSymbol + "</td>";
+				resultHtml += "<td>" + comma(this.priceBtcB) + "</td>";
+				resultHtml += "<td>" + comma(this.priceUsdtB) + "</td>";
+				resultHtml += "<td>" + comma(this.priceKrwB) + "</td>";
+				resultHtml += "<td>" + comma(this.priceKrwA) + "</td>";
+				resultHtml += "<td>" + "-" + "</td>";
+				resultHtml += "<td>" + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + "</td>";
+				resultHtml += "</tr>";
+				// 마이너스 빨간색 플러스 파란색 
+				resultJsonArray.push(resultVO);
+			});
+			
+      /*      <td class="text-navy"> <i class="fa fa-level-up"></i> 40% </td>
+            <td class="text-warning"> <i class="fa fa-level-down"></i> -20% </td>
+            <td class="text-navy"> <i class="fa fa-level-up"></i> 26% </td>*/
+        
+			$("#priceTbody").html(resultHtml);
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);

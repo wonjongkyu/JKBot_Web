@@ -46,6 +46,8 @@
    	<script src="<c:url value='/js/plugins/chosen/chosen.jquery.js'/>"></script> 
 	 
 	 
+   	<script src="<c:url value='/js/views/common.js'/>"></script> 
+   	
 	<!-- contextpath 가져와서 변수 정의 하고.. -->
 	<c:set var="contextPath" value="<%= request.getContextPath()%>"></c:set>  
 	<c:set var="imgContextPath" value="${contextPath}/img"></c:set> 

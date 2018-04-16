@@ -29,29 +29,22 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>코인명</th>
-                            <th>업비트</th>
-                            <th>코인네스트</th>
-                            <th>시세차</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>비트코인</td>
-                            <td>13,000,000원</td>
-                            <td>11,000,000원</td>
-                            <td>-5 % (-2,000,000원) </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
+	                <table class="table table-hover">
+	                    <thead>
+	                  		<tr>
+		                      <th>#</th>
+		                      <th>코인</th>
+		                      <th>binance(BTC)</th>
+		                      <th>binance($)</th>
+		                      <th>binance(￦)</th>
+		                      <th>upbit(￦)</th>
+		                      <th>BTC차액(￦)</th>
+		                      <th>김치프리미엄(￦)</th>
+	                     	</tr>
+	                    </thead>
+	                    <tbody id="priceTbody"></tbody>
+	                </table>
+     			</div>
             </div>
         </div>
 

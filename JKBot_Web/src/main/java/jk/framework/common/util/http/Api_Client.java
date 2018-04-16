@@ -252,6 +252,38 @@ public class Api_Client {
 		return rgResultDecode;
     }
     
+   
+    /**
+     * <pre>
+     * 1. 개요 : 기본 API 적용
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : callCommonApi
+     * @date : 2018. 4. 16.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 16.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callCommonApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+ 
+		String api_host = api_url + endpoint;
+		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+	
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+		return rgResultDecode;
+    }
+    
     /**
      * <pre>
      * 1. 개요 : 바이낸스 API 전용
