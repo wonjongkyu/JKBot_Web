@@ -9,7 +9,7 @@
     <div class="col-lg-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>업비트 - 코인네스트 재정거래 </h5>
+                    <h5>업비트 - 바이낸스 김프 계산 </h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>

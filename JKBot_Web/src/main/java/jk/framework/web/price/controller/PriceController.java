@@ -1,6 +1,8 @@
 package jk.framework.web.price.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -159,7 +161,7 @@ public class PriceController {
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
  						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
- 						resultEntity.get(entity.getTradeType()).setPriceGapPercent((String.valueOf(JKStringUtil.mathRound(priceGapPercent,2))) );
+ 						resultEntity.get(entity.getTradeType()).setPriceGapPercent(JKStringUtil.mathRound(priceGapPercent,2));
  					}
  				}
  			}
@@ -170,6 +172,56 @@ public class PriceController {
  			result.add(resultEntity.get(key));
  	        logger.info("키 : {}, 값 : {}", key, resultEntity.get(key));
  	    }
+ 		
+ 		// 상승률 내림차순 정렬
+ 		Collections.sort(result, new GapPercentDescCompare());
+		
  		return result;
+	}
+    
+   
+	/**
+	 * <pre> 상승률 ASC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:45:45
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercentAscCompare implements Comparator<PriceCompareEntity> {
+		/**
+		 * 오름차순(ASC)
+		 */
+		@Override
+		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
+			double d1 = arg0.getPriceGapPercent();
+			double d2 = arg1.getPriceGapPercent();
+			return d1 < d2 ? -1 : d1 > d2 ? 1:0;
+		}
+	}
+
+ 
+	/**
+	 * <pre> 상승률 DESC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:46:32
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercentDescCompare implements Comparator<PriceCompareEntity> {
+		/**
+		 * 내림차순(DESC)
+		 */
+		@Override
+		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
+			double d1 = arg0.getPriceGapPercent();
+			double d2 = arg1.getPriceGapPercent();
+			return d1 > d2 ? -1 : d1 < d2 ? 1:0;
+		}
 	}
 }

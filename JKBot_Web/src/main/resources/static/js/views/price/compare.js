@@ -62,7 +62,17 @@ function getCompareCoinprice() {
 				resultHtml += "<td>" + comma(this.priceKrwB) + "</td>";
 				resultHtml += "<td>" + comma(this.priceKrwA) + "</td>";
 				resultHtml += "<td>" + "-" + "</td>";
-				resultHtml += "<td>" + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + "</td>";
+				if(this.priceGapPercent == null){
+					this.priceGapPercent = 0;
+				}
+				
+				if(this.priceGapPercent.indexOf("-") > -1){
+					resultHtml += '<td class="text-sucess">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + '<i class="fa fa-level-down"></i></td>';
+				}else if(this.priceGapPercent == 0){
+					resultHtml += "<td>" + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + "</td>";
+				}else {
+					resultHtml += '<td class="text-danger">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ')   ' + '<i class="fa fa-level-up"></i></td>';
+				}
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
 				resultJsonArray.push(resultVO);

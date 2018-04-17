@@ -8,6 +8,7 @@
 package jk.framework.web.price.entity; 
 
 import jk.framework.rest.common.entity.RestCommonVO;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,7 +40,5 @@ public class PriceCompareEntity extends RestCommonVO{
 	private String priceBtcB;		// 비교대상 코인 BTC 가격
 	private String priceUsdtB;		// 비교대상 코인 USDT 가격
 	private String priceGapKrw;		// 원화 가격 차이
-	private String priceGapPercent;	// 김프 (%)
-	
-	 
+	private double priceGapPercent = 0D;	// 김프 (%)
 }
