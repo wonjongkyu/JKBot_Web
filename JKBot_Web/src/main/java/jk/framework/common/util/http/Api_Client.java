@@ -58,7 +58,8 @@ public class Api_Client {
 		return String.valueOf(System.currentTimeMillis());
     }
 
-    private String request(String strHost, String strMemod, HashMap<String, String> rgParams,  HashMap<String, String> httpHeaders) {
+    @SuppressWarnings("null")
+	private String request(String strHost, String strMemod, HashMap<String, String> rgParams,  HashMap<String, String> httpHeaders) {
     	String response = "";
 
 		// SSL 여부
@@ -71,34 +72,33 @@ public class Api_Client {
 		}
 	
 		if (strMemod.toUpperCase().equals("HEAD")) {
+		
 		} else {
 		    HttpRequest request = null;
 	
 		    // POST/GET 설정
 		    if (strMemod.toUpperCase().equals("POST")) {
-	
-			request = new HttpRequest(strHost, "POST");
-			request.readTimeout(2000);
-	
-			System.out.println("POST ==> " + request.url());
-	
-			if (httpHeaders != null && !httpHeaders.isEmpty()) {
-			    httpHeaders.put("api-client-type", "2");
-			    httpHeaders.put("cookie", "2");
-			    httpHeaders.put("Access-Control-Allow-Origin", "*");	// 추가
-			    request.headers(httpHeaders);
-			    System.out.println(httpHeaders.toString());
-			}
-			if (rgParams != null && !rgParams.isEmpty()) {
-			    request.form(rgParams);
-			    System.out.println(rgParams.toString());
-			}
+				request = new HttpRequest(strHost, "POST");
+				request.readTimeout(2000);
+		
+				System.out.println("POST ==> " + request.url());
+		
+				if (httpHeaders != null && !httpHeaders.isEmpty()) {
+				    httpHeaders.put("api-client-type", "2");
+				    httpHeaders.put("cookie", "2");
+				    httpHeaders.put("Access-Control-Allow-Origin", "*");	// 추가
+				    request.headers(httpHeaders);
+				    System.out.println(httpHeaders.toString());
+				}
+				if (rgParams != null && !rgParams.isEmpty()) {
+				    request.form(rgParams);
+				    System.out.println(rgParams.toString());
+				}
 		    } else {
-			request = HttpRequest.get(strHost
-				+ Util.mapToQueryString(rgParams));
-			request.readTimeout(2000);
-	
-			System.out.println("Response was: " + response);
+		    	// request.headers(httpHeaders);
+				request = HttpRequest.get(strHost + Util.mapToQueryString(rgParams));
+				request.readTimeout(200);
+				// System.out.println("Response was: " + response);
 		    }
 	
 		    if (request.ok()) {
@@ -309,7 +309,11 @@ public class Api_Client {
 		HashMap<String, String> rgParams = new HashMap<String, String>();
  
 		String api_host = api_url + endpoint;
-		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		// HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
 	
 		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
 	
@@ -354,8 +358,12 @@ public class Api_Client {
 		HashMap<String, String> rgParams = new HashMap<String, String>();
  
 		String api_host = api_url + endpoint;
-		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
-	
+		// HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
+		
 		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
 	
 		// 예외처리 필요함 { "code": -1121, "msg":"Invalid symbol." }

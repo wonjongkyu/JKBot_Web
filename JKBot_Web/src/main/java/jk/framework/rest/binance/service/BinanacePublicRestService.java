@@ -17,10 +17,10 @@ import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 public class BinanacePublicRestService {
 	
 	public List<BinanceTickerResultEntity> getTicker(String apiUrl){
-		return getTicker(apiUrl, null);
+		return getTicker(apiUrl, null, "USDT");
 	}
 	
-	public List<BinanceTickerResultEntity> getTicker(String apiUrl, HashSet<String> coinList){
+	public List<BinanceTickerResultEntity> getTicker(String apiUrl, HashSet<String> coinList, String symbolType){
 		
 		List<BinanceTickerResultEntity> entity = null;
 		List<BinanceTickerResultEntity> returnEntity = new ArrayList<BinanceTickerResultEntity>();
@@ -33,10 +33,31 @@ public class BinanacePublicRestService {
 		    entity = gson.fromJson(result, new TypeToken<List<BinanceTickerResultEntity>>(){}.getType()); 
 		    for (BinanceTickerResultEntity binanceTickerResultEntity : entity) {
 		    	if(coinList != null) {
-		    		// 지정한 코인만 찾아서 리턴
-		    		String symbol = binanceTickerResultEntity.getSymbol().replaceAll("USDT", "");
-		    		if(coinList.contains(symbol)) {
-		    			if( binanceTickerResultEntity.getSymbol().contains("USDT") ) {
+		    		
+		    		/*// 지정한 코인만 찾아서 리턴
+		    		if(symbol.substring(symbol.length()-4).indexOf("USDT") > -1){
+		    			symbol = symbol.replaceAll("USDT", "");
+		    			addEntity = true;
+		    		}else if(symbol.substring(symbol.length()-3).indexOf("BTC") > -1) {
+		    			symbol = symbol.replaceAll("BTC", "");
+		    			addEntity = true;
+		    		}*/
+		    		String symbol = binanceTickerResultEntity.getSymbol();
+		    		boolean addYN = false;
+		    		if("BTC".equals(symbolType)) {
+		    			if(symbol.substring(symbol.length()-3).indexOf("BTC") > -1){
+		    				symbol = symbol.replaceAll(symbolType, "");
+		    				addYN = true;
+		    			}		    			
+		    		}else if("USDT".equals(symbolType)) {
+		    			if(symbol.substring(symbol.length()-4).indexOf("USDT") > -1){
+		    				symbol = symbol.replaceAll(symbolType, "");
+		    				addYN = true;
+		    			}
+		    		}
+		    		
+		    		if(addYN && coinList.contains(symbol)) {
+		    			if( binanceTickerResultEntity.getSymbol().contains(symbolType) ) {
 		    				binanceTickerResultEntity.setTradeType(symbol);
 		    				returnEntity.add(binanceTickerResultEntity);
 		    			}

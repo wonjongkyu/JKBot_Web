@@ -125,10 +125,10 @@ public class SessionService {
 		final HttpServletRequest request = sra.getRequest(); // 리퀘스트 가져오기
 		final HttpSession httpSession = request.getSession(); // 세션가져오기
 
-		if (attributName.equals("searchId")) {
+		httpSession.setAttribute(attributName, attributVal);
+		/*if (attributName.equals("searchId")) {
 			// to-do : 예외처리
-			httpSession.setAttribute(attributName, attributVal);
-		}
+		}*/
 	}
 
 	/**

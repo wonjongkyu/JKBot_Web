@@ -41,10 +41,14 @@
 	<script src="<c:url value='/js/plugins/jquery-ui/jquery-ui.min.js'/>"></script>
 	 
 	 
-	<link href="<c:url value='/css/plugins/chosen/bootstrap-chosen.css'/>" rel="stylesheet" >
 	<!-- Chosen --> 
+	<link href="<c:url value='/css/plugins/chosen/bootstrap-chosen.css'/>" rel="stylesheet" >
    	<script src="<c:url value='/js/plugins/chosen/chosen.jquery.js'/>"></script> 
-	 
+	
+	<!-- Dual Listbox -->
+	<link href="<c:url value='/css/plugins/dualListbox/bootstrap-duallistbox.min.css'/>" rel="stylesheet">
+	<script src="<c:url value='/js/plugins/dualListbox/jquery.bootstrap-duallistbox.js'/>"></script>
+	
 	 
    	<script src="<c:url value='/js/views/common.js'/>"></script> 
    	

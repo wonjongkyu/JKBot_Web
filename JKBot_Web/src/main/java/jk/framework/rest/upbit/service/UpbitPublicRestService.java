@@ -27,10 +27,10 @@ public class UpbitPublicRestService {
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		for(String str : coinList) {
-			String param = "/minutes/1?code=CRIX.UPBIT.KRW-" + str;
-			String result = api.callUpbitApi("/candles/"+param, null);
-
 			try {
+				Thread.sleep(50);	// 1000이 1초
+				String param = "/minutes/1?code=CRIX.UPBIT.KRW-" + str;
+				String result = api.callUpbitApi("/candles/"+param, null);
 			    Gson gson = new Gson();
 			    entity = gson.fromJson(result, new TypeToken<List<UpbitTickerResultEntity>>(){}.getType()); 
 			    for (UpbitTickerResultEntity upbitTickerResultEntity : entity) {

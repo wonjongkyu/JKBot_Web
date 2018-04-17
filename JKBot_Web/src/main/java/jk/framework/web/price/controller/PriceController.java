@@ -14,14 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import jk.framework.common.util.etc.JKStringUtil;
+import jk.framework.common.util.etc.SessionService;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
+import jk.framework.rest.bithumb.entity.BithumbInfoAccountEntity;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
 import jk.framework.web.price.entity.PriceCompareEntity;
@@ -55,6 +58,9 @@ public class PriceController {
     
     @Autowired
     PriceService priceService;
+    
+    @Autowired
+    SessionService sessionService;
 	
     /**
      * <pre>
@@ -104,8 +110,8 @@ public class PriceController {
      * @return
      */ 	
     @ResponseBody
-    @RequestMapping(value = "/priceCompare", method = RequestMethod.GET)
-   	public List<PriceCompareEntity> priceCompare(Model model) {
+    @RequestMapping(value = "/priceCompare/{symbolType}", method = RequestMethod.GET)
+   	public List<PriceCompareEntity> priceCompare(Model model, @PathVariable String symbolType) {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
     	// 환율
@@ -119,27 +125,61 @@ public class PriceController {
  		coinList.add("NEO");
  		coinList.add("LTC");
  		coinList.add("QTUM");
+ 		coinList.add("ADA");
+ 		
+ 		HashSet<String> coinList2 = new HashSet<String>();
+ 		coinList2.add("ETH");
  		
  		/*
  		 * 1.resultEntity 세팅
  		 */
  		Map<String, PriceCompareEntity> resultEntity = new HashMap<String, PriceCompareEntity>();
- 		for (String coinSymbol : coinList) {
- 			PriceCompareEntity entity = new PriceCompareEntity();
- 			entity.setCoinSymbol(coinSymbol);
- 			resultEntity.put(coinSymbol, entity);
+ 		if(symbolType.equals("USDT")) {
+	 		for (String coinSymbol : coinList) {
+	 			PriceCompareEntity entity = new PriceCompareEntity();
+	 			entity.setCoinSymbol(coinSymbol);
+	 			resultEntity.put(coinSymbol, entity);
+	 		}
+ 		}else if(symbolType.equals("BTC")) {
+ 			for (String coinSymbol : coinList2) {
+	 			PriceCompareEntity entity = new PriceCompareEntity();
+	 			entity.setCoinSymbol(coinSymbol);
+	 			resultEntity.put(coinSymbol, entity);
+	 		}
+ 			coinList = coinList2;
  		}
  		
- 		List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList);
+ 		List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
- 			if(resultEntity.containsKey(entity.getTradeType())){
- 				String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
- 				resultEntity.get(entity.getTradeType()).setPriceUsdtB(String.valueOf(JKStringUtil.mathRound(lastPrice,2)));
- 				if(!("-").equals(lastPrice)) {
- 					// 소수 셋째자리에서 반올림
- 					double priceKrw = JKStringUtil.parseDouble(lastPrice) * exchangeRate;
- 					resultEntity.get(entity.getTradeType()).setPriceKrwB(JKStringUtil.mathKrwRound(priceKrw) );
+ 			if("USDT".equals(symbolType)){
+ 				if(resultEntity.containsKey(entity.getTradeType())){
+ 					// USDT or BTC
+ 					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
+ 					resultEntity.get(entity.getTradeType()).setPriceUsdtB(String.valueOf(JKStringUtil.mathRound(lastPrice,2)));
+ 					if(!("-").equals(lastPrice)) {
+ 						// 소수 셋째자리에서 반올림
+ 						double priceKrw = JKStringUtil.parseDouble(lastPrice) * exchangeRate;
+ 						resultEntity.get(entity.getTradeType()).setPriceKrwB(JKStringUtil.mathKrwRound(priceKrw) );
+ 					}
  				}
+ 				// BTC - KRW는 Session에 저장해 둔다.
+ 	 			if("BTCUSDT".equals(entity.getSymbol())){
+ 	 				sessionService.setAttribute("BTCKRW", resultEntity.get("BTC").getPriceKrwB());
+ 	 				logger.info("BTCKRW:::{}", sessionService.getAttribute("BTCKRW"));
+ 	 			}
+ 			}else if("BTC".equals(symbolType)) {
+ 				if(resultEntity.containsKey(entity.getTradeType())){
+ 					double btckrw = Double.parseDouble(sessionService.getAttribute("BTCKRW"));
+ 					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
+ 					resultEntity.get(entity.getTradeType()).setPriceBtcB(String.valueOf(lastPrice));
+ 					if(!("-").equals(lastPrice)) {
+ 						// 소수 셋째자리에서 반올림
+ 						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
+ 						resultEntity.get(entity.getTradeType()).setPriceKrwB(JKStringUtil.mathKrwRound(priceKrw) );
+ 					}
+ 				}
+ 			}else {
+ 				return null;		// 예외처리 필요함
  			}
  		}
 
