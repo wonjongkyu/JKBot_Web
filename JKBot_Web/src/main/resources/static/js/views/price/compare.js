@@ -18,6 +18,7 @@ var coinnestCoinArray = ['btc','bch','eth','btg','qtum','etc','omg','neo'];
 var upbitCoinArray = ['BTC','BCC','ETH','BTG','QTUM','ETC','OMG','NEO'];
 
 $(document).ready(function() {
+	// getExchangeRate();
 	getCompareUSDT();
 	getCompareBTC();
 	setInterval(function(){
@@ -27,7 +28,38 @@ $(document).ready(function() {
 	setInterval(function(){
 		getCompareBTC();
 	}, 15000);
+	
+	// 10분 마다 환율정보 가져오기
+	setInterval(function(){
+		getExchangeRate();
+	}, 600000);	
 });
+
+
+/*
+ * 환율 가져오는 function
+ */
+function getExchangeRate() {
+	var data = {}
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/price/getExchangeRate",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 5000,
+		success : function(data) {
+			 
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
 
 /*
  * 업비트-바이낸스 가격 가져오는 function

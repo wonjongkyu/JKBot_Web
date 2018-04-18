@@ -83,6 +83,8 @@ public class PriceController {
     @RequestMapping(value = "/compare", method = RequestMethod.GET)
 	public ModelAndView compare(Model model) {
 		ModelAndView mav = new ModelAndView();
+		// 환율 가져오기
+		getExchangeRate(model);		
 		mav.setViewName("/price/priceCompare");
 		return mav;
     }
@@ -115,7 +117,8 @@ public class PriceController {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
     	// 환율
- 		Double exchangeRate = priceService.getExchangeRate();
+    	// priceService.getExchangeRate();
+ 		Double exchangeRate = Double.parseDouble(sessionService.getAttribute("exchangeRate"));
  		logger.info("exchangeRate:::{}", exchangeRate);
  		// 가져올 코인 코드
  		HashSet<String> coinList = new HashSet<String>();
@@ -128,7 +131,16 @@ public class PriceController {
  		coinList.add("ADA");
  		
  		HashSet<String> coinList2 = new HashSet<String>();
- 		coinList2.add("ETH");
+ 		coinList2.add("ADA");
+ 		// coinList2.add("BTC");
+ 		coinList2.add("GRS");
+ 		coinList2.add("EOS");
+ 		coinList2.add("TRX");
+ 		coinList2.add("OMG");
+ 		coinList2.add("XRP");
+ 		coinList2.add("SNT");
+ 		coinList2.add("LTC");
+ 		coinList2.add("XLM");
  		
  		/*
  		 * 1.resultEntity 세팅
@@ -218,6 +230,31 @@ public class PriceController {
 		
  		return result;
 	}
+    
+    /**
+     * <pre>
+     * 1. 개요 : 김프 계산 페이지 연결
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : compare
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param model
+     * @return
+     */ 	
+    @RequestMapping(value = "/getExchangeRate", method = RequestMethod.GET)
+	public void getExchangeRate(Model model) {
+		// 환율
+		Double exchangeRate = priceService.getExchangeRate();
+		sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
+    }
     
    
 	/**

@@ -97,7 +97,7 @@ public class Api_Client {
 		    } else {
 		    	// request.headers(httpHeaders);
 				request = HttpRequest.get(strHost + Util.mapToQueryString(rgParams));
-				request.readTimeout(200);
+				request.readTimeout(500);
 				// System.out.println("Response was: " + response);
 		    }
 	
