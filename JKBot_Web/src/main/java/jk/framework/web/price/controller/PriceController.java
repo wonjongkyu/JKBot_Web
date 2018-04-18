@@ -132,15 +132,35 @@ public class PriceController {
  		
  		HashSet<String> coinList2 = new HashSet<String>();
  		coinList2.add("ADA");
- 		// coinList2.add("BTC");
- 		coinList2.add("GRS");
+ 		coinList2.add("ARK");
+ 		coinList2.add("BCC");
+ 		coinList2.add("DASH");
  		coinList2.add("EOS");
- 		coinList2.add("TRX");
- 		coinList2.add("OMG");
- 		coinList2.add("XRP");
- 		coinList2.add("SNT");
+ 		coinList2.add("ETC");
+ 		coinList2.add("ETH");
+ 		coinList2.add("GRS");
+ 		coinList2.add("ICX");
+ 		coinList2.add("KMD");
+ 		coinList2.add("LSK");
  		coinList2.add("LTC");
+ 		coinList2.add("MTL");
+ 		coinList2.add("NEO");
+ 		coinList2.add("OMG");
+ 		coinList2.add("PIVX");
+ 		coinList2.add("PORW");
+ 		coinList2.add("QTUM");
+ 		coinList2.add("SNT");
+ 		coinList2.add("STEEM");
+ 		coinList2.add("STORJ");
+ 		coinList2.add("STORM");
+ 		coinList2.add("STRAT");
+ 		coinList2.add("TRX");
+ 		coinList2.add("WAVES");
+ 		coinList2.add("XEM");
  		coinList2.add("XLM");
+ 		coinList2.add("XMR");
+ 		coinList2.add("XRP");
+ 		coinList2.add("ZEC");
  		
  		/*
  		 * 1.resultEntity 세팅
