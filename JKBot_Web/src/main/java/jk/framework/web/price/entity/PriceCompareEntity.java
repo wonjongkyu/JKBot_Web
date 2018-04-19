@@ -40,5 +40,7 @@ public class PriceCompareEntity extends RestCommonVO{
 	private String priceBtcB;		// 비교대상 코인 BTC 가격
 	private String priceUsdtB;		// 비교대상 코인 USDT 가격
 	private String priceGapKrw;		// 원화 가격 차이
+	private String transferFeeA;	// 전송 수수료 (업비트)
+	private String transferFeeB;	// 전송 수수료 (바이낸스)
 	private double priceGapPercent = 0D;	// 김프 (%)
 }

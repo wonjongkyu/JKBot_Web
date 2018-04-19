@@ -7,7 +7,7 @@
  */
 package jk.framework.web.user.entity; 
 
-import jk.framework.web.exchage.entity.ExchangeInfoEntity;
+import jk.framework.web.price.entity.PriceExchangeInfoEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=false)
-public class UserBalanceEntity extends ExchangeInfoEntity{
+public class UserBalanceEntity extends PriceExchangeInfoEntity{
 	private String userId;				// 사용자 ID
 	private String exchangeName;		// 거래소 명
 	private String coinSymbolName;		// 코인 심볼명

@@ -2,6 +2,7 @@ package jk.framework.web.price.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,9 @@ import com.google.gson.reflect.TypeToken;
 
 import jk.framework.common.util.http.Api_Client;
 import jk.framework.web.price.entity.ExchangeRateEntity;
+import jk.framework.web.price.entity.PriceExchangeInfoEntity;
+import jk.framework.web.price.mapper.ExchangeInfoMapper;
+import jk.framework.web.user.entity.UserBalanceEntity;
 
 @Service
 public class PriceService {
@@ -18,6 +22,15 @@ public class PriceService {
     @Value("${exchange.apiUrl}")
     private String apiUrl ;
 	
+    
+    @Autowired
+    ExchangeInfoMapper mapper;
+    
+	// ExchangeRateEntity
+	public List<PriceExchangeInfoEntity> getAllExchangeInfo(PriceExchangeInfoEntity entity){
+		return mapper.getAllExchangeInfo(entity);
+	}
+	 
 	/**
 	 * <pre>
 	 * 1. 개요 : 현재 환율 정보를 가져온다.

@@ -128,10 +128,10 @@
 		                      <th>#</th>
 		                      <th>코인</th>
 		                      <th>binance(BTC)</th>
-		                      <th>binance($)</th>
 		                      <th>binance(￦)</th>
+		                      <th>binance(수수료)</th>
 		                      <th>upbit(￦)</th>
-		                      <th>BTC차액(￦)</th>
+		                      <th>upbit(수수료)</th>
 		                      <th>김치프리미엄(￦)</th>
 	                     	</tr>
 	                    </thead>

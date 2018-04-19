@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.price.mapper.ExchangeInfoMapper">
+ 	
+ 	<select id="getAllExchangeInfo" parameterType="java.util.List" resultType="PriceExchangeInfoEntity">
+		SELECT 
+			EXCHANGE_NAME
+		   ,COIN_KOR_NAME
+		   ,COIN_SYMBOL_NAME
+		   ,COIN_EXCHANGE_TYPE
+		   ,COIN_TRANS_FEE_KRW
+		FROM jk_exchange_info 
+	</select>
+</mapper>

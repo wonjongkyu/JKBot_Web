@@ -165,11 +165,20 @@ function getCompareBTC() {
 				resultHtml += "<td>-</td>";
 				resultHtml += "<td>" + this.coinSymbol + "</td>";
 				resultHtml += "<td>" + this.priceBtcB + "</td>";
-				resultHtml += "<td>" + comma(this.priceUsdtB) + "</td>";
 				resultHtml += "<td>" + comma(this.priceKrwB) + "</td>";
-				resultHtml += "<td>" + comma(this.priceKrwA) + "</td>";
-				resultHtml += "<td>" + "-" + "</td>";
+				if(this.transferFeeB <= 4000){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
+				}
 				
+				resultHtml += "<td>" + comma(this.priceKrwA) + "</td>";
+				if(this.transferFeeA <= 4000){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeA) + "</td>";
+				}
+                 
 				var priceGapPercent = this.priceGapPercent;
 				if(priceGapPercent == null){
 					priceGapPercent = '0';

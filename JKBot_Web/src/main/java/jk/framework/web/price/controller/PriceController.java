@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +25,10 @@ import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
-import jk.framework.rest.bithumb.entity.BithumbInfoAccountEntity;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
 import jk.framework.web.price.entity.PriceCompareEntity;
+import jk.framework.web.price.entity.PriceExchangeInfoEntity;
 import jk.framework.web.price.service.PriceService;
 
 /**
@@ -85,6 +86,7 @@ public class PriceController {
 		ModelAndView mav = new ModelAndView();
 		// 환율 가져오기
 		getExchangeRate(model);		
+		getPriceExchangeRate(model);
 		mav.setViewName("/price/priceCompare");
 		return mav;
     }
@@ -147,7 +149,7 @@ public class PriceController {
  		coinList2.add("NEO");
  		coinList2.add("OMG");
  		coinList2.add("PIVX");
- 		coinList2.add("PORW");
+ 		coinList2.add("POWR");
  		coinList2.add("QTUM");
  		coinList2.add("SNT");
  		coinList2.add("STEEM");
@@ -204,6 +206,10 @@ public class PriceController {
  					double btckrw = Double.parseDouble(sessionService.getAttribute("BTCKRW"));
  					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
  					resultEntity.get(entity.getTradeType()).setPriceBtcB(String.valueOf(lastPrice));
+ 					
+ 					// 수수료 Get
+ 					resultEntity.get(entity.getTradeType()).setTransferFeeB(sessionService.getAttribute("binance_" + entity.getTradeType()));
+ 					
  					if(!("-").equals(lastPrice)) {
  						// 소수 셋째자리에서 반올림
  						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
@@ -229,6 +235,8 @@ public class PriceController {
  						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw(JKStringUtil.mathKrwRound(krwGap));
  						
+ 						// 수수료 Get
+ 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttribute("upbit_" + entity.getTradeType()));
  						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
@@ -274,6 +282,16 @@ public class PriceController {
 		// 환율
 		Double exchangeRate = priceService.getExchangeRate();
 		sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
+    }
+    
+    @RequestMapping(value = "/getPriceExchangeInfo", method = RequestMethod.GET)
+   	public void getPriceExchangeRate(Model model) {
+    	PriceExchangeInfoEntity entity = new PriceExchangeInfoEntity();
+   		// 환율
+    	List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(entity);
+    	for (PriceExchangeInfoEntity resultEntity : entityList) {
+    		sessionService.setAttribute(resultEntity.getExchangeName() + "_" + resultEntity.getCoinSymbolName(), resultEntity.getCoinTransFeeKrw());
+		}
     }
     
    
