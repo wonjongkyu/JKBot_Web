@@ -86,7 +86,7 @@ public class PriceController {
 		ModelAndView mav = new ModelAndView();
 		// 환율 가져오기
 		getExchangeRate(model);		
-		getPriceExchangeRate(model);
+		// getPriceExchangeRate(model);
 		mav.setViewName("/price/priceCompare");
 		return mav;
     }
@@ -139,12 +139,13 @@ public class PriceController {
  		coinList2.add("DASH");
  		coinList2.add("EOS");
  		coinList2.add("ETC");
- 		coinList2.add("ETH");
+ 		// coinList2.add("ETH");
  		coinList2.add("GRS");
  		coinList2.add("ICX");
- 		coinList2.add("KMD");
+ 		// coinList2.add("KMD");
  		coinList2.add("LSK");
  		coinList2.add("LTC");
+ 		coinList2.add("MCO");		// 모나코인 추가
  		coinList2.add("MTL");
  		coinList2.add("NEO");
  		coinList2.add("OMG");
@@ -160,7 +161,7 @@ public class PriceController {
  		coinList2.add("WAVES");
  		coinList2.add("XEM");
  		coinList2.add("XLM");
- 		coinList2.add("XMR");
+ 		// coinList2.add("XMR");
  		coinList2.add("XRP");
  		coinList2.add("ZEC");
  		
@@ -213,7 +214,7 @@ public class PriceController {
  					if(!("-").equals(lastPrice)) {
  						// 소수 셋째자리에서 반올림
  						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
- 						resultEntity.get(entity.getTradeType()).setPriceKrwB(JKStringUtil.mathKrwRound(priceKrw) );
+ 						resultEntity.get(entity.getTradeType()).setPriceKrwB(String.valueOf(JKStringUtil.mathRound(priceKrw,2)) );
  					}
  				}
  			}else {
@@ -228,12 +229,12 @@ public class PriceController {
  				String priceKrwB = resultEntity.get(entity.getTradeType()).getPriceKrwB();
  				// 업비트 원화 가격을 받아왔을때.
  				if(!("-").equals(priceKrwA)) {
- 					resultEntity.get(entity.getTradeType()).setPriceKrwA(JKStringUtil.mathKrwRound(priceKrwA));
+ 					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));
  					// 원화 차액을 계산하기 위해 바이낸스 가격을 가져왔을때. 원화차액 및 김프까지 계산
  					if(!("-").equals(priceKrwB)) {
  						// 원화 차액 계산
  						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
- 						resultEntity.get(entity.getTradeType()).setPriceGapKrw(JKStringUtil.mathKrwRound(krwGap));
+ 						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
  						// 수수료 Get
  						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttribute("upbit_" + entity.getTradeType()));
@@ -284,14 +285,37 @@ public class PriceController {
 		sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
     }
     
-    @RequestMapping(value = "/getPriceExchangeInfo", method = RequestMethod.GET)
-   	public void getPriceExchangeRate(Model model) {
+    /**
+     * <pre>
+     * 1. 개요 : DB에 저장되어 있는 거래소별 코인 리스트 가져오기
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : getPriceExchangeRate
+     * @date : 2018. 4. 20.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 20.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param model
+     */ 	
+    @ResponseBody
+    @RequestMapping(value = "/priceExchangeInfo", method = RequestMethod.GET)
+   	public List<PriceExchangeInfoEntity> priceExchangeInfo(Model model) {
+    	List<PriceExchangeInfoEntity> listEntity = new ArrayList<PriceExchangeInfoEntity>();
     	PriceExchangeInfoEntity entity = new PriceExchangeInfoEntity();
    		// 환율
     	List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(entity);
     	for (PriceExchangeInfoEntity resultEntity : entityList) {
     		sessionService.setAttribute(resultEntity.getExchangeName() + "_" + resultEntity.getCoinSymbolName(), resultEntity.getCoinTransFeeKrw());
+    		if(resultEntity.getExchangeName().equals("upbit")) {
+    			listEntity.add(resultEntity);
+    		}
 		}
+    	return listEntity;
     }
     
    

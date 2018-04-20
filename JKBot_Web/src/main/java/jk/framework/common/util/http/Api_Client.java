@@ -97,7 +97,11 @@ public class Api_Client {
 		    } else {
 		    	// request.headers(httpHeaders);
 				request = HttpRequest.get(strHost + Util.mapToQueryString(rgParams));
-				request.readTimeout(500);
+				if(strHost.contains("http://api.manana.kr")) {
+					request.readTimeout(30000);
+				}else {
+					request.readTimeout(500);
+				}
 				// System.out.println("Response was: " + response);
 		    }
 	
@@ -276,9 +280,12 @@ public class Api_Client {
     public String callCommonApi(String endpoint, HashMap<String, String> params) {
 		String rgResultDecode = "";
 		HashMap<String, String> rgParams = new HashMap<String, String>();
- 
+		
 		String api_host = api_url + endpoint;
-		HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
 	
 		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
 		return rgResultDecode;

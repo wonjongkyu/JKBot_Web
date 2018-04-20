@@ -19,20 +19,22 @@ var upbitCoinArray = ['BTC','BCC','ETH','BTG','QTUM','ETC','OMG','NEO'];
 
 $(document).ready(function() {
 	// getExchangeRate();
-	getCompareUSDT();
-	getCompareBTC();
-	setInterval(function(){
+	getPriceExchangeInfo();		// DB에 있는 코인 리스트 가져오기
+	getCompareUSDT();			// USDT API 호출
+	getCompareBTC();			// BTC API 호출
+	setInterval(function(){		// 1분마다 USDT 호출
 		getCompareUSDT();
-	}, 20000);
+	}, 60000);
 	
-	setInterval(function(){
+	setInterval(function(){		// 15초마다 BTC 호출
 		getCompareBTC();
 	}, 15000);
 	
 	// 10분 마다 환율정보 가져오기
-	setInterval(function(){
+	setInterval(function(){		// 10분마다 환율정보 호출
 		getExchangeRate();
 	}, 600000);	
+	
 });
 
 
@@ -50,6 +52,40 @@ function getExchangeRate() {
 		timeout : 5000,
 		success : function(data) {
 			 
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+
+/*
+ * 코인 리스트 가져오는 function
+ */
+function getPriceExchangeInfo() {
+	var data = {}
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/price/priceExchangeInfo",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 5000,
+		success : function(data) {
+			var result = data;
+			var resultHtml = '<select id="coinSymbolList" data-placeholder="Choose a Country..." class="chosen-select" multiple style="width:350px;" tabindex="4">';
+			$.each(result, function(){
+				var symbol = this.coinSymbolName;
+				resultHtml += '<option value="'+ symbol + '">'+ symbol +'</option>';
+			});
+			resultHtml += "</select>";
+			$("#coinSymbolList").html(resultHtml);
+			
+			$('.chosen-select').chosen({width: "100%"});
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
@@ -144,6 +180,16 @@ function getCompareBTC() {
 		dataType : 'json',
 		timeout : 60000,
 		success : function(data) {
+			// 선택한 코인 조회하기
+			var choiceCoinList = $("ul.chosen-choices").find("li>span");
+			var choiceCoinStr = '';
+			$.each(choiceCoinList, function(){
+				var value = $(this).text();
+				choiceCoinStr += value + "/";
+			})
+			/*	
+			class= ul chosen-choices
+			li span */
 			var result = data;
 			
 			var resultJsonArray = new Array();
@@ -161,7 +207,12 @@ function getCompareBTC() {
 				resultVO.priceGapKrw = this.priceGapKrw;
 				resultVO.priceGapPercent = this.priceGapPercent;
 				resultVO.status = this.status;
-				resultHtml += "<tr>";
+				
+				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					resultHtml += "<tr class='alert-success'>";
+				}else {
+					resultHtml += "<tr>";
+				}
 				resultHtml += "<td>-</td>";
 				resultHtml += "<td>" + this.coinSymbol + "</td>";
 				resultHtml += "<td>" + this.priceBtcB + "</td>";
@@ -193,6 +244,7 @@ function getCompareBTC() {
 				}else {
 					resultHtml += '<td class="text-danger">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ')   ' + '<i class="fa fa-level-up"></i></td>';
 				}
+				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
 				resultJsonArray.push(resultVO);

@@ -3,7 +3,7 @@
     
 <script src="<c:url value='/js/views/price/compare.js'/>"></script>
 
-<div class="row">
+<div class="row hide">
 	<div class="col-lg-12">
 	    <div class="ibox">
 	        <div class="ibox-title">
@@ -51,7 +51,41 @@
 	    </div>
 	</div>
 </div>
-            
+
+<div class="row">
+	<div class="col-lg-5">
+	    <div class="ibox float-e-margins">
+	    <div class="ibox-title">
+	        <h5>코인 선택 </h5>
+	        <div class="ibox-tools">
+	            <a class="collapse-link">
+	                <i class="fa fa-chevron-up"></i>
+	            </a>
+	            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                <i class="fa fa-wrench"></i>
+	            </a>
+	            <ul class="dropdown-menu dropdown-user">
+	                <li><a href="#">Config option 1</a>
+	                </li>
+	                <li><a href="#">Config option 2</a>
+	                </li>
+	            </ul>
+	            <a class="close-link">
+	                <i class="fa fa-times"></i>
+	            </a>
+	        </div>
+	    </div>
+	   		<div class="ibox-content">
+				<p>선택한 코인 하이라이팅</p>
+			    <div class="form-group">
+			    	<!-- <label class="font-normal">Multi select</label> -->
+				    <div id="coinSymbolList"> </div>
+			    </div>
+	    	</div>
+	    </div>
+	 </div>
+</div>
+                     
 <!--  DashBoard 현재 시세 -->
 <!-- <div class="row col-lg-12"> -->
 <div class="row">
@@ -145,4 +179,6 @@
 $('.dual_select').bootstrapDualListbox({
     selectorMinimalHeight: 160
 });
+
+
 </script>
