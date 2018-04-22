@@ -5,7 +5,7 @@
  * This software is the confidential and proprietary information
  * of yysvip.tistory.com.,LTD. ("Confidential Information").
  */
-package jk.framework.web.price.entity; 
+package jk.framework.web.admin.entity; 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

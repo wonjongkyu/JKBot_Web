@@ -5,10 +5,9 @@
  * This software is the confidential and proprietary information
  * of yysvip.tistory.com.,LTD. ("Confidential Information").
  */
-package jk.framework.web.price.entity; 
+package jk.framework.web.admin.entity; 
 
 import jk.framework.rest.common.entity.RestCommonVO;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

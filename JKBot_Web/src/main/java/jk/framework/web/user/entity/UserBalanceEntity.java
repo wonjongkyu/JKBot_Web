@@ -7,7 +7,7 @@
  */
 package jk.framework.web.user.entity; 
 
-import jk.framework.web.price.entity.PriceExchangeInfoEntity;
+import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -26,10 +26,10 @@ import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
-import jk.framework.web.price.entity.ExchangeRateEntity;
-import jk.framework.web.price.entity.PriceCompareEntity;
-import jk.framework.web.price.entity.PriceExchangeInfoEntity;
-import jk.framework.web.price.service.PriceService;
+import jk.framework.web.admin.entity.ExchangeRateEntity;
+import jk.framework.web.admin.entity.PriceCompareEntity;
+import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
+import jk.framework.web.admin.service.AdminService;
 
 /**
  * Handles requests for the application home page. 
@@ -52,7 +52,7 @@ public class AdminController {
     UpbitPublicRestService upbitPublicService;
     
     @Autowired
-    PriceService priceService;
+    AdminService adminService;
     
     @Autowired
     SessionService sessionService;
@@ -124,7 +124,7 @@ public class AdminController {
  		Map<String, PriceCompareEntity> resultEntity = new HashMap<String, PriceCompareEntity>();
  		PriceExchangeInfoEntity param = new PriceExchangeInfoEntity();
  		param.setCoinExchangeType(symbolType);
- 		List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(param);
+ 		List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(param);
  		
  		// 가져올 코인 코드
  	 	for (PriceExchangeInfoEntity e : entityList) {
@@ -145,9 +145,8 @@ public class AdminController {
 	
 	 	 		/* 기본 데이터 세팅*/
 	 	 		PriceCompareEntity entity = new PriceCompareEntity();
-				entity.setCoinSymbol(entity.getCoinSymbol());
-				entity.setTransferFeeA(entity.getTransferFeeA());
-				entity.setTransferFeeB(entity.getTransferFeeB());
+				entity.setCoinSymbol(e.getCoinSymbolName());
+				entity.setTransferFeeA(e.getCoinTransFeeKrw());
 				resultEntity.put(entity.getCoinSymbol(), entity);
  	 		}
  		}
@@ -196,7 +195,7 @@ public class AdminController {
  		for (UpbitTickerResultEntity entity : upBitResultEntity) {
  			if(resultEntity.containsKey(entity.getTradeType())){
  				String priceKrwA = JKStringUtil.nvl(entity.getTradePrice(), "-");
- 				String priceKrwB = resultEntity.get(entity.getTradeType()).getPriceKrwB();
+ 				String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
  				// 업비트 원화 가격을 받아왔을때.
  				if(!("-").equals(priceKrwA)) {
  					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));
@@ -207,7 +206,7 @@ public class AdminController {
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
  						// 수수료 Get
- 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttributeStr("upbit_" + entity.getTradeType()));
+ 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttributeStr("upbi" + entity.getTradeType()));
  						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
@@ -233,11 +232,21 @@ public class AdminController {
 	 			// DB에 가격 저장 Update
 	 			sessionService.setAttributeInt("priceCompare",sessionService.getAttributeInt("priceCompare") + 15);
 	 		}else {
-	 			priceService.updateCoinPriceInfo(result);
+	 			adminService.updateCoinPriceInfo(result);
 	 			sessionService.setAttributeInt("priceCompare", 15);
 	 		}
 	 		logger.info("compareTime:::{}", sessionService.getAttributeInt("priceCompare"));
 	 	}
+ 		
+ 		
+ 		// DB에 데이터 저장하기
+ 		// List<PriceCompareEntity> result
+ 		if(symbolType.equals("BTC")) {
+ 			adminService.updateBtcCoinPrice(result);
+ 		}else if(symbolType.equals("USDT")) {
+ 			adminService.updateUsdtCoinPrice(result);
+ 		}
+ 		
  		
  		return result;
 	}
@@ -264,7 +273,7 @@ public class AdminController {
     @RequestMapping(value = "/getExchangeRate", method = RequestMethod.GET)
 	public List<ExchangeRateEntity> getExchangeRate(Model model) {
 		// 환율
-    	List<ExchangeRateEntity>  result = priceService.getExchangeRate();
+    	List<ExchangeRateEntity>  result = adminService.getExchangeRate();
     	
 		if(result != null) {
             Double exchangeRate = 0D;	// 환율
@@ -299,7 +308,7 @@ public class AdminController {
    	public List<PriceExchangeInfoEntity> priceExchangeInfo(Model model) {
     	List<PriceExchangeInfoEntity> listEntity = new ArrayList<PriceExchangeInfoEntity>();
     	PriceExchangeInfoEntity entity = new PriceExchangeInfoEntity();
-    	List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(entity);
+    	List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(entity);
     	for (PriceExchangeInfoEntity resultEntity : entityList) {
     		sessionService.setAttribute(resultEntity.getExchangeName() + "_" + resultEntity.getCoinSymbolName(), resultEntity.getCoinTransFeeKrw());
     		if(resultEntity.getExchangeName().equals("upbit")) {

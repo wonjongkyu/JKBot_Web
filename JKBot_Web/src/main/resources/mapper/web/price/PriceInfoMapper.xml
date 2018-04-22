@@ -2,8 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="jk.framework.web.price.mapper.ExchangeInfoMapper">
+<mapper namespace="jk.framework.web.price.mapper.PriceInfoMapper">
  	
+ 	<select id="selectAllCoinPrice" parameterType="String" resultType="PriceExchangeInfoEntity">
+		SELECT 
+			COIN_EXCHANGE_TYPE
+		   ,COIN_SYMBOL
+		   ,COIN_TRANS_FEE_A
+		   ,COIN_TRANS_FEE_B
+		   ,PRICE_KRW_A
+		   ,PRICE_KRW_B
+		   ,PRICE_BTC_B
+		   ,PRICE_USDT_B
+		   ,PRICE_GAP_KRW
+		   ,TRANSFER_FEE_A
+		   ,TRANSFER_FEE_B
+		   ,PRICE_GAP_PERCENT
+		   ,UPDATE_DT
+		FROM jk_service_coin_price 
+		WHERE USE_YN = 'Y'
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbol)">
+			AND COIN_EXCHANGE_TYPE = #{coinSymbol}
+		</if>		
+	</select>
+	
  	<select id="getAllExchangeInfo" parameterType="PriceExchangeInfoEntity" resultType="PriceExchangeInfoEntity">
 		SELECT 
 			EXCHANGE_NAME
