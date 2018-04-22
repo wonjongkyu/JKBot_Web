@@ -39,8 +39,6 @@
 	       ,PRICE_BTC_B = #{priceBtcB}
 	       ,PRICE_USDT_B = #{priceUsdtB}
 	       ,PRICE_GAP_KRW = #{priceGapKrw}
-	       ,TRANSFER_FEE_A = #{transferFeeA}
-	       ,TRANSFER_FEE_B = #{transferFeeB}
 	       ,PRICE_GAP_PERCENT = #{priceGapPercent}
            ,UPDATE_DT = now()
         WHERE  COIN_EXCHANGE_TYPE = 'BTC'
@@ -56,8 +54,6 @@
 		       ,PRICE_BTC_B = #{entity.priceBtcB}
 		       ,PRICE_USDT_B = #{entity.priceUsdtB}
 		       ,PRICE_GAP_KRW = #{entity.priceGapKrw}
-		       ,TRANSFER_FEE_A = #{entity.transferFeeA}
-		       ,TRANSFER_FEE_B = #{entity.transferFeeB}
 		       ,PRICE_GAP_PERCENT = #{entity.priceGapPercent}
 	           ,UPDATE_DT = now()
 	        WHERE  COIN_EXCHANGE_TYPE = 'BTC'
@@ -74,8 +70,6 @@
 		       ,PRICE_BTC_B = #{entity.priceBtcB}
 		       ,PRICE_USDT_B = #{entity.priceUsdtB}
 		       ,PRICE_GAP_KRW = #{entity.priceGapKrw}
-		       ,TRANSFER_FEE_A = #{entity.transferFeeA}
-		       ,TRANSFER_FEE_B = #{entity.transferFeeB}
 		       ,PRICE_GAP_PERCENT = #{entity.priceGapPercent}
 	           ,UPDATE_DT = now()
 	        WHERE COIN_EXCHANGE_TYPE = 'USDT'
