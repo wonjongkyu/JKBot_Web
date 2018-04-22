@@ -1,5 +1,7 @@
 package jk.framework.common.util.etc;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -56,51 +58,67 @@ public class SessionService {
 		final HttpServletRequest request = sra.getRequest(); // 리퀘스트 가져오기
 		final HttpSession httpSession = request.getSession(); // 세션가져오기
 
-		if (attributName.equals("uuid")) {
-			final String uuid = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(uuid)) {
-				return "testUuid";
-			}
-			return uuid;
-		} /**/else if (attributName.equals("userId")) {
-			final String userId = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(userId)) {
-				return Constants.NO_USER_ID_SQ;
-			}
-			return userId;
-		} else if (attributName.equals("memberIdSq")) {
-			final String memberIdSq = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(memberIdSq)) {
-				return Constants.NO_MEMBER_ID_SQ;
-			}
-			return memberIdSq;
-		} else if (attributName.equals("hccAuthYN")) {
-			final String hccAuthYN = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(hccAuthYN)) {
-				return Constants.HCC_AUTH_N;
-			}
-			return hccAuthYN;
-		} else if (attributName.equals("customerNo")) {
-			final String customerNo = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(customerNo)) {
-				return "1";
-			}
-			return customerNo;
-		} else if (attributName.equals("searchId")) {
-			// 2018.03.13 검색어 로그 저장을 위한 날짜데이터 저장
-			final String searchLogDate = (String) httpSession.getAttribute(attributName);
-			if (StringUtils.isBlank(searchLogDate)) {
-				return "";
-			}
-			return searchLogDate;
-		} else if (attributName.equals("sessionId")) {
-			return httpSession.getId();
-		}
-
 		return (String) httpSession.getAttribute(attributName);
 	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : Int 반환
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : getAttributeInt
+	 * @date : 2018. 4. 21.
+	 * @author : jongkyu
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2018. 4. 21.		jongkyu				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param attributName
+	 * @return
+	 */ 	
+	public int getAttributeInt(final String attributName) {
 
+		final ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		final HttpServletRequest request = sra.getRequest(); // 리퀘스트 가져오기
+		final HttpSession httpSession = request.getSession(); // 세션가져오기
+		
+		if("priceCompare".equals(attributName)) {
+			if(httpSession.getAttribute(attributName) == null) {
+				return 0;
+			}
+		}
+		return (int) httpSession.getAttribute(attributName);
+	}
 
+	/**
+	 * <pre>
+	 * 1. 개요 : 문자열로 attribute 가져오기
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : getAttributeStr
+	 * @date : 2018. 4. 20.
+	 * @author : jongkyu
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2018. 4. 20.		jongkyu				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param attributName
+	 * @return
+	 */ 	
+	public String getAttributeStr(final String attributName) {
+
+		final ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		final HttpServletRequest request = sra.getRequest(); // 리퀘스트 가져오기
+		final HttpSession httpSession = request.getSession(); // 세션가져오기
+ 
+		return (String)httpSession.getAttribute(attributName);
+	}
 	/**
 	 * <pre>
 	 * 1. 개요 : 세션 추가
@@ -130,15 +148,34 @@ public class SessionService {
 			// to-do : 예외처리
 		}*/
 	}
-
+	
 	/**
+	 * <pre>
+	 * 1. 개요 : 세션 추가
+	 * 2. 처리내용 :
+	 * </pre>
+	 * @Method Name : setAttribute
+	 * @date : 2018. 3. 13.
+	 * @author : "Wonjongkyu"
+	 * @history :
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용
+	 *	----------- ------------------- ---------------------------------------
+	 *	2018. 3. 13.		"Wonjongkyu"				최초 작성
+	 *	-----------------------------------------------------------------------
 	 *
-	 * @Mehtod Name : getLoginUser
-	 * @param
-	 * @return
+	 * @param attributName
+	 * @param attributVal
 	 */
-	// public TempUserEntity getLoginUser() {
-	// return (TempUserEntity)httpSession.getAttribute("loginUser");
-	// }
+	public void setAttributeInt(final String attributName, final int attributVal) {
 
+		final ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		final HttpServletRequest request = sra.getRequest(); // 리퀘스트 가져오기
+		final HttpSession httpSession = request.getSession(); // 세션가져오기
+
+		httpSession.setAttribute(attributName, attributVal);
+		/*if (attributName.equals("searchId")) {
+			// to-do : 예외처리
+		}*/
+	}
 }

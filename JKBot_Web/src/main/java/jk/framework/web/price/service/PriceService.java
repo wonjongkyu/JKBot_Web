@@ -1,5 +1,6 @@
 package jk.framework.web.price.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import jk.framework.common.util.http.Api_Client;
+import jk.framework.web.price.entity.ExchangeCoinPriceEntity;
 import jk.framework.web.price.entity.ExchangeRateEntity;
+import jk.framework.web.price.entity.PriceCompareEntity;
 import jk.framework.web.price.entity.PriceExchangeInfoEntity;
 import jk.framework.web.price.mapper.ExchangeInfoMapper;
-import jk.framework.web.user.entity.UserBalanceEntity;
 
 @Service
 public class PriceService {
@@ -29,6 +31,30 @@ public class PriceService {
 	// ExchangeRateEntity
 	public List<PriceExchangeInfoEntity> getAllExchangeInfo(PriceExchangeInfoEntity entity){
 		return mapper.getAllExchangeInfo(entity);
+	}
+	
+	public void updateCoinPriceInfo(List<PriceCompareEntity> list){
+		List<ExchangeCoinPriceEntity> param = new ArrayList<ExchangeCoinPriceEntity>();
+		
+		for (PriceCompareEntity entity : list) {
+			// A는 코인 거래소 upbit 가격 입력
+			// B는 코인 거래소 binance 가격 입력
+			if( entity.getPriceKrwA() != null) {
+				ExchangeCoinPriceEntity exchangeEntity = new ExchangeCoinPriceEntity();
+				exchangeEntity.setCoinSymbol(entity.getCoinSymbol());
+				exchangeEntity.setExchangeName("upbit");
+				exchangeEntity.setPriceKrw(entity.getPriceKrwA());
+				param.add(exchangeEntity);
+			}
+			if( entity.getPriceKrwB() != null) {
+				ExchangeCoinPriceEntity exchangeEntity = new ExchangeCoinPriceEntity();
+				exchangeEntity.setCoinSymbol(entity.getCoinSymbol());
+				exchangeEntity.setExchangeName("binance");
+				exchangeEntity.setPriceKrw(entity.getPriceKrwB());
+				param.add(exchangeEntity);
+			}
+		}
+		mapper.updateCoinPriceInfo(param);
 	}
 	 
 	/**
@@ -50,24 +76,18 @@ public class PriceService {
 	 * 
 	 * @return
 	 */ 	
-	public Double getExchangeRate(){
-		
-		Double exchangeRate = 0D;	// 환율
+	public List<ExchangeRateEntity> getExchangeRate(){
 		List<ExchangeRateEntity> entity = null;
-		
 		Api_Client api = new Api_Client(apiUrl, null, null);
-		
 		try {
 		    String result = api.callCommonApi("/KRW/USD.json", null);
 		    Gson gson = new Gson();
 		    
 		    entity = gson.fromJson(result, new TypeToken<List<ExchangeRateEntity>>(){}.getType()); 
-		    for (ExchangeRateEntity exchangeRateEntity : entity) {
-		    	exchangeRate = Double.parseDouble(exchangeRateEntity.getRate());
-			}
+
 		} catch (Exception e) {
 		   // e.printStackTrace();
 		}
-		return exchangeRate;
+		return entity;
 	}
 }

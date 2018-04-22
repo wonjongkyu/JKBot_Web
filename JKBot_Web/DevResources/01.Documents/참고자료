@@ -1,3 +1,8 @@
+mysql 다중 update
+url에 ?allowMultiQueries=true  붙여줘야함
+
+
+
 참고자료 :http://ssoonidev.tistory.com/59
 
 

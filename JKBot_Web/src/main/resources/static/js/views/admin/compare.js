@@ -25,16 +25,16 @@ $(document).ready(function() {
 	
 	
 	setInterval(function(){		// 1분마다 USDT 호출
-		getCompareUSDT();
+		// getCompareUSDT();
 	}, 60000);
 	
 	setInterval(function(){		// 15초마다 BTC 호출
-		getCompareBTC();
+		// getCompareBTC();
 	}, 15000);
 	
 	// 10분 마다 환율정보 가져오기
 	setInterval(function(){		// 10분마다 환율정보 호출
-		getExchangeRate();
+		// getExchangeRate();
 	}, 600000);	
 	
 });
@@ -48,7 +48,7 @@ function getExchangeRate() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/price/getExchangeRate",
+		url : "/admin/getExchangeRate",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 5000,
@@ -73,7 +73,7 @@ function getPriceExchangeInfo() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/price/priceExchangeInfo",
+		url : "/admin/priceExchangeInfo",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 5000,
@@ -108,7 +108,7 @@ function getCompareUSDT() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/price/priceCompare/USDT",
+		url : "/admin/priceCompare/USDT",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 60000,
@@ -177,7 +177,7 @@ function getCompareBTC() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/price/priceCompare/BTC",
+		url : "/admin/priceCompare/BTC",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 60000,

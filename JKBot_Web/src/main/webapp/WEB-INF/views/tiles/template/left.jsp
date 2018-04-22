@@ -32,7 +32,10 @@
                 <a href="${contextPath}/user/mypage"><i class="fa fa-th-large"></i> <span class="nav-label">나의 통장</span></a>
             </li>
             <li>
-                <a href="${contextPath}/price/compare"><i class="fa fa-th-large"></i> <span class="nav-label">시세 비교</span></a>
+                <a href="${contextPath}/price/compare"><i class="fa fa-th-large"></i> <span class="nav-label">재정거래</span></a>
+            </li>
+            <li>
+                <a href="${contextPath}/admin/compare"><i class="fa fa-th-large"></i> <span class="nav-label">관리자</span></a>
             </li>
             
             <li>

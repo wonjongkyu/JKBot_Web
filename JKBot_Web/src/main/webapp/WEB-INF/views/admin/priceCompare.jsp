@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/price/compare.js'/>"></script>
+<script src="<c:url value='/js/views/admin/compare.js'/>"></script>
 
 <div class="row hide">
 	<div class="col-lg-12">

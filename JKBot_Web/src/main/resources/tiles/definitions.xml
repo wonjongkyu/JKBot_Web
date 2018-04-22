@@ -30,5 +30,11 @@
        <put-attribute name="title" value="Welcome" />  
        <put-attribute name="body" value="/WEB-INF/views/user/{1}.jsp" />  
    </definition>   
+   
+      <!-- priceCompare Page -->
+   <definition name="/admin/*" extends="base-definition">  
+       <put-attribute name="title" value="Welcome" />  
+       <put-attribute name="body" value="/WEB-INF/views/admin/{1}.jsp" />  
+   </definition> 
  
 </tiles-definitions>

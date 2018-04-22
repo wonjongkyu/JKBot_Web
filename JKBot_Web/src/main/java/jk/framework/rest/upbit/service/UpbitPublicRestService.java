@@ -38,7 +38,7 @@ public class UpbitPublicRestService {
 			    	resultEntity.add(upbitTickerResultEntity);
 				}
 			} catch (Exception e) {
-			    e.printStackTrace();
+			    // e.printStackTrace();
 			}
 		}
 		 

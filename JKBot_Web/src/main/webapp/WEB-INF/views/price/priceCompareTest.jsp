@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/price/compare.js'/>"></script>
+<script src="<c:url value='/js/views/price/compareTest.js'/>"></script>
 
 <div class="row hide">
 	<div class="col-lg-12">
@@ -26,7 +26,7 @@
 	                </a>
 	            </div>
 	        </div>
-	        <div class="ibox-content" >
+	        <div class="ibox-content">
 	           <!--  <p>
 	                Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
 	            </p> -->
@@ -75,7 +75,7 @@
 	            </a>
 	        </div>
 	    </div>
-	   		<div class="ibox-content" style="display: none;">
+	   		<div class="ibox-content">
 				<p>선택한 코인 하이라이팅</p>
 			    <div class="form-group">
 			    	<!-- <label class="font-normal">Multi select</label> -->
@@ -111,7 +111,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content" style="display: none;">
+                <div class="ibox-content">
 	                <table class="table table-hover">
 	                    <thead>
 	                  		<tr>

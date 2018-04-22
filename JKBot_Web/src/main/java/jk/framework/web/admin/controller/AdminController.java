@@ -1,8 +1,6 @@
-package jk.framework.web.price.controller;
+package jk.framework.web.admin.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,18 +34,12 @@ import jk.framework.web.price.service.PriceService;
 /**
  * Handles requests for the application home page. 
  */
-@RequestMapping("/price")
+@RequestMapping("/admin")
 @Controller
-public class PriceController {
+public class AdminController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
-	
-	// bithumb apiKey
-    @Value("${bithumb.apiConnectKey}")
-    private String apiConnectKey ;
-    @Value("${bithumb.apiSecretKey}")
-    private String apiSecretKey;
-    
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+ 
     @Value("${binance.apiUrl}")
     private String binanceApiUrl ;
     @Value("${upbit.apiUrl}")
@@ -84,41 +76,13 @@ public class PriceController {
      * @param model
      * @return
      */ 	
-    @RequestMapping(value = "/compareTest", method = RequestMethod.GET)
-	public ModelAndView compareTest(Model model) {
-		ModelAndView mav = new ModelAndView();
-		// 환율 가져오기
-		getExchangeRate(model);		
-		// getPriceExchangeRate(model);
-		mav.setViewName("/price/priceCompareTest");
-		return mav;
-    }
-    
-    /**
-     * <pre>
-     * 1. 개요 : 김프 계산 페이지 연결
-     * 2. 처리내용 : 
-     * </pre>
-     * @Method Name : compare
-     * @date : 2018. 4. 13.
-     * @author : Hyundai
-     * @history : 
-     *	-----------------------------------------------------------------------
-     *	변경일				작성자						변경내용  
-     *	----------- ------------------- ---------------------------------------
-     *	2018. 4. 13.		Hyundai				최초 작성 
-     *	-----------------------------------------------------------------------
-     * 
-     * @param model
-     * @return
-     */ 	
     @RequestMapping(value = "/compare", method = RequestMethod.GET)
 	public ModelAndView compare(Model model) {
 		ModelAndView mav = new ModelAndView();
 		// 환율 가져오기
 		getExchangeRate(model);		
 		// getPriceExchangeRate(model);
-		mav.setViewName("/price/priceCompare");
+		mav.setViewName("/admin/priceCompare");
 		return mav;
     }
     
@@ -147,79 +111,45 @@ public class PriceController {
     @ResponseBody
     @RequestMapping(value = "/priceCompare/{symbolType}", method = RequestMethod.GET)
    	public List<PriceCompareEntity> priceCompare(Model model, @PathVariable String symbolType) {
+    	// 최종 리턴되는 결과
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
-    	// 환율
-    	// priceService.getExchangeRate();
+    	// 환율 가져오기
  		Double exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
  		
+ 		// USDT / BTC 전용 코인 symbol 리스트
+ 		HashSet<String> coinList = new HashSet<String>();
+ 	 	
  		// 거래소 최근 거래 가격 가져오기
- 		PriceExchangeInfoEntity tempEntity = new PriceExchangeInfoEntity();
- 		// List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(tempEntity);
- 		
+ 		Map<String, PriceCompareEntity> resultEntity = new HashMap<String, PriceCompareEntity>();
+ 		PriceExchangeInfoEntity param = new PriceExchangeInfoEntity();
+ 		param.setCoinExchangeType(symbolType);
+ 		List<PriceExchangeInfoEntity> entityList = priceService.getAllExchangeInfo(param);
  		
  		// 가져올 코인 코드
- 		HashSet<String> coinList = new HashSet<String>();
- 		coinList.add("BTC");
- 		coinList.add("ETH");
- 		coinList.add("BCC");
- 		coinList.add("NEO");
- 		coinList.add("LTC");
- 		coinList.add("QTUM");
- 		coinList.add("ADA");
- 		
- 		HashSet<String> coinList2 = new HashSet<String>();
- 		coinList2.add("ADA");
- 		coinList2.add("ARK");
- 		coinList2.add("BCC");
- 		coinList2.add("DASH");
- 		coinList2.add("EOS");
- 		coinList2.add("ETC");
- 		// coinList2.add("ETH");
- 		coinList2.add("GRS");
- 		coinList2.add("ICX");
- 		// coinList2.add("KMD");
- 		coinList2.add("LSK");
- 		coinList2.add("LTC");
- 		coinList2.add("MCO");		// 모나코인 추가
- 		coinList2.add("MTL");
- 		coinList2.add("NEO");
- 		coinList2.add("OMG");
- 		coinList2.add("PIVX");
- 		coinList2.add("POWR");
- 		coinList2.add("QTUM");
- 		coinList2.add("SNT");
- 		coinList2.add("STEEM");
- 		coinList2.add("STORJ");
- 		coinList2.add("STORM");
- 		coinList2.add("STRAT");
- 		coinList2.add("TRX");
- 		coinList2.add("WAVES");
- 		coinList2.add("XEM");
- 		coinList2.add("XLM");
- 		// coinList2.add("XMR");
- 		coinList2.add("XRP");
- 		coinList2.add("ZEC");
- 		
- 		/*
- 		 * 1.resultEntity 세팅
- 		 */
- 		Map<String, PriceCompareEntity> resultEntity = new HashMap<String, PriceCompareEntity>();
- 		if(symbolType.equals("USDT")) {
-	 		for (String coinSymbol : coinList) {
-	 			PriceCompareEntity entity = new PriceCompareEntity();
-	 			entity.setCoinSymbol(coinSymbol);
-	 			resultEntity.put(coinSymbol, entity);
-	 		}
- 		}else if(symbolType.equals("BTC")) {
- 			logger.info("BTC  getExchangeRate:::{}", exchangeRate);
- 			
- 			for (String coinSymbol : coinList2) {
-	 			PriceCompareEntity entity = new PriceCompareEntity();
-	 			entity.setCoinSymbol(coinSymbol);
-	 			resultEntity.put(coinSymbol, entity);
-	 		}
- 			coinList = coinList2;
+ 	 	for (PriceExchangeInfoEntity e : entityList) {
+ 	 		boolean listPut = false;
+ 	 		if("USDT".equals(symbolType)) {
+ 	 			if("USDT".equals(e.getCoinExchangeType())) {
+ 	 				listPut = true;
+ 	 			}
+ 	 		}else if("BTC".equals(symbolType)) {
+ 	 			if("BTC".equals(e.getCoinExchangeType()) || "KRW".equals(e.getCoinExchangeType())){
+ 	 				listPut = true;
+ 	 			}
+ 	 		}
+ 	 		
+ 	 		if(listPut) {
+	 	 		logger.info("{}------coin::::{}", symbolType, e.getCoinSymbolName());
+	 	 		coinList.add( e.getCoinSymbolName());
+	
+	 	 		/* 기본 데이터 세팅*/
+	 	 		PriceCompareEntity entity = new PriceCompareEntity();
+				entity.setCoinSymbol(entity.getCoinSymbol());
+				entity.setTransferFeeA(entity.getTransferFeeA());
+				entity.setTransferFeeB(entity.getTransferFeeB());
+				resultEntity.put(entity.getCoinSymbol(), entity);
+ 	 		}
  		}
  		
  		List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
@@ -266,7 +196,7 @@ public class PriceController {
  		for (UpbitTickerResultEntity entity : upBitResultEntity) {
  			if(resultEntity.containsKey(entity.getTradeType())){
  				String priceKrwA = JKStringUtil.nvl(entity.getTradePrice(), "-");
- 				String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
+ 				String priceKrwB = resultEntity.get(entity.getTradeType()).getPriceKrwB();
  				// 업비트 원화 가격을 받아왔을때.
  				if(!("-").equals(priceKrwA)) {
  					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));

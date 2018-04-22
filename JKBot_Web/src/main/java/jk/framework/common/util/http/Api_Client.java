@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.media.jfxmedia.logging.Logger;
 
 
 @SuppressWarnings("unused")
@@ -97,6 +98,7 @@ public class Api_Client {
 		    } else {
 		    	// request.headers(httpHeaders);
 				request = HttpRequest.get(strHost + Util.mapToQueryString(rgParams));
+				// System.out.println("request:" + request);
 				if(strHost.contains("http://api.manana.kr")) {
 					request.readTimeout(30000);
 				}else {

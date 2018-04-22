@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import jk.framework.common.util.etc.SessionService;
 import jk.framework.web.user.entity.UserBalanceEntity;
 import jk.framework.web.user.entity.UserInfoEntity;
 import jk.framework.web.user.service.UserBalanceService;
@@ -34,6 +35,9 @@ public class UserController {
 	
 	@Autowired
 	UserBalanceService userBalanceService;
+	
+    @Autowired
+    SessionService sessionService;
 	
 	/**
 	 * <pre>
@@ -60,6 +64,7 @@ public class UserController {
 		entity.setUserId("wonjongkyu");
 		
 		List<UserBalanceEntity> entityList = this.getUserBalanceInfo(entity);
+		
 		model.addAttribute("entityList", entityList);
 		return "/user/myPage";
 	}
