@@ -206,7 +206,7 @@ public class AdminController {
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
  						// 수수료 Get
- 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttributeStr("upbi" + entity.getTradeType()));
+ 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttributeStr("upbit_" + entity.getTradeType()));
  						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
