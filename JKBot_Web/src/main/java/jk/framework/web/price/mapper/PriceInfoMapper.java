@@ -12,6 +12,5 @@ import jk.framework.web.admin.entity.PriceCompareEntity;
 public interface PriceInfoMapper {
 	
 	public List<PriceCompareEntity> selectAllCoinPrice(String coinSymbol) throws DataAccessException;
-	public List<PriceCompareEntity> selectAllCoinPrice(Map<String, Object> map) throws DataAccessException;
 }
 

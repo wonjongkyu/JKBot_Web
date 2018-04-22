@@ -4,12 +4,10 @@
 	
 <mapper namespace="jk.framework.web.price.mapper.PriceInfoMapper">
  	
- 	<select id="selectAllCoinPrice" parameterType="String" resultType="PriceExchangeInfoEntity">
+ 	<select id="selectAllCoinPrice" parameterType="String" resultType="PriceCompareEntity">
 		SELECT 
 			COIN_EXCHANGE_TYPE
 		   ,COIN_SYMBOL
-		   ,COIN_TRANS_FEE_A
-		   ,COIN_TRANS_FEE_B
 		   ,PRICE_KRW_A
 		   ,PRICE_KRW_B
 		   ,PRICE_BTC_B
@@ -21,9 +19,7 @@
 		   ,UPDATE_DT
 		FROM jk_service_coin_price 
 		WHERE USE_YN = 'Y'
-		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbol)">
-			AND COIN_EXCHANGE_TYPE = #{coinSymbol}
-		</if>		
+		AND COIN_EXCHANGE_TYPE = #{coinSymbol}
 	</select>
 	
  	<select id="getAllExchangeInfo" parameterType="PriceExchangeInfoEntity" resultType="PriceExchangeInfoEntity">

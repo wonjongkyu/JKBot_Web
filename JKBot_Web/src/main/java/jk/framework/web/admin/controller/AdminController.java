@@ -140,7 +140,6 @@ public class AdminController {
  	 		}
  	 		
  	 		if(listPut) {
-	 	 		logger.info("{}------coin::::{}", symbolType, e.getCoinSymbolName());
 	 	 		coinList.add( e.getCoinSymbolName());
 	
 	 	 		/* 기본 데이터 세팅*/
@@ -223,8 +222,7 @@ public class AdminController {
  	        // logger.info("키 : {}, 값 : {}", key, resultEntity.get(key));
  	    }
  		
- 		// 상승률 내림차순 정렬
- 		Collections.sort(result, new GapPercentDescCompare());
+ 
  		
  		if(symbolType.equals("BTC")) {
 	 		// 10분마다 시세 Update
@@ -318,49 +316,4 @@ public class AdminController {
     	return listEntity;
     }
     
-   
-	/**
-	 * <pre> 상승률 ASC
-	 * jk.framework.web.price.controller 
-	 *    |_ PriceController.java
-	 * 
-	 * </pre>
-	 * @date : 2018. 4. 17. 오전 9:45:45
-	 * @version : 
-	 * @author : Hyundai
-	 */
-	static class GapPercentAscCompare implements Comparator<PriceCompareEntity> {
-		/**
-		 * 오름차순(ASC)
-		 */
-		@Override
-		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
-			double d1 = arg0.getPriceGapPercent();
-			double d2 = arg1.getPriceGapPercent();
-			return d1 < d2 ? -1 : d1 > d2 ? 1:0;
-		}
-	}
-
- 
-	/**
-	 * <pre> 상승률 DESC
-	 * jk.framework.web.price.controller 
-	 *    |_ PriceController.java
-	 * 
-	 * </pre>
-	 * @date : 2018. 4. 17. 오전 9:46:32
-	 * @version : 
-	 * @author : Hyundai
-	 */
-	static class GapPercentDescCompare implements Comparator<PriceCompareEntity> {
-		/**
-		 * 내림차순(DESC)
-		 */
-		@Override
-		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
-			double d1 = arg0.getPriceGapPercent();
-			double d2 = arg1.getPriceGapPercent();
-			return d1 > d2 ? -1 : d1 < d2 ? 1:0;
-		}
-	}
 }

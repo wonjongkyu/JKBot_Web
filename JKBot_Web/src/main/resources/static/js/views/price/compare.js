@@ -21,16 +21,16 @@ $(document).ready(function() {
 	// getExchangeRate();
 	getPriceExchangeInfo();		// DB에 있는 코인 리스트 가져오기
 	getCompareUSDT();			// USDT API 호출
-	// getCompareBTC();			// BTC API 호출 (5초 후에 호출 되도록 변경 필요함)
+	getCompareBTC();			// BTC API 호출 (5초 후에 호출 되도록 변경 필요함)
 	
 	
 	setInterval(function(){		// 1분마다 USDT 호출
 		getCompareUSDT();
 	}, 60000);
 	
-	setInterval(function(){		// 15초마다 BTC 호출
+	setInterval(function(){		// 10초마다 BTC 호출
 		getCompareBTC();
-	}, 15000);
+	}, 10000);
 	
 	// 10분 마다 환율정보 가져오기
 	setInterval(function(){		// 10분마다 환율정보 호출
