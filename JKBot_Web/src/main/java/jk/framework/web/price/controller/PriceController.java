@@ -1,6 +1,8 @@
 package jk.framework.web.price.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -144,6 +146,10 @@ public class PriceController {
    	public List<PriceCompareEntity> priceCompare(Model model, @PathVariable String symbolType) {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	result = priceService.selectAllCoinPrice(symbolType);
+    	
+    	// 상승률 내림차순 정렬
+    	Collections.sort(result, new GapPercentDescCompare());
+    	 		
     	return result;
 	}
     
@@ -163,4 +169,50 @@ public class PriceController {
 		}
 		return result;
     }
+    
+    
+    /**
+	 * <pre> 상승률 ASC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:45:45
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercentAscCompare implements Comparator<PriceCompareEntity> {
+		/**
+		 * 오름차순(ASC)
+		 */
+		@Override
+		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
+			double d1 = arg0.getPriceGapPercent();
+			double d2 = arg1.getPriceGapPercent();
+			return d1 < d2 ? -1 : d1 > d2 ? 1:0;
+		}
+	}
+
+ 
+	/**
+	 * <pre> 상승률 DESC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:46:32
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercentDescCompare implements Comparator<PriceCompareEntity> {
+		/**
+		 * 내림차순(DESC)
+		 */
+		@Override
+		public int compare(PriceCompareEntity arg0, PriceCompareEntity arg1) {
+			double d1 = arg0.getPriceGapPercent();
+			double d2 = arg1.getPriceGapPercent();
+			return d1 > d2 ? -1 : d1 < d2 ? 1:0;
+		}
+	}
 }
