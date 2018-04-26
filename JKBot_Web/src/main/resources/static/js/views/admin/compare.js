@@ -48,12 +48,12 @@ function getExchangeRate() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "/admin/getExchangeRate",
+		url : "https://kauth.kakao.com/oauth/authorize?client_id=cc04df8dc625cce522bad9cb5fede3df&redirect_uri=http://localhost/login/kakaologin&response_type=code",
 		// data : JSON.stringify(data),
 		dataType : 'json',
 		timeout : 5000,
 		success : function(data) {
-			 
+			 alert(data);
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
@@ -190,7 +190,7 @@ function getCompareBTC() {
 				choiceCoinStr += value + "/";
 			})
 			// 임시
-			choiceCoinStr = "PIVX/MTL/GRS/NEO/ARK/STEEM/XRP/";
+			choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/";
 			
 			/*	
 			class= ul chosen-choices

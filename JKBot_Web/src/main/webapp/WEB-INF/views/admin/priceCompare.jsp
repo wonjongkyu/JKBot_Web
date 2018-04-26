@@ -3,6 +3,7 @@
     
 <script src="<c:url value='/js/views/admin/compare.js'/>"></script>
 
+
 <div class="row hide">
 	<div class="col-lg-12">
 	    <div class="ibox">
