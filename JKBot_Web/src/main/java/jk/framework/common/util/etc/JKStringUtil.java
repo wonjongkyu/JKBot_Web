@@ -56,7 +56,19 @@ public class JKStringUtil {
 	public static double parseDouble(final String str) {
 		double result = 0L;
 		try {
-			result = Double.parseDouble(str);
+			if(str != null) {
+				result = Double.parseDouble(str);
+			}
+		} catch (NumberFormatException e) {
+			// logger.error(e.getMessage());
+		}
+		return result;
+	}
+	
+	public static float parseFloat(final String str) {
+		float result = 0f;
+		try {
+			result = Float.parseFloat(str);
 		} catch (NumberFormatException e) {
 			logger.error(e.getMessage());
 		}
