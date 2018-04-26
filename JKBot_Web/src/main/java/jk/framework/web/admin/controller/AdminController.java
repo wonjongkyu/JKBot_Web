@@ -30,6 +30,7 @@ import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
+import jk.framework.web.kakao.controller.KakaoController;
 
 /**
  * Handles requests for the application home page. 
@@ -80,6 +81,7 @@ public class AdminController {
 	public ModelAndView compare(Model model) {
 		ModelAndView mav = new ModelAndView();
 		// 환율 가져오기
+		KakaoController test = new KakaoController();
 		getExchangeRate(model);		
 		// getPriceExchangeRate(model);
 		mav.setViewName("/admin/priceCompare");
@@ -115,7 +117,10 @@ public class AdminController {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
     	// 환율 가져오기
- 		Double exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
+    	Double exchangeRate = 1065D;
+    	if(sessionService.getAttributeStr("exchangeRate") != null) {
+    		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
+    	}
  		
  		// USDT / BTC 전용 코인 symbol 리스트
  		HashSet<String> coinList = new HashSet<String>();
@@ -140,16 +145,27 @@ public class AdminController {
  	 		}
  	 		
  	 		if(listPut) {
-	 	 		logger.info("{}------coin::::{}", symbolType, e.getCoinSymbolName());
+	 	 		// logger.info("{}------coin::::{}", symbolType, e.getCoinSymbolName());
 	 	 		coinList.add( e.getCoinSymbolName());
 	
-	 	 		/* 기본 데이터 세팅*/
+	 	 		/* 
+	 	 		 * 	기본 데이터 세팅
+	 	 		 *	- 수수료 사토시 출력
+	 	 		 */
 	 	 		PriceCompareEntity entity = new PriceCompareEntity();
 				entity.setCoinSymbol(e.getCoinSymbolName());
-				entity.setTransferFeeA(e.getCoinTransFeeKrw());
+				if("upbit".equals(e.getExchangeName())) {
+					entity.setTransferFeeA(e.getCoinTransFeeKrw());
+				}else if("binance".equals(e.getExchangeName())) {
+					logger.info("coinSymbol:::{}", entity.getCoinSymbol());
+					logger.info("transferFeeB:::{}", e.getCoinTransFeeKrw());
+					entity.setTransferFeeB(e.getCoinTransFeeKrw());
+				}
 				resultEntity.put(entity.getCoinSymbol(), entity);
  	 		}
  		}
+ 	 	
+  
  		
  		List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
@@ -175,15 +191,17 @@ public class AdminController {
  					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
  					resultEntity.get(entity.getTradeType()).setPriceBtcB(String.valueOf(lastPrice));
  					
- 					// 수수료 Get
- 					resultEntity.get(entity.getTradeType()).setTransferFeeB(sessionService.getAttributeStr("binance_" + entity.getTradeType()));
- 					
+ 				// 차액도 계산 (최근 10분)
  					if(!("-").equals(lastPrice)) {
  						// 소수 셋째자리에서 반올림
  						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
  						resultEntity.get(entity.getTradeType()).setPriceKrwB(String.valueOf(JKStringUtil.mathRound(priceKrw,2)) );
- 						// 차액도 계산 (최근 10분)
  						
+ 						// 수수료 사토시 -> 원화 계산
+ 						logger.info("Aaaaaaaaaa:::{}", entity.getTradeType());
+ 	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeB();
+ 	 					String transferFeeSum = JKStringUtil.mathKrwRound(priceKrw * JKStringUtil.parseDouble(transferFee));
+ 	 					resultEntity.get(entity.getTradeType()).setTransferFeeB(transferFeeSum);
  					}
  				}
  			}else {
@@ -205,13 +223,16 @@ public class AdminController {
  						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
- 						// 수수료 Get
- 						resultEntity.get(entity.getTradeType()).setTransferFeeA(sessionService.getAttributeStr("upbit_" + entity.getTradeType()));
  						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
  						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
  						resultEntity.get(entity.getTradeType()).setPriceGapPercent(JKStringUtil.mathRound(priceGapPercent,2));
+ 						
+ 						// 수수료 사토시 -> 원화 계산
+ 	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeA();
+ 	 					String transferFeeSum = JKStringUtil.mathKrwRound(JKStringUtil.parseDouble(priceKrwA) * JKStringUtil.parseDouble(transferFee));
+ 	 					resultEntity.get(entity.getTradeType()).setTransferFeeA(transferFeeSum);
  					}
  				}
  			}

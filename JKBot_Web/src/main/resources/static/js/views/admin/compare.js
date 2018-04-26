@@ -1,21 +1,5 @@
-/*
- *	업비트 	코인네스트
- * 	BTC		btc
-	BCC		bch
-	ETH		eth
-	BTG		btg
-	NEO		neo
-	QTUM	qtum
-	ETC		etc
-	OMG		omg
-	
-	document.ready
-	- coinnest 배열만큼 함수 호출
-	- upbit 배열만큼 함수 호출
-	10초마다.			
- */
-var coinnestCoinArray = ['btc','bch','eth','btg','qtum','etc','omg','neo'];
-var upbitCoinArray = ['BTC','BCC','ETH','BTG','QTUM','ETC','OMG','NEO'];
+
+
 
 $(document).ready(function() {
 	getExchangeRate();
@@ -48,12 +32,12 @@ function getExchangeRate() {
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
-		url : "https://kauth.kakao.com/oauth/authorize?client_id=cc04df8dc625cce522bad9cb5fede3df&redirect_uri=http://localhost/login/kakaologin&response_type=code",
+		url : "/admin/getExchangeRate",
 		// data : JSON.stringify(data),
 		dataType : 'json',
-		timeout : 5000,
+		timeout : 50000,
 		success : function(data) {
-			 alert(data);
+			
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
@@ -265,34 +249,5 @@ function getCompareBTC() {
 		}
 	});
 }
-/*function getCoinnest() {
-	
-	  var url = "https://api.coinnest.co.kr/api/pub/ticker?coin=" + coin;
-	  $.getJSON(url,   
-	    {   
-	        tags: "mount rainier",   
-	        tagmode: "any",   
-	        format: "json"   
-	      },   
-	      function(data) {   
-	        alert(data.last);
-	        alert(data.buy);
-	        
-	        $.each(data.items, function(i,item){   
-  	          $("<img/>").attr("src", item.media.m).appendTo("#images");   
-  	          if ( i == 3 ) return false;   
-  	        });   
-	    });  
-}
 
 
-function getUpbit(coin) {
-	  if(coin==null){
-	    coin = "btc";
-	  }
-	  
-	  var url = "https://crix-api-endpoint.upbit.com/v1/crix/candles/minutes/1?code=CRIX.UPBIT.KRW-" + coin;
-	 
-}*/
-
- 

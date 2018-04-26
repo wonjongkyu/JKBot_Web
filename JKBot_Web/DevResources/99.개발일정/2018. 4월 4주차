@@ -11,9 +11,42 @@ v0.4 2018. 4월 4주차
 		- https://kauth.kakao.com/oauth/authorize?client_id={REST API 앱ID}&redirect_uri=http://{uri_redirect}}&response_type=code 
 		- https://kauth.kakao.com/oauth/authorize?client_id=cc04df8dc625cce522bad9cb5fede3df&redirect_uri=http://localhost/login/kakaologin&response_type=code
 		=> 위 URL 호출하면 메시지 감. 메시지로 보낼 내용 session에 담아두기.
-	
-	1.12. 관심코인이 김프 0.5프로 미만인 경우, 관심코인 중에 최대 / 최소 김프 메시지로 보내기
 		
+		
+	{
+	  "object_type": "list",
+	  "header_title": "업비트 코인 추천 (STORM)",
+	  "header_link": {
+	    "web_url": ""
+	  },
+	  "contents": [
+	    {
+	      "title": "최대 김프 STEEM (3.54%)",
+	      "description": "바) 4,080 원  업) 4,250 원",
+	      "image_url": "http://k.kakaocdn.net/dn/zak4y/btqgdEP2KW8/t6rzlaHEMVyF4WmRMllJkK/kakaolink40_original.png",
+	      "image_width": 640,
+	      "image_height": 640,
+	      "link": {
+	        "web_url": ""
+	      }
+	    },
+	    {
+	      "title": "최소 김프 STORM (-0.2%)",
+	      "description":  "바) 67.59 원  업) 67.2 원",
+	      "image_url": "http://k.kakaocdn.net/dn/zak4y/btqgdEP2KW8/t6rzlaHEMVyF4WmRMllJkK/kakaolink40_original.png",
+	      "image_width": 640,
+	      "image_height": 640,
+	      "link": {
+	       "web_url": ""
+	      }
+	    }
+	  ]
+	}
+
+
+	1.12. 관심코인이 김프 0.5프로 미만인 경우, 관심코인 중에 최대 / 최소 김프 메시지로 보내기
+		- 화면에 Input창 설정 (값 유지 되어야 함)
+		- 현재는 하드 코딩임.
 	1.12. 수수료 다시 정리 및 select 해오도록. 화면에서 계산까지.. 소숫점 버리고
 		
 	1.13. 코인 수수료를 사토시 + 현재가격으로 보여주도록 변경
