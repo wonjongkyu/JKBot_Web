@@ -62,5 +62,8 @@ dependencies {
 	compile("org.apache.httpcomponents:httpcore:4.4.6")
 	compile("org.apache.httpcomponents:httpclient:4.5.2")
 	
+	// Telegram lib
+	compile("com.github.pengrad:java-telegram-bot-api:3.4.0")
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
