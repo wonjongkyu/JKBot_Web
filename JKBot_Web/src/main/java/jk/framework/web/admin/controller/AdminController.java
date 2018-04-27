@@ -30,7 +30,7 @@ import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
-import jk.framework.web.kakao.controller.KakaoController;
+import jk.framework.web.message.controller.KakaoController;
 
 /**
  * Handles requests for the application home page. 

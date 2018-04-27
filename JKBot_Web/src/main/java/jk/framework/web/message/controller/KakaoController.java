@@ -1,4 +1,4 @@
-package jk.framework.web.kakao.controller;
+package jk.framework.web.message.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jk.framework.common.util.etc.SessionService;
-import jk.framework.web.kakao.entity.KakaoMessageModel;
+import jk.framework.web.message.entity.KakaoMessageEntity;
 
 /**
  * Handles requests for the application home page. 
@@ -75,7 +75,7 @@ public class KakaoController {
 	 * @throws Exception
 	 */ 	
 	@RequestMapping(value = "/kakao/oauth",  method = {RequestMethod.GET, RequestMethod.POST})
-	public String oauth(@RequestParam("message") String message, KakaoMessageModel model) throws Exception{
+	public String oauth(@RequestParam("message") String message, KakaoMessageEntity model) throws Exception{
 		logger.info("message:::{}", model.getMenuPath());
 		String RequestUrl = authorizeApiUrl + "?client_id="+clientId+"&redirect_uri="+redirectUrl+"&response_type=code";
 		sessionService.setAttribute("kakaoMessage", model.getMenuPath());

@@ -30,7 +30,7 @@ $(document).ready(function() {
 	
 	setInterval(function(){		// 10초마다 BTC 호출
 		getCompareBTC();
-	}, 10000);
+	}, 60000);		// 10000 로 변경
 	
 	// 10분 마다 환율정보 가져오기
 	setInterval(function(){		// 10분마다 환율정보 호출
@@ -190,7 +190,7 @@ function getCompareBTC() {
 				choiceCoinStr += value + "/";
 			})
 			// 임시
-			choiceCoinStr = "PIVX/MTL/GRS/NEO/ARK/STEEM/XRP/";
+			choiceCoinStr = "STORM/ICX/TRX/GRS/NEO/STEEM/XRP/";
 			
 			/*	
 			class= ul chosen-choices
@@ -199,6 +199,8 @@ function getCompareBTC() {
 			
 			var resultJsonArray = new Array();
 			var resultHtml = "";
+			var sendYN = 'Y';
+			
 			$("#priceTbodyBTC").html('');
 			
 			$.each(result, function(){
@@ -214,6 +216,10 @@ function getCompareBTC() {
 				resultVO.status = this.status;
 				
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					if(this.priceGapPercent < 2){
+						sendYN = 'Y';
+					}
+					// resultJsonArray.push(resultVO);
 					resultHtml += "<tr class='alert-success'>";
 				}else {
 					resultHtml += "<tr>";
@@ -254,6 +260,9 @@ function getCompareBTC() {
 				// 마이너스 빨간색 플러스 파란색 
 				resultJsonArray.push(resultVO);
 			});
+			if(sendYN == 'Y'){
+				sendTelegramMessage(resultJsonArray)
+			}
 			$("#priceTbodyBTC").html(resultHtml);
 		},
 		error : function(e) {
@@ -265,34 +274,28 @@ function getCompareBTC() {
 		}
 	});
 }
-/*function getCoinnest() {
-	
-	  var url = "https://api.coinnest.co.kr/api/pub/ticker?coin=" + coin;
-	  $.getJSON(url,   
-	    {   
-	        tags: "mount rainier",   
-	        tagmode: "any",   
-	        format: "json"   
-	      },   
-	      function(data) {   
-	        alert(data.last);
-	        alert(data.buy);
-	        
-	        $.each(data.items, function(i,item){   
-  	          $("<img/>").attr("src", item.media.m).appendTo("#images");   
-  	          if ( i == 3 ) return false;   
-  	        });   
-	    });  
-}
-
-
-function getUpbit(coin) {
-	  if(coin==null){
-	    coin = "btc";
-	  }
-	  
-	  var url = "https://crix-api-endpoint.upbit.com/v1/crix/candles/minutes/1?code=CRIX.UPBIT.KRW-" + coin;
-	 
-}*/
 
  
+function sendTelegramMessage(param) {
+	var data = param;
+	$.ajax({
+		type : "POST",
+		contentType : "application/json",
+		url : "/telegram/sendMessage",
+		data : JSON.stringify(data),
+		dataType : 'json',
+		// tradtional : true,				// json List로 받기 위한 설정
+		timeout : 5000,
+		success : function(data) {
+			
+			
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}

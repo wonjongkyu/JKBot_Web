@@ -5,9 +5,8 @@
  * This software is the confidential and proprietary information
  * of yysvip.tistory.com.,LTD. ("Confidential Information").
  */
-package jk.framework.web.kakao.entity;
+package jk.framework.web.message.entity;
 
-import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,10 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=false)
-public class KakaoUserEntity extends PriceExchangeInfoEntity{
-		private String userName;
-		private String profileImagePath;
-		private String snsId;
-		private String email;
-		private String nickName;
+public class KakaoMessageEntity {
+		private String menuPath;
 }
