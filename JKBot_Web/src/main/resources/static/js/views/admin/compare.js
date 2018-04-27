@@ -174,7 +174,7 @@ function getCompareBTC() {
 				choiceCoinStr += value + "/";
 			})
 			// 임시
-			choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/";
+			choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/OMG/";
 			
 			/*	
 			class= ul chosen-choices

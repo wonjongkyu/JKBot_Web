@@ -155,11 +155,20 @@ public class AdminController {
 	 	 		PriceCompareEntity entity = new PriceCompareEntity();
 				entity.setCoinSymbol(e.getCoinSymbolName());
 				if("upbit".equals(e.getExchangeName())) {
-					entity.setTransferFeeA(e.getCoinTransFeeKrw());
+					if(resultEntity.get(entity.getCoinSymbol()) != null){
+						// resultEntity.get(entity.getCoinSymbol()).setTransferFeeA(e.getCoinTransFeeKrw());
+					}else {
+						// entity.setTransferFeeA(e.getCoinTransFeeKrw());
+					}
 				}else if("binance".equals(e.getExchangeName())) {
-					logger.info("coinSymbol:::{}", entity.getCoinSymbol());
-					logger.info("transferFeeB:::{}", e.getCoinTransFeeKrw());
-					entity.setTransferFeeB(e.getCoinTransFeeKrw());
+					if(resultEntity.get(entity.getCoinSymbol()) != null){
+						// resultEntity.get(entity.getCoinSymbol()).setTransferFeeB(e.getCoinTransFeeKrw());
+					}else {
+						// entity.setTransferFeeB(e.getCoinTransFeeKrw());
+					}
+				}
+				
+				if(resultEntity.get(entity.getCoinSymbol()) != null){
 				}
 				resultEntity.put(entity.getCoinSymbol(), entity);
  	 		}
@@ -198,8 +207,8 @@ public class AdminController {
  						resultEntity.get(entity.getTradeType()).setPriceKrwB(String.valueOf(JKStringUtil.mathRound(priceKrw,2)) );
  						
  						// 수수료 사토시 -> 원화 계산
- 						logger.info("Aaaaaaaaaa:::{}", entity.getTradeType());
  	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeB();
+ 	 					logger.info("Aaaaaaaaaa:::{}...{}...{}", entity.getTradeType(),priceKrw, transferFee);
  	 					String transferFeeSum = JKStringUtil.mathKrwRound(priceKrw * JKStringUtil.parseDouble(transferFee));
  	 					resultEntity.get(entity.getTradeType()).setTransferFeeB(transferFeeSum);
  					}
