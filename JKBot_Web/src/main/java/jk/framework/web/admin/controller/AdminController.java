@@ -81,9 +81,7 @@ public class AdminController {
 	public ModelAndView compare(Model model) {
 		ModelAndView mav = new ModelAndView();
 		// 환율 가져오기
-		KakaoController test = new KakaoController();
 		getExchangeRate(model);		
-		// getPriceExchangeRate(model);
 		mav.setViewName("/admin/priceCompare");
 		return mav;
     }
@@ -155,22 +153,22 @@ public class AdminController {
 	 	 		PriceCompareEntity entity = new PriceCompareEntity();
 				entity.setCoinSymbol(e.getCoinSymbolName());
 				if("upbit".equals(e.getExchangeName())) {
-					if(resultEntity.get(entity.getCoinSymbol()) != null){
-						// resultEntity.get(entity.getCoinSymbol()).setTransferFeeA(e.getCoinTransFeeKrw());
+					if(resultEntity.containsKey(entity.getCoinSymbol())){
+						resultEntity.get(entity.getCoinSymbol()).setTransferFeeA(e.getCoinTransFeeKrw());
 					}else {
-						// entity.setTransferFeeA(e.getCoinTransFeeKrw());
+						entity.setTransferFeeA(e.getCoinTransFeeKrw());
 					}
 				}else if("binance".equals(e.getExchangeName())) {
-					if(resultEntity.get(entity.getCoinSymbol()) != null){
-						// resultEntity.get(entity.getCoinSymbol()).setTransferFeeB(e.getCoinTransFeeKrw());
+					if(resultEntity.containsKey(entity.getCoinSymbol())){
+						resultEntity.get(entity.getCoinSymbol()).setTransferFeeB(e.getCoinTransFeeKrw());
 					}else {
-						// entity.setTransferFeeB(e.getCoinTransFeeKrw());
+						entity.setTransferFeeB(e.getCoinTransFeeKrw());
 					}
 				}
 				
-				if(resultEntity.get(entity.getCoinSymbol()) != null){
+				if(!resultEntity.containsKey(entity.getCoinSymbol())){
+					resultEntity.put(entity.getCoinSymbol(), entity);
 				}
-				resultEntity.put(entity.getCoinSymbol(), entity);
  	 		}
  		}
  	 	
@@ -208,7 +206,6 @@ public class AdminController {
  						
  						// 수수료 사토시 -> 원화 계산
  	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeB();
- 	 					logger.info("Aaaaaaaaaa:::{}...{}...{}", entity.getTradeType(),priceKrw, transferFee);
  	 					String transferFeeSum = JKStringUtil.mathKrwRound(priceKrw * JKStringUtil.parseDouble(transferFee));
  	 					resultEntity.get(entity.getTradeType()).setTransferFeeB(transferFeeSum);
  					}
@@ -257,25 +254,41 @@ public class AdminController {
  		Collections.sort(result, new GapPercentDescCompare());
  		
  		if(symbolType.equals("BTC")) {
-	 		// 10분마다 시세 Update
+	 		
+ 			// 1. 10분마다 시세 Update
 	 		if(sessionService.getAttributeInt("priceCompare") < 600) {
-	 			// DB에 가격 저장 Update
 	 			sessionService.setAttributeInt("priceCompare",sessionService.getAttributeInt("priceCompare") + 15);
 	 		}else {
 	 			adminService.updateCoinPriceInfo(result);
 	 			sessionService.setAttributeInt("priceCompare", 15);
 	 		}
-	 		logger.info("compareTime:::{}", sessionService.getAttributeInt("priceCompare"));
+	 		
+	 		// 2. 30분마다 히스토리 삭제
+	 		if(sessionService.getAttributeInt("historyDeleteTime") < 1800) {
+	 			sessionService.setAttributeInt("historyDeleteTime",sessionService.getAttributeInt("historyDeleteTime") + 15);
+	 			// 30초마다 DB에 저장
+	 			if( sessionService.getAttributeInt("historyDeleteTime") % 30 == 0) {
+	 				adminService.insertPriceHistory(result);
+	 				result = adminService.getPriceHistory(result);
+	 			}
+	 		}else {
+	 			adminService.deletePriceHistory();
+	 			sessionService.setAttributeInt("historyDeleteTime", 15);
+	 		}
+	 		
+	 		
+	 		// logger.debug("compareTime:::{}", sessionService.getAttributeInt("priceCompare"));
 	 	}
  		
  		
- 		// DB에 데이터 저장하기
- 		// List<PriceCompareEntity> result
- 		if(symbolType.equals("BTC")) {
- 			adminService.updateBtcCoinPrice(result);
+ 		/*if(symbolType.equals("BTC")) {
+ 			// 최근 5분 변동폭 가져오기
+ 			adminService.insertPriceHistory(result);
+ 			result = adminService.getPriceHistory(result);
+ 			// adminService.updateBtcCoinPrice(result);
  		}else if(symbolType.equals("USDT")) {
- 			adminService.updateUsdtCoinPrice(result);
- 		}
+ 			// adminService.updateUsdtCoinPrice(result);
+ 		}*/
  		
  		
  		return result;
@@ -311,6 +324,7 @@ public class AdminController {
     	    	exchangeRate = Double.parseDouble(exchangeRateEntity.getRate());
     		}
     	    
+    	    // jk_common_infomation에 업데이트 작업 수행
 			sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
 		}
 		return result;
@@ -347,7 +361,6 @@ public class AdminController {
 		}
     	return listEntity;
     }
-    
    
 	/**
 	 * <pre> 상승률 ASC

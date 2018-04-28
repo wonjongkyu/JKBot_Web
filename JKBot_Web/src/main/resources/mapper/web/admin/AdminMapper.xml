@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="jk.framework.web.admin.mapper.ExchangeInfoMapper">
+<mapper namespace="jk.framework.web.admin.mapper.AdminMapper">
  	
  	<select id="getAllExchangeInfo" parameterType="PriceExchangeInfoEntity" resultType="PriceExchangeInfoEntity">
 		SELECT 
@@ -76,5 +76,57 @@
 	        AND COIN_SYMBOL = #{entity.coinSymbol}
 	    </foreach>
 	</update>
+	
+	<select id="getAllPriceHistory" resultType="PriceHistoryEntity">
+		SELECT COIN_SYMBOL_NAME
+			  ,COIN_PRICE_KRW_A
+			  ,COIN_PRICE_KRW_B
+		FROM 
+			(SELECT 
+				COIN_SYMBOL_NAME
+			   ,COIN_PRICE_KRW_A
+			   ,COIN_PRICE_KRW_B
+				FROM jk_exchange_price_history
+				ORDER BY INSERT_DT DESC
+			) A
+		GROUP BY A.COIN_SYMBOL_NAME
+	</select>
+	
+	<select id="getOnePriceHistory" resultType="PriceCompareEntity">
+		SELECT 
+			SUM(A.COIN_PRICE_WEIGHT_A) AS COIN_PRICE_WEIGHT_A, 
+		 	SUM(A.COIN_PRICE_WEIGHT_B) AS COIN_PRICE_WEIGHT_B
+		FROM (
+			select COIN_SYMBOL_NAME, 
+					 COIN_PRICE_WEIGHT_A, 
+					 COIN_PRICE_WEIGHT_B, 
+					 INSERT_DT
+			from jk_exchange_price_history 
+			WHERE COIN_SYMBOL_NAME = #{coinSymbol}
+			ORDER BY INSERT_DT DESC
+			LIMIT 10
+		) A
+	</select>
+	
+	<insert id="insertPriceHistory" parameterType="java.util.List">
+		<!--  작업해야 함 -->
+		INSERT INTO JK_EXCHANGE_PRICE_HISTORY (
+			 COIN_SYMBOL_NAME
+			,COIN_PRICE_KRW_A
+			,COIN_PRICE_KRW_B
+			,COIN_PRICE_WEIGHT_A
+			,COIN_PRICE_WEIGHT_B
+			,INSERT_DT
+			,UPDATE_DT
+		) VALUES 
+			<foreach item="data" index="index" collection="list" open="" separator="," close="">
+				(#{data.coinSymbol}, #{data.priceKrwA}, #{data.priceKrwB}, #{data.coinPriceWeightA}, #{data.coinPriceWeightB}, NOW(), NOW() )
+			</foreach>	  
+	</insert>
+ 
+	<delete id="deletePriceHistory" >
+		DELETE * 
+		FROM JK_EXCHANGE_PRICE_HISTORY 
+	</delete>
 	
 </mapper>

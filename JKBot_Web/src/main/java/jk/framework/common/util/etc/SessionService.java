@@ -89,6 +89,10 @@ public class SessionService {
 			if(httpSession.getAttribute(attributName) == null) {
 				return 0;
 			}
+		}else if("historyDeleteTime".equals(attributName)) {
+			if(httpSession.getAttribute(attributName) == null) {
+				return 0;
+			}
 		}
 		return (int) httpSession.getAttribute(attributName);
 	}

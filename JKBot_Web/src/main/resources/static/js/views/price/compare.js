@@ -216,10 +216,10 @@ function getCompareBTC() {
 				resultVO.status = this.status;
 				
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
-					if(this.priceGapPercent < 2){
+					if(this.priceGapPercent < 0){
 						sendYN = 'Y';
 					}
-					// resultJsonArray.push(resultVO);
+					resultJsonArray.push(resultVO);
 					resultHtml += "<tr class='alert-success'>";
 				}else {
 					resultHtml += "<tr>";

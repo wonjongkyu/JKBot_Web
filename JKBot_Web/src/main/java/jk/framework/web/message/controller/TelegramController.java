@@ -63,7 +63,7 @@ public class TelegramController {
 				messageEntity.setMinPriceGapPercent(String.valueOf(entity.getPriceGapPercent()));
 			}
 			index++;
-			logger.info("getPriceGapPercent::{}", entity.getPriceGapPercent());
+			logger.debug("sendMessage.getPriceGapPercent::{}", entity.getPriceGapPercent());
 		}
 		StringBuffer message = new StringBuffer();
 		message.append("[업비트 구매 추천 <b>").append(messageEntity.getMinCoinSymbol()).append("</b>]\r\n");

@@ -176,9 +176,6 @@ function getCompareBTC() {
 			// 임시
 			choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/OMG/";
 			
-			/*	
-			class= ul chosen-choices
-			li span */
 			var result = data;
 			
 			var resultJsonArray = new Array();
@@ -195,6 +192,8 @@ function getCompareBTC() {
 				resultVO.priceUsdtB = this.priceUsdtB;
 				resultVO.priceGapKrw = this.priceGapKrw;
 				resultVO.priceGapPercent = this.priceGapPercent;
+				resultVO.coinPriceWeightA = this.coinPriceWeightA;
+				resultVO.coinPriceWeightB = this.coinPriceWeightB;
 				resultVO.status = this.status;
 				
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
@@ -205,14 +204,31 @@ function getCompareBTC() {
 				resultHtml += "<td>-</td>";
 				resultHtml += "<td>" + this.coinSymbol + "</td>";
 				resultHtml += "<td>" + this.priceBtcB + "</td>";
-				resultHtml += "<td>" + comma(this.priceKrwB) + "</td>";
+				
+				if(this.coinPriceWeightB > 5){
+					resultHtml += '<td class="text-danger">' + comma(this.priceKrwB);
+				}else if(this.coinPriceWeightB < -5){
+					resultHtml += '<td class="text-success">'  + comma(this.priceKrwB);
+				}else {
+					resultHtml += '<td>'  + comma(this.priceKrwB);
+				}
+				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
+				
 				if(this.transferFeeB <= 4000){
 					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
 				}else {
 					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
 				}
 				
-				resultHtml += "<td>" + comma(this.priceKrwA) + "</td>";
+				if(this.coinPriceWeightA > 5){
+					resultHtml += '<td class="text-danger">' + comma(this.priceKrwA);
+				}else if(this.coinPriceWeightA < -5){
+					resultHtml += '<td class="text-success">'  + comma(this.priceKrwA);
+				}else {
+					resultHtml += '<td>'  + comma(this.priceKrwA);
+				}
+				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				
 				if(this.transferFeeA <= 4000){
 					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
 				}else {

@@ -163,10 +163,11 @@
 		                      <th>#</th>
 		                      <th>코인</th>
 		                      <th>binance(BTC)</th>
-		                      <th>binance(￦)</th>
+		                      <th>binance(￦) (가중치)</th>
 		                      <th>binance(수수료)</th>
-		                      <th>upbit(￦)</th>
+		                      <th>upbit(￦) (가중치)</th>
 		                      <th>upbit(수수료)</th>
+		                      <!-- <th>가격 변동(최근 5분)</th> -->
 		                      <th>김치프리미엄(￦)</th>
 	                     	</tr>
 	                    </thead>

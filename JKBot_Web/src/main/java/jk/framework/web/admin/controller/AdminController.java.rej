@@ -1,7 +1,0 @@
-diff a/JKBot_Web/src/main/java/jk/framework/web/admin/controller/AdminController.java b/JKBot_Web/src/main/java/jk/framework/web/admin/controller/AdminController.java	(rejected hunks)
-@@ -316,5 +316,4 @@
-     	return listEntity;
-     }
-     
--	 * @date : 2018. 4. 17. 오전 9:46:32
- }
