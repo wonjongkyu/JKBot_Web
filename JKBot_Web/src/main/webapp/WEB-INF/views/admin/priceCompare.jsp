@@ -4,7 +4,7 @@
 <script src="<c:url value='/js/views/admin/compare.js'/>"></script>
 
 
-<div class="row hide">
+<!-- <div class="row hide">
 	<div class="col-lg-12">
 	    <div class="ibox">
 	        <div class="ibox-title">
@@ -28,9 +28,9 @@
 	            </div>
 	        </div>
 	        <div class="ibox-content" >
-	           <!--  <p>
+	            <p>
 	                Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
-	            </p> -->
+	            </p>
 	
 	            <form id="form" action="#" class="wizard-big">
 	                <select class="form-control dual_select" multiple>
@@ -51,8 +51,7 @@
 	        </div>
 	    </div>
 	</div>
-</div>
-
+</div> -->
 <div class="row">
 	<div class="col-lg-5">
 	    <div class="ibox float-e-margins">
@@ -86,10 +85,47 @@
 	    </div>
 	 </div>
 </div>
-                     
-<!--  DashBoard 현재 시세 -->
-<!-- <div class="row col-lg-12"> -->
+   
+   
 <div class="row">
+	<div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5>BTC-KRW 가격 (바이낸스)</h5>
+            </div>
+            <div class="ibox-content">
+           		 <input type="hidden" class="form-control" id="exchangePrice" /> 
+                <h1 class="no-margins" id="exchange_rate"></h1>
+                 <!-- <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div> -->
+                 <br/>
+                <small id="exchangeDate"></small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 사토시 계산기 </h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="sathoshi"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="sathoshiBtn" > 사토시 계산</button> 
+	               	</span>
+            	</div>
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<div class=""><input type="text" disabled="" id="sathoshiPrice" class="form-control" /></div>
+	            </div>
+            </div>
+        </div>
+    </div>
+</div>
+                  
+<div class="row hide">
     <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">

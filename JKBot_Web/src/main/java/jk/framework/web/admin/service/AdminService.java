@@ -2,6 +2,7 @@ package jk.framework.web.admin.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -158,16 +159,6 @@ public class AdminService {
 	 */ 	
 	public void insertPriceHistory(List<PriceCompareEntity> list){
 		
-		/*// History List로 마이그레이션 (코인명,가격A,B 저장)
-		List<PriceHistoryEntity> paramList = new ArrayList<PriceHistoryEntity>();
-		for (PriceCompareEntity entity : list) {
-			PriceHistoryEntity history = new PriceHistoryEntity();
-			history.setCoinSymbolName(entity.getCoinSymbol());
-			history.setCoinPriceKrwA(entity.getPriceKrwA());
-			history.setCoinPriceKrwB(entity.getPriceKrwB());
-			paramList.add(history);
-		}*/
-		
 		// 히스토리 테이블 조회
 		List<PriceHistoryEntity> historyList = this.getAllPriceHistory();
 		Map<String, PriceHistoryEntity> historyMap = new HashMap<String, PriceHistoryEntity>();
@@ -217,8 +208,10 @@ public class AdminService {
 	public List<PriceCompareEntity> getPriceHistory(List<PriceCompareEntity> list){
 		for (PriceCompareEntity entity : list) {
 			PriceCompareEntity tempEntity = mapper.getOnePriceHistory(entity);
-			entity.setCoinPriceWeightA( tempEntity.getCoinPriceWeightA()  );
-			entity.setCoinPriceWeightB( tempEntity.getCoinPriceWeightB()  );
+			if(tempEntity != null) {
+				entity.setCoinPriceWeightA( tempEntity.getCoinPriceWeightA()  );
+				entity.setCoinPriceWeightB( tempEntity.getCoinPriceWeightB()  );
+			}
 		}
 		return list;
 	}
@@ -244,8 +237,8 @@ public class AdminService {
 	 *	-----------------------------------------------------------------------
 	 * 
 	 */ 	
-	public void deletePriceHistory(){
-		mapper.deletePriceHistory();
+	public void deletePriceHistory(HashSet<String> coinList){
+		mapper.deletePriceHistory(coinList);
 	}
 	 
 }

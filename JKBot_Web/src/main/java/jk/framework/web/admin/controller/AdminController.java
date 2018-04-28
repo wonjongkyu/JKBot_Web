@@ -198,7 +198,7 @@ public class AdminController {
  					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
  					resultEntity.get(entity.getTradeType()).setPriceBtcB(String.valueOf(lastPrice));
  					
- 				// 차액도 계산 (최근 10분)
+ 					// 차액도 계산 (최근 10분)
  					if(!("-").equals(lastPrice)) {
  						// 소수 셋째자리에서 반올림
  						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
@@ -263,32 +263,29 @@ public class AdminController {
 	 			sessionService.setAttributeInt("priceCompare", 15);
 	 		}
 	 		
-	 		// 2. 30분마다 히스토리 삭제
-	 		if(sessionService.getAttributeInt("historyDeleteTime") < 1800) {
+	 		// 2. 2시간 마다 히스토리 삭제
+	 		if(sessionService.getAttributeInt("historyDeleteTime") < 7200) {
 	 			sessionService.setAttributeInt("historyDeleteTime",sessionService.getAttributeInt("historyDeleteTime") + 15);
 	 			// 30초마다 DB에 저장
 	 			if( sessionService.getAttributeInt("historyDeleteTime") % 30 == 0) {
 	 				adminService.insertPriceHistory(result);
-	 				result = adminService.getPriceHistory(result);
 	 			}
 	 		}else {
-	 			adminService.deletePriceHistory();
+	 			adminService.deletePriceHistory(coinList);
 	 			sessionService.setAttributeInt("historyDeleteTime", 15);
 	 		}
+	 		result = adminService.getPriceHistory(result);
 	 		
 	 		
 	 		// logger.debug("compareTime:::{}", sessionService.getAttributeInt("priceCompare"));
 	 	}
  		
  		
- 		/*if(symbolType.equals("BTC")) {
- 			// 최근 5분 변동폭 가져오기
- 			adminService.insertPriceHistory(result);
- 			result = adminService.getPriceHistory(result);
- 			// adminService.updateBtcCoinPrice(result);
+ 		if(symbolType.equals("BTC")) {
+ 			adminService.updateBtcCoinPrice(result);
  		}else if(symbolType.equals("USDT")) {
  			// adminService.updateUsdtCoinPrice(result);
- 		}*/
+ 		}
  		
  		
  		return result;
@@ -328,6 +325,12 @@ public class AdminController {
 			sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
 		}
 		return result;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/getBtcKrwPrice", method = RequestMethod.GET)
+	public String getBtcKrwPrice(Model model) {
+    	return sessionService.getAttribute("BTCKRW");
     }
     
     /**

@@ -6,7 +6,7 @@ $(document).ready(function() {
 	getPriceExchangeInfo();		// DB에 있는 코인 리스트 가져오기
 	getCompareUSDT();			// USDT API 호출
 	getCompareBTC();			// BTC API 호출 (5초 후에 호출 되도록 변경 필요함)
-	
+	setBtcKrwPrice();
 	
 	setInterval(function(){		// 1분마다 USDT 호출
 		getCompareUSDT();
@@ -14,6 +14,7 @@ $(document).ready(function() {
 	
 	setInterval(function(){		// 15초마다 BTC 호출
 		getCompareBTC();
+		setBtcKrwPrice();
 	}, 15000);
 	
 	// 10분 마다 환율정보 가져오기
@@ -24,6 +25,44 @@ $(document).ready(function() {
 });
 
 
+$(function(){
+    $('#sathoshiBtn').click(function(){
+    	var exchangePrice = $('#exchangePrice').val();		// BTC-KRW 가격
+    	var sathoshi = $('#sathoshi').val();				// 입력한 사토시 가격
+    	var result = exchangePrice*sathoshi;
+    	result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
+    	$("#sathoshiPrice").val(result);
+    });
+});
+  
+	
+	
+<!-- BTC-KRW 가격 저장 -->
+function setBtcKrwPrice(){
+	var data = {}
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/admin/getBtcKrwPrice",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 10000,
+		success : function(data) {
+			var price = Math.round(data);
+			$("#exchange_rate").empty();
+			$("#exchange_rate").text( comma(price) + ' 원' );
+			$("#exchangePrice").val(price);
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+ 
 /*
  * 환율 가져오는 function
  */
@@ -37,7 +76,11 @@ function getExchangeRate() {
 		dataType : 'json',
 		timeout : 50000,
 		success : function(data) {
-			
+			/*
+				var rate = Math.round(data[0].rate);
+				$("#exchange_rate").text( comma(rate) + '원' );
+				$("#exchangeDate").text('Last Update:   '+ data[0].date );
+			*/
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
@@ -206,9 +249,9 @@ function getCompareBTC() {
 				resultHtml += "<td>" + this.priceBtcB + "</td>";
 				
 				if(this.coinPriceWeightB > 5){
-					resultHtml += '<td class="text-danger">' + comma(this.priceKrwB);
+					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
 				}else if(this.coinPriceWeightB < -5){
-					resultHtml += '<td class="text-success">'  + comma(this.priceKrwB);
+					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
 				}else {
 					resultHtml += '<td>'  + comma(this.priceKrwB);
 				}
@@ -221,9 +264,9 @@ function getCompareBTC() {
 				}
 				
 				if(this.coinPriceWeightA > 5){
-					resultHtml += '<td class="text-danger">' + comma(this.priceKrwA);
+					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
 				}else if(this.coinPriceWeightA < -5){
-					resultHtml += '<td class="text-success">'  + comma(this.priceKrwA);
+					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
 				}else {
 					resultHtml += '<td>'  + comma(this.priceKrwA);
 				}

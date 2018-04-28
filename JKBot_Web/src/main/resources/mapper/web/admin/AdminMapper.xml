@@ -124,9 +124,13 @@
 			</foreach>	  
 	</insert>
  
-	<delete id="deletePriceHistory" >
-		DELETE * 
-		FROM JK_EXCHANGE_PRICE_HISTORY 
+	<delete id="deletePriceHistory" parameterType="java.util.Set">
+		<foreach collection="list" item="entity" index="index" separator=";">
+			DELETE
+			FROM JK_EXCHANGE_PRICE_HISTORY entity
+			WHERE 
+		</foreach> 
 	</delete>
 	
+	 	
 </mapper>

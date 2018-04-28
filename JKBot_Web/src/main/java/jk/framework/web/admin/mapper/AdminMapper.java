@@ -1,5 +1,6 @@
 package jk.framework.web.admin.mapper;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -177,6 +178,6 @@ public interface AdminMapper {
 	 * 
 	 * @throws DataAccessException
 	 */ 	
-	public void deletePriceHistory() throws DataAccessException;
+	public void deletePriceHistory(HashSet<String> coinList) throws DataAccessException;
 }
 
