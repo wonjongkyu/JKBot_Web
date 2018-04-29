@@ -61,36 +61,7 @@ public class PriceController {
     @Autowired
     SessionService sessionService;
 	
-    
-    /**
-     * <pre>
-     * 1. 개요 : 김프 계산 페이지 연결
-     * 2. 처리내용 : 
-     * </pre>
-     * @Method Name : compare
-     * @date : 2018. 4. 13.
-     * @author : Hyundai
-     * @history : 
-     *	-----------------------------------------------------------------------
-     *	변경일				작성자						변경내용  
-     *	----------- ------------------- ---------------------------------------
-     *	2018. 4. 13.		Hyundai				최초 작성 
-     *	-----------------------------------------------------------------------
-     * 
-     * @param model
-     * @return
-     */ 	
-    @RequestMapping(value = "/compareTest", method = RequestMethod.GET)
-	public ModelAndView compareTest(Model model) {
-		ModelAndView mav = new ModelAndView();
-		// 환율 가져오기
-		AdminController rate = new AdminController();
-		rate.getExchangeRate(model);		
-		// getPriceExchangeRate(model);
-		mav.setViewName("/price/priceCompareTest");
-		return mav;
-    }
-    
+   
     /**
      * <pre>
      * 1. 개요 : 김프 계산 페이지 연결

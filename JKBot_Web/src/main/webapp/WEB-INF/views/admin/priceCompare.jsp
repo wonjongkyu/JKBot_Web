@@ -1,57 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/admin/compare.js'/>"></script>
+<script src="<c:url value='/js/views/admin/admin.js'/>"></script>
+<script src="<c:url value='/js/views/common/compare.js'/>"></script>
 
-
-<!-- <div class="row hide">
-	<div class="col-lg-12">
-	    <div class="ibox">
-	        <div class="ibox-title">
-	            <h5>코인 선택</h5>
-	            <div class="ibox-tools">
-	                <a class="collapse-link">
-	                    <i class="fa fa-chevron-up"></i>
-	                </a>
-	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	                    <i class="fa fa-wrench"></i>
-	                </a>
-	                <ul class="dropdown-menu dropdown-user">
-	                    <li><a href="#">Config option 1</a>
-	                    </li>
-	                    <li><a href="#">Config option 2</a>
-	                    </li>
-	                </ul>
-	                <a class="close-link">
-	                    <i class="fa fa-times"></i>
-	                </a>
-	            </div>
-	        </div>
-	        <div class="ibox-content" >
-	            <p>
-	                Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
-	            </p>
-	
-	            <form id="form" action="#" class="wizard-big">
-	                <select class="form-control dual_select" multiple>
-	                    <option value="United States">United States</option>
-	                    <option value="United Kingdom">United Kingdom</option>
-	                    <option value="Australia">Australia</option>
-	                    <option selected value="Austria">Austria</option>
-	                    <option selected value="Bahamas">Bahamas</option>
-	                    <option value="Barbados">Barbados</option>
-	                    <option value="Belgium">Belgium</option>
-	                    <option value="Bermuda">Bermuda</option>
-	                    <option value="Brazil">Brazil</option>
-	                    <option value="Bulgaria">Bulgaria</option>
-	                    <option value="Cameroon">Cameroon</option>
-	                    <option value="Canada">Canada</option>
-	                </select>
-	            </form>
-	        </div>
-	    </div>
-	</div>
-</div> -->
 <div class="row">
 	<div class="col-lg-5">
 	    <div class="ibox float-e-margins">
@@ -104,7 +56,7 @@
         </div>
     </div>
     
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -119,6 +71,25 @@
             	</div>
             	<div class="form-group has-error"><label class="control-label"></label>
 	            	<div class=""><input type="text" disabled="" id="sathoshiPrice" class="form-control" /></div>
+	            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="ibox float-e-margins ">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 김프 알람 (텔레그램)</h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="kimchPreminum" value="-1"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
+	               	</span>
+            	</div>
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="-1" /></div>
 	            </div>
             </div>
         </div>

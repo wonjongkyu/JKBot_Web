@@ -2,55 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
 <script src="<c:url value='/js/views/price/compare.js'/>"></script>
-
-<div class="row hide">
-	<div class="col-lg-12">
-	    <div class="ibox">
-	        <div class="ibox-title">
-	            <h5>코인 선택</h5>
-	            <div class="ibox-tools">
-	                <a class="collapse-link">
-	                    <i class="fa fa-chevron-up"></i>
-	                </a>
-	                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	                    <i class="fa fa-wrench"></i>
-	                </a>
-	                <ul class="dropdown-menu dropdown-user">
-	                    <li><a href="#">Config option 1</a>
-	                    </li>
-	                    <li><a href="#">Config option 2</a>
-	                    </li>
-	                </ul>
-	                <a class="close-link">
-	                    <i class="fa fa-times"></i>
-	                </a>
-	            </div>
-	        </div>
-	        <div class="ibox-content" >
-	           <!--  <p>
-	                Bootstrap Dual Listbox is a responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
-	            </p> -->
-	
-	            <form id="form" action="#" class="wizard-big">
-	                <select class="form-control dual_select" multiple>
-	                    <option value="United States">United States</option>
-	                    <option value="United Kingdom">United Kingdom</option>
-	                    <option value="Australia">Australia</option>
-	                    <option selected value="Austria">Austria</option>
-	                    <option selected value="Bahamas">Bahamas</option>
-	                    <option value="Barbados">Barbados</option>
-	                    <option value="Belgium">Belgium</option>
-	                    <option value="Bermuda">Bermuda</option>
-	                    <option value="Brazil">Brazil</option>
-	                    <option value="Bulgaria">Bulgaria</option>
-	                    <option value="Cameroon">Cameroon</option>
-	                    <option value="Canada">Canada</option>
-	                </select>
-	            </form>
-	        </div>
-	    </div>
-	</div>
-</div>
+<script src="<c:url value='/js/views/common/compare.js'/>"></script>
 
 <div class="row">
 	<div class="col-lg-5">
@@ -85,10 +37,68 @@
 	    </div>
 	 </div>
 </div>
-                     
+   
+<div class="row">
+	<div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-info pull-right" id="exchangePriceUpdateDt"></span>
+                <h5>BTC-KRW 가격</h5>
+            </div>
+            <div class="ibox-content">
+				<input type="hidden" class="form-control" id="exchangePrice" /> 
+                <h1 class="no-margins" id="exchange_rate"></h1>
+                <!-- <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>  -->
+                <br/>
+                <small id="exchangeDate"></small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+            	<!-- <span class="label label-success pull-right">Monthly</span>  -->
+                <h5> 사토시 계산기 </h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="sathoshi"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="sathoshiBtn" > 사토시 계산</button> 
+	               	</span>
+            	</div>
+            	<!-- <div class="form-group has-error"><label class="control-label"></label> -->
+	            	<div class=""><input type="text" disabled="" id="sathoshiPrice" class="form-control" /></div>
+	            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="ibox float-e-margins ">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 김프 알람 (텔레그램)</h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="kimchPreminum" value="-1"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
+	               	</span>
+            	</div>
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="-1" /></div>
+	            </div>
+            </div>
+        </div>
+    </div>
+</div>        
+
+          
 <!--  DashBoard 현재 시세 -->
 <!-- <div class="row col-lg-12"> -->
-<div class="row">
+<div class="row hide">
     <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
