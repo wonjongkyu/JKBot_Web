@@ -26,11 +26,11 @@ import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
+import jk.framework.web.admin.entity.BtcKrwPriceEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
-import jk.framework.web.message.controller.KakaoController;
 
 /**
  * Handles requests for the application home page. 
@@ -190,6 +190,7 @@ public class AdminController {
  				// BTC - KRW는 Session에 저장해 둔다.
  	 			if("BTCUSDT".equals(entity.getSymbol())){
  	 				sessionService.setAttribute("BTCKRW", resultEntity.get("BTC").getPriceKrwB());
+ 	 				sessionService.setAttribute("BTCKRW_UPDATE_DT", JKStringUtil.getNowTime());
  	 				logger.info("BTCKRW:::{}", sessionService.getAttribute("BTCKRW"));
  	 			}
  			}else if("BTC".equals(symbolType)) {
@@ -329,8 +330,11 @@ public class AdminController {
     
     @ResponseBody
     @RequestMapping(value = "/getBtcKrwPrice", method = RequestMethod.GET)
-	public String getBtcKrwPrice(Model model) {
-    	return sessionService.getAttribute("BTCKRW");
+	public BtcKrwPriceEntity getBtcKrwPrice(Model model) {
+    	BtcKrwPriceEntity entity = new BtcKrwPriceEntity();
+    	entity.setBtcKrwPrice(sessionService.getAttribute("BTCKRW"));
+    	entity.setUpdateDt(sessionService.getAttribute("BTCKRW_UPDATE_DT"));
+    	return entity;
     }
     
     /**

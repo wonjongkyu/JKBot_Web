@@ -1,5 +1,9 @@
 package jk.framework.common.util.etc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -259,5 +263,29 @@ public class JKStringUtil {
 	 */ 	
 	public static String mathKrwRound(double num){
 		return String.valueOf((int)Math.round(num));
+	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : 현재시간 가져오기
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : getNowTime
+	 * @date : 2018. 4. 29.
+	 * @author : jongkyu
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2018. 4. 29.		jongkyu				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @return
+	 */ 	
+	public static String getNowTime(){
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		return mTime;
 	}
 }
