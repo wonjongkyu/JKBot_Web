@@ -1,4 +1,7 @@
 
+
+var highlightTransferFee = 4000;
+
 $(function(){
     $('#sathoshiBtn').click(function(){
     	var exchangePrice = $('#exchangePrice').val();		// BTC-KRW 가격
@@ -29,9 +32,9 @@ function setBtcKrwPrice(){
 		dataType : 'json',
 		timeout : 10000,
 		success : function(data) {
-			var updateDt = data.updateDt;		// 업데이트 날짜
+			var updateDt = data.btcUpdateDt;		// 업데이트 날짜
+			var price = Math.round(data.binanceBtcKrwPrice);
 			
-			var price = Math.round(data.btcKrwPrice);
 			$("#exchange_rate").empty();
 			$("#exchange_rate").text( comma(price) + ' 원' );
 			$("#exchangePrice").val(price);
@@ -193,6 +196,8 @@ function getCompareBTC() {
 		dataType : 'json',
 		timeout : 60000,
 		success : function(data) {
+			var result = data;
+			
 			// 선택한 코인 조회하기
 			var choiceCoinList = $("ul.chosen-choices").find("li>span");
 			var choiceCoinStr = '';
@@ -200,15 +205,25 @@ function getCompareBTC() {
 				var value = $(this).text();
 				choiceCoinStr += value + "/";
 			})
+			
+			
 			// 임시
 			if(context == 'admin'){
 				choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/OMG/";
 			}
-			var result = data;
+			
 			
 			var resultJsonArray = new Array();
 			var resultHtml = "";
 			var sendMessage = "N";
+			
+			// 김치 프리미엄 
+			var minPremium = Number($("#minPremium").val());
+			var maxPremium = Number($("#maxPremium").val());
+			
+			// 텔레그램 프리미엄
+			var telegram = $("#kimchPreminum").val();
+			
 			$("#priceTbodyBTC").html('');
 			
 			$.each(result, function(){
@@ -227,7 +242,7 @@ function getCompareBTC() {
 				
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
 					// 텔레그램 메시지 전송
-					if( this.priceGapPercent < -1){
+					if( this.priceGapPercent < telegram){
 						sendMessage = "Y";
 					}
 					resultJsonArray.push(resultVO);
@@ -240,31 +255,31 @@ function getCompareBTC() {
 				resultHtml += "<td>" + this.coinSymbol + "</td>";
 				resultHtml += "<td>" + this.priceBtcB + "</td>";
 				
-				if(this.coinPriceWeightB > 5){
+				if(this.coinPriceWeightB > maxPremium){
 					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightB < -5){
+				}else if(this.coinPriceWeightB < minPremium){
 					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
 				}else {
 					resultHtml += '<td>'  + comma(this.priceKrwB);
 				}
 				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
 				
-				if(this.transferFeeB <= 4000){
+				if(this.transferFeeB <= highlightTransferFee){
 					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
 				}else {
 					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
 				}
 				
-				if(this.coinPriceWeightA > 5){
+				if(this.coinPriceWeightA > maxPremium){
 					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightA < -5){
+				}else if(this.coinPriceWeightA < minPremium){
 					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
 				}else {
 					resultHtml += '<td>'  + comma(this.priceKrwA);
 				}
 				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
 				
-				if(this.transferFeeA <= 4000){
+				if(this.transferFeeA <= highlightTransferFee){
 					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
 				}else {
 					resultHtml += "<td>" + comma(this.transferFeeA) + "</td>";

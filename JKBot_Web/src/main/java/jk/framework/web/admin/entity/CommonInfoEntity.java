@@ -8,7 +8,6 @@
 package jk.framework.web.admin.entity; 
 
 import jk.framework.rest.common.entity.RestCommonVO;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,8 +17,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=false)
-public class BtcKrwPriceEntity extends RestCommonVO{
+public class CommonInfoEntity extends RestCommonVO{
 
-	private String btcKrwPrice;		// 비트코인-원화 가격 (바이낸스 기준)
-	private String updateDt;		// 업데이트 날짜
+	private String binanceBtcKrwPrice;		// 비트코인-원화 가격 (바이낸스 기준)
+	private String btcUpdateDt;				// BTC 업데이트 날짜
+	private String exchangeRate;			// 환율
+	private String exchangeUpdateDt;		// 환율 업데이트 날짜
 }

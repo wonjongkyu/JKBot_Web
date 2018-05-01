@@ -26,7 +26,7 @@ import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
-import jk.framework.web.admin.entity.BtcKrwPriceEntity;
+import jk.framework.web.admin.entity.CommonInfoEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
@@ -300,7 +300,7 @@ public class AdminController {
      * @Method Name : compare
      * @date : 2018. 4. 13.
      * @author : Hyundai
-     * @history : 
+     * @history : 환율 정보 DB에 Update 처리
      *	-----------------------------------------------------------------------
      *	변경일				작성자						변경내용  
      *	----------- ------------------- ---------------------------------------
@@ -330,10 +330,10 @@ public class AdminController {
     
     @ResponseBody
     @RequestMapping(value = "/getBtcKrwPrice", method = RequestMethod.GET)
-	public BtcKrwPriceEntity getBtcKrwPrice(Model model) {
-    	BtcKrwPriceEntity entity = new BtcKrwPriceEntity();
-    	entity.setBtcKrwPrice(sessionService.getAttribute("BTCKRW"));
-    	entity.setUpdateDt(sessionService.getAttribute("BTCKRW_UPDATE_DT"));
+	public CommonInfoEntity getBtcKrwPrice(Model model) {
+    	CommonInfoEntity entity = new CommonInfoEntity();
+    	entity.setBinanceBtcKrwPrice(sessionService.getAttribute("BTCKRW"));
+    	entity.setBtcUpdateDt(sessionService.getAttribute("BTCKRW_UPDATE_DT"));
     	return entity;
     }
     

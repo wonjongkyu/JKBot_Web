@@ -240,5 +240,7 @@ public class AdminService {
 	public void deletePriceHistory(HashSet<String> coinList){
 		mapper.deletePriceHistory(coinList);
 	}
+	
+	// public void updateBtcKrwPrice
 	 
 }

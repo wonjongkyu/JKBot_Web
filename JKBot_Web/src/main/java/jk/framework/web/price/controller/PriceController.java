@@ -121,6 +121,10 @@ public class PriceController {
     	// 상승률 내림차순 정렬
     	Collections.sort(result, new GapPercentDescCompare());
     	 		
+    	if(symbolType.equals("BTC")) {
+	 		result = adminService.getPriceHistory(result);
+	 	}
+
     	return result;
 	}
     

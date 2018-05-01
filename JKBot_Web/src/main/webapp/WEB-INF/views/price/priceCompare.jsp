@@ -42,15 +42,16 @@
 	<div class="col-lg-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <span class="label label-info pull-right" id="exchangePriceUpdateDt"></span>
+                
                 <h5>BTC-KRW 가격</h5>
             </div>
             <div class="ibox-content">
 				<input type="hidden" class="form-control" id="exchangePrice" /> 
-                <h1 class="no-margins" id="exchange_rate"></h1>
+                <h2 class="no-margins" id="exchange_rate"></h1>
                 <!-- <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>  -->
                 <br/>
-                <small id="exchangeDate"></small>
+                <!-- <small id="exchangeDate"></small> -->
+                <span class="label label-info pull-right" id="exchangePriceUpdateDt"></span>
             </div>
         </div>
     </div>
@@ -68,13 +69,14 @@
 	               		<button type="button" class="btn btn-primary" id="sathoshiBtn" > 사토시 계산</button> 
 	               	</span>
             	</div>
-            	<!-- <div class="form-group has-error"><label class="control-label"></label> -->
+            	<div class="form-group has-error">
+            		<!-- <div class="form-group has-error"><label class="control-label"></label> -->
 	            	<div class=""><input type="text" disabled="" id="sathoshiPrice" class="form-control" /></div>
 	            </div>
-            </div>
-        </div>
+   			</div>
+    	</div>
     </div>
-    <div class="col-md-5">
+    <div class="col-lg-3">
         <div class="ibox float-e-margins ">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -90,6 +92,28 @@
             	<div class="form-group has-error"><label class="control-label"></label>
 	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="-1" /></div>
 	            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins ">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 김프 알람 (최대. 최소)</h5>
+            </div>
+            <div class="ibox-content">
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<input type="text" disabled="" id="maxPremium" class="form-control" value="5" />
+	            </div>
+	            <div class="form-group has-error"><label class="control-label"></label>
+	            	<input type="text" disabled="" id="minPremium" class="form-control" value="-5" />
+	            </div>
+               <!-- <div class="input-group">
+	               	<input type="text" class="form-control" id="kimchPreminum" value="-1"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
+	               	</span>
+            	</div> -->
             </div>
         </div>
     </div>
