@@ -23,6 +23,14 @@ v0.4 2018. 4월 4주차
 		ex) 바이낸스 20초마다 / 업비트 1초마다 코인 10개씩 가져와서 업데이트
 
 
+	API 변경 작업. 
+	[사용하는 api]
+	
+	환율정보 : https://free.currencyconverterapi.com/api/v5/convert?q=USD_KRW&compact=y
+	
+	업비트 현재가(체결가 기준) : https://crix-api-endpoint.upbit.com/v1/crix/candles/minutes/1?code=CRIX.UPBIT.KRW-(코인명)
+	
+	바이낸스 현재가(체결가 기준) : https://api.binance.com/api/v3/ticker/price
 
 		
 

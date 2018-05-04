@@ -64,7 +64,7 @@ public class Api_Client {
     	String response = "";
 
 		// SSL 여부
-		if (strHost.startsWith("https://")) {
+		if (!strHost.contains("binance.com") && strHost.startsWith("https://")) {
 		    HttpRequest request = HttpRequest.get(strHost);
 		    // Accept all certificates
 		    request.trustAllCerts();
@@ -322,6 +322,7 @@ public class Api_Client {
 		HashMap<String, String> httpHeaders = new HashMap<String, String>();
 		String nNonce = usecTime();
 		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Accept", "application/json, text/javascript, */*; q=0.01");
 		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
 	
 		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);

@@ -53,6 +53,10 @@ public class BinanceTickerResultEntity extends RestCommonVO{
 	
 	@JsonProperty("symbol")
 	private String symbol;				// 코인종류
+
+	@JsonProperty("price")
+	private String price;				// 코인 BTC 가격 (v3 API)
+	
 	@JsonProperty("priceChange")
 	private String priceChange;			// 가격 변동
 	@JsonProperty("priceChangePercent")
