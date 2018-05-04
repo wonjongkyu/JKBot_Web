@@ -70,7 +70,7 @@ public class BinancePublicRestController{
 	@RequestMapping(value = "/ticker/24hr", method = RequestMethod.GET)
 	public List<BinanceTickerResultEntity> getTicker() {
 		// 모든 코인 찾기
-		List<BinanceTickerResultEntity> resultEntity = binancePublicService.getTicker(apiUrl);
+		List<BinanceTickerResultEntity> resultEntity = binancePublicService.getAllTicker(apiUrl);
 		return resultEntity;
 	}
 	
