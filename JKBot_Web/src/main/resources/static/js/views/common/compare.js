@@ -2,6 +2,123 @@
 
 var highlightTransferFee = 4000;
 
+// 수익률 계산기 관련 function
+
+$(function(){
+    $('#saveTradeBtn').click(function(){
+    	var resultJsonArray = new Array();
+		
+    	for(var i=1; i<5; i++){
+    		var resultVO = new Object();
+    		resultVO.exchangeName = $('#trade_exchangeName_' + i).val();
+    		resultVO.coinSymbol = $('#trade_coinSymbol_' + i).val();
+    		resultVO.quantity = $('#trade_quantity_' + i).val();
+    		resultVO.coinPrice = $('#trade_coinPrice_' + i).val();
+    		resultVO.totalPrice = $('#trade_totalPrice_' + i).val();
+    		resultVO.profitRate = $('#trade_profitRate_' + i).val();
+    		resultJsonArray.push(resultVO);
+    	}
+    	
+    	saveTradeHistory(resultJsonArray);
+    });
+    
+    $('#setProfitBtn').click(function(){
+   	 
+    });
+    
+    $('#setTotalProfitBtn').click(function(){
+    	var exchangePrice = $('#exchangePrice').val();		// BTC-KRW 가격
+    	for(var i=1; i<5; i++){
+    		var quantity = $('#trade_quantity_' + i).val();				// 입력한 사토시 가격
+    		var coinPrice = $('#trade_coinPrice_' + i).val();				// 입력한 사토시 가격
+    		var totalPrice = quantity*coinPrice;
+    		totalPrice = comma(totalPrice.toFixed(0));
+    		$("#trade_totalPrice_" + i).val('￦ ' + totalPrice);
+    	}
+    	
+    	// 업비트-바이낸스 코인이름, 개수 세팅
+    	var trade_coinSymbol_1 = $('#trade_coinSymbol_1').val();
+    	$("#trade_coinSymbol_2").val(trade_coinSymbol_1);
+    	var trade_quantity_1 = $('#trade_quantity_1').val();
+    	$("#trade_quantity_2").val(trade_quantity_1);
+    	
+    	
+    	var totalPrice_1 = uncomma($("#trade_totalPrice_1").val());
+    	var totalPrice_2 = uncomma($("#trade_totalPrice_2").val());
+    	var totalPrice_3 = uncomma($("#trade_totalPrice_3").val());
+    	var totalPrice_4 = uncomma($("#trade_totalPrice_4").val());
+    	
+    	// 업비트-바낸 수익률
+    	var profitRate_1 = (1-(totalPrice_1/totalPrice_2))*100;
+    	profitRate_1 = profitRate_1.toFixed(2);
+    	if(Number(profitRate_1) < 0){
+    		$("#trade_profitRate_").removeClass("text-danger text-success");
+    		$("#trade_profitRate_1").addClass("text-success");
+    		$("#trade_profitRate_1").val(profitRate_1);
+    	}else {
+    		$("#trade_profitRate_1").removeClass("text-danger text-success");
+    		$("#trade_profitRate_1").addClass("text-danger");
+    		$("#trade_profitRate_1").val(profitRate_1);
+    	}
+    	
+    	// 바낸-업비트 수익률
+    	var profitRate_3 = (1-(totalPrice_2/totalPrice_4))*100;
+    	profitRate_3 = profitRate_3.toFixed(2);
+    	if(Number(profitRate_3) < 0){
+    		$("#trade_profitRate_3").removeClass("text-danger text-success");
+    		$("#trade_profitRate_3").addClass("text-success");
+    		$("#trade_profitRate_3").val(profitRate_3);
+    	}else {
+    		$("#trade_profitRate_3").removeClass("text-danger text-success");
+    		$("#trade_profitRate_3").addClass("text-danger");
+    		$("#trade_profitRate_3").val(profitRate_3);
+    	}
+    	
+    	// 최종 수익률
+    	var profitRate_5 = (1-(totalPrice_1/totalPrice_4))*100;
+    	profitRate_5 = profitRate_5.toFixed(2);
+    	if(Number(profitRate_5) < 0){
+    		$("#trade_profitRate_5").removeClass("text-danger text-success");
+    		$("#trade_profitRate_5").addClass("text-success");
+    		$("#trade_profitRate_5").val(profitRate_5);
+    	}else {
+    		$("#trade_profitRate_5").removeClass("text-danger text-success");
+    		$("#trade_profitRate_5").addClass("text-danger");
+    		$("#trade_profitRate_5").val(profitRate_5);
+    	}
+    	
+    	// 최종 가격
+    	var totalPrice_5 = totalPrice_4 - totalPrice_1;
+    	totalPrice_5 = comma(totalPrice_5.toFixed(0));
+    	$("#trade_totalPrice_5").val('￦ ' + totalPrice_5);
+    });
+});
+
+function saveTradeHistory(param) {
+	var data = param;
+	$.ajax({
+		type : "POST",
+		contentType : "application/json",
+		url : "/admin/saveTradeHistory",
+		data : JSON.stringify(data),
+		dataType : 'json',
+		// tradtional : true,				// json List로 받기 위한 설정
+		timeout : 5000,
+		success : function(data) {
+			
+			
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+
+
 $(function(){
     $('#sathoshiBtn').click(function(){
     	var exchangePrice = $('#exchangePrice').val();		// BTC-KRW 가격
@@ -21,7 +138,7 @@ $(function(){
 });
 	
 	
-<!-- BTC-KRW 가격 저장 -->
+// BTC-KRW 가격 저장
 function setBtcKrwPrice(){
 	var data = {}
 	$.ajax({

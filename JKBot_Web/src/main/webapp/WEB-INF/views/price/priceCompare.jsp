@@ -119,71 +119,10 @@
     </div>
 </div>        
 
-            
-<div class="row">
-    <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5> 재정거래 내역 등록</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#">Config option 1</a>
-                            </li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content m-b-sm border-bottom">
-	                <div class="row">
-	                    <div class="col-sm-1">
-	                        <div class="form-group has-success">
-	                            <label class="control-label" for="product_name">거래소</label>
-	                            <input type="text" id="product_name" disabled name="product_name" value="업비트" class="form-control hnas-">
-	                        </div>
-	                        
-	                    </div>
-	                    <div class="col-sm-2">
-	                        <div class="form-group has-success">
-	                            <label class="control-label" for="price">코인명</label>
-	                            <input type="text" id="price" name="price" value="" placeholder="Symbol" class="form-control">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-2">
-	                        <div class="form-group has-success">
-	                            <label class="control-label" for="quantity">코인 수</label>
-	                            <input type="text" id="quantity" name="quantity" value="" placeholder="Quantity" class="form-control">
-	                        </div>
-	                    </div>
-	                     <div class="col-sm-2">
-	                        <div class="form-group has-success">
-	                            <label class="control-label" for="quantity">코인 가격</label>
-	                            <input type="text" id="quantity" name="quantity" value="" placeholder="Quantity" class="form-control">
-	                        </div>
-	                    </div>
-	                    <div class="col-sm-4">
-	                        <div class="form-group has-success">
-	                            <label class="control-label" for="status">코인 가격</label>
-	                            <select name="status" id="status" class="form-control">
-	                                <option value="1" selected="">Enabled</option>
-	                                <option value="0">Disabled</option>
-	                            </select>
-	                        </div>
-	                    </div>
-	                </div>
-           	 	</div>
-            </div>
-        </div>
-</div>
+<!-- 재정거래 등록 페이지 -->
+<%@include file="/WEB-INF/views/common/trade_insert.jsp"%>
+
+
 
  
 <!--  DashBoard 현재 시세 -->
