@@ -6,20 +6,24 @@ var highlightTransferFee = 4000;
 
 $(function(){
     $('#saveTradeBtn').click(function(){
-    	var resultJsonArray = new Array();
+    	// var resultJsonArray = new Array();
+		var resultVO = new Object();
+		// 업비트 출발 트레이드 정보
+		resultVO.exchangeName_A = $('#trade_exchangeName_1').val();
+		resultVO.coinSymbol_A = $('#trade_coinSymbol_1').val();
+		resultVO.totalPrice_A = $('#trade_totalPrice_1').val();
 		
-    	for(var i=1; i<5; i++){
-    		var resultVO = new Object();
-    		resultVO.exchangeName = $('#trade_exchangeName_' + i).val();
-    		resultVO.coinSymbol = $('#trade_coinSymbol_' + i).val();
-    		resultVO.quantity = $('#trade_quantity_' + i).val();
-    		resultVO.coinPrice = $('#trade_coinPrice_' + i).val();
-    		resultVO.totalPrice = $('#trade_totalPrice_' + i).val();
-    		resultVO.profitRate = $('#trade_profitRate_' + i).val();
-    		resultJsonArray.push(resultVO);
-    	}
+		// 업비트 도착 트레이드 정보
+		resultVO.exchangeName_B = $('#trade_exchangeName_4').val();
+		resultVO.coinSymbol_B = $('#trade_coinSymbol_4').val();
+		resultVO.totalPrice_B = $('#trade_totalPrice_4').val();
+		
+		// 총 수익 및 수익률 정보
+		resultVO.profitPrice = $('#trade_totalPrice_5').val();
+		resultVO.profitRate  = $('#trade_profitRate_5').val();
+		
+    	saveTradeHistory(resultVO);
     	
-    	saveTradeHistory(resultJsonArray);
     });
     
     $('#setProfitBtn').click(function(){
@@ -99,7 +103,7 @@ function saveTradeHistory(param) {
 	$.ajax({
 		type : "POST",
 		contentType : "application/json",
-		url : "/admin/saveTradeHistory",
+		url : "/history/saveTradeHistory",
 		data : JSON.stringify(data),
 		dataType : 'json',
 		// tradtional : true,				// json List로 받기 위한 설정

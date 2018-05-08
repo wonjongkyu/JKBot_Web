@@ -17,6 +17,10 @@
     <link href="<c:url value='/css/plugins/morris/morris-0.4.3.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/animate.css" rel="stylesheet'/>" />
     <link href="<c:url value='/css/style.css" rel="stylesheet'/>" />
+    
+    <!-- FooTable -->
+    <link href="<c:url value='/css/plugins/footable/footable.core.css'/>" rel="stylesheet">
+    
 
     <link href="<c:url value='/css/plugins/jQueryUI/jquery-ui-1.10.4.custom.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/plugins/jqGrid/ui.jqgrid.css'/>" rel="stylesheet">
@@ -49,6 +53,9 @@
 	<link href="<c:url value='/css/plugins/dualListbox/bootstrap-duallistbox.min.css'/>" rel="stylesheet">
 	<script src="<c:url value='/js/plugins/dualListbox/jquery.bootstrap-duallistbox.js'/>"></script>
 	
+	            
+    <!-- FooTable -->
+    <script src="<c:url value='/js/plugins/footable/footable.all.min.js'/>"></script>  
 	 
    	<script src="<c:url value='/js/views/common.js'/>"></script> 
    	
