@@ -84,13 +84,13 @@
             </div>
             <div class="ibox-content">
                <div class="input-group">
-	               	<input type="text" class="form-control" id="kimchPreminum" value="-1"> 
+	               	<input type="text" class="form-control" id="kimchPreminum" value="8"> 
 	               	<span class="input-group-btn"> 
 	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
 	               	</span>
             	</div>
             	<div class="form-group has-error"><label class="control-label"></label>
-	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="-1" /></div>
+	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="8" /></div>
 	            </div>
             </div>
         </div>
