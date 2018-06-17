@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import jk.framework.common.util.http.Api_Client;
+import jk.framework.rest.binance.entity.BinanceAskBidResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
-import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 
 @Service
 public class BinanacePublicRestService {
@@ -55,7 +55,37 @@ public class BinanacePublicRestService {
 		return returnEntity;
 	}
 	
+	public BinanceAskBidResultEntity getBidAskPrice(String apiUrl){
+		return getBidAskPrice(apiUrl, null, "USDT");
+	}
 	
+	public BinanceAskBidResultEntity getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType){
+		
+		BinanceAskBidResultEntity entity = null;
+		BinanceAskBidResultEntity returnEntity = new BinanceAskBidResultEntity();
+		Api_Client api = new Api_Client(apiUrl, null, null);
+
+		for(String str : coinList) {
+			try {
+				Thread.sleep(10);	// 1000이 1초
+				String param = "?symbol=" + str + symbolType;
+				String result = api.callUpbitApi("/v1/depth"+param, null);
+			    Gson gson = new Gson();
+			    returnEntity = gson.fromJson(result, BinanceAskBidResultEntity.class ); 
+			    
+			    System.out.println("test:::" + returnEntity.getBids());
+			    Object[] bids = returnEntity.getBids().toArray();
+			    for (Object object : bids) {
+					System.out.println(str + ":::" + object.toString());
+				}
+			    break;
+			} catch (Exception e) {
+			    // e.printStackTrace();
+			}
+		}
+		
+		return returnEntity;
+	}
 	
 	public List<BinanceTickerResultEntity> getAllTicker(String apiUrl){
 		return getAllTicker(apiUrl, null, "USDT");

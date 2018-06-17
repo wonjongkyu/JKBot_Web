@@ -343,7 +343,7 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "STORM/TRX/GRS/NEO/STEEM/XRP/POWR/SNT/EOS/ICX/";
+				choiceCoinStr = "GTO/STORM/TRX/GRS/NEO/STEEM/XRP/POWR/ONT/EOS/ICX/";
 			}
 			
 			
@@ -383,7 +383,7 @@ function getCompareBTC() {
 				
 				resultJsonArray.push(resultVO);
 				// 텔레그램 메시지 전송
-				if( this.priceGapPercent > telegram || this.priceGapPercent < 0){
+				if( this.priceKrwA != null && this.priceKrwB != null && (this.priceGapPercent > telegram || this.priceGapPercent < 0)){
 					sendMessage = "Y";
 				}
 				

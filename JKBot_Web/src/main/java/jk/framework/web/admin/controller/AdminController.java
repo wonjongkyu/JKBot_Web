@@ -15,22 +15,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.request.ParseMode;
-import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
-
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
+import jk.framework.rest.binance.entity.BinanceAskBidResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
@@ -40,7 +32,6 @@ import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
-import jk.framework.web.message.entity.TelegramMessageEntity;
 
 /**
  * Handles requests for the application home page. 
@@ -182,9 +173,10 @@ public class AdminController {
  	 		}
  		}
  	 	
+ 	 	BinanceAskBidResultEntity binanceResultEntity2 = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
+ 	 	
   
- 		
- 		List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
+ 	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
  			if("USDT".equals(symbolType)){
  				if(resultEntity.containsKey(entity.getTradeType())){
