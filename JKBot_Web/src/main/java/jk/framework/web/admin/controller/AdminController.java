@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
-import jk.framework.rest.binance.entity.BinanceAskBidResultEntity;
+import jk.framework.rest.binance.entity.BinanceAskResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
@@ -173,7 +173,9 @@ public class AdminController {
  	 		}
  		}
  	 	
- 	 	BinanceAskBidResultEntity binanceResultEntity2 = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
+ 	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
+ 	 	// 해당 결과값을 아래 binanceResultEntity에 merge
+ 	 	List<BinanceAskResultEntity> binanceResultEntity2 = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
  	 	
   
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);

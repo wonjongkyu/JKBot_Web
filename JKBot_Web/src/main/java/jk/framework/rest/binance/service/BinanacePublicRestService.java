@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.http.Api_Client;
 import jk.framework.rest.binance.entity.BinanceAskBidResultEntity;
+import jk.framework.rest.binance.entity.BinanceAskResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 
 @Service
@@ -55,30 +57,54 @@ public class BinanacePublicRestService {
 		return returnEntity;
 	}
 	
-	public BinanceAskBidResultEntity getBidAskPrice(String apiUrl){
+	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl){
 		return getBidAskPrice(apiUrl, null, "USDT");
 	}
 	
-	public BinanceAskBidResultEntity getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType){
+	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType){
 		
 		BinanceAskBidResultEntity entity = null;
-		BinanceAskBidResultEntity returnEntity = new BinanceAskBidResultEntity();
+		List<BinanceAskResultEntity> returnEntity = new ArrayList<BinanceAskResultEntity>();
 		Api_Client api = new Api_Client(apiUrl, null, null);
 
+		// 현재 Binance BTC 가격 가져와서 500만원으로 몇 비트 살 수 있는지 계산
+		double BtcPrice = 0.66;		// 500만원
+		double resultPrice = 0.0;
 		for(String str : coinList) {
 			try {
-				Thread.sleep(10);	// 1000이 1초
-				String param = "?symbol=" + str + symbolType;
-				String result = api.callUpbitApi("/v1/depth"+param, null);
-			    Gson gson = new Gson();
-			    returnEntity = gson.fromJson(result, BinanceAskBidResultEntity.class ); 
-			    
-			    System.out.println("test:::" + returnEntity.getBids());
-			    Object[] bids = returnEntity.getBids().toArray();
-			    for (Object object : bids) {
-					System.out.println(str + ":::" + object.toString());
+				if(str.equals("XLM")) {
+					Thread.sleep(10);	// 1000이 1초
+					String param = "?symbol=" + str + symbolType;
+					String result = api.callUpbitApi("/v1/depth"+param, null);
+				    Gson gson = new Gson();
+				    entity = gson.fromJson(result, BinanceAskBidResultEntity.class ); 
+				    
+				    // System.out.println("test:::" + returnEntity.getBids());
+				    Object[] bids = entity.getBids().toArray();
+				    Double coinAmount = 0.0;
+				    for (Object object : bids) {
+				    	// ,로 자르고, 공백 [ 제거
+				    	String btc = object.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+				    	String[] priceArray = btc.split(",");
+				    	Double array1 = Double.parseDouble(priceArray[0].trim());
+				    	Double array2 = Double.parseDouble(priceArray[1].trim());
+				    	coinAmount += array2;
+				    	Double result22 = array1 * array2;
+				    	resultPrice += JKStringUtil.mathRound(result22,9);
+				    	if(BtcPrice < resultPrice) {
+				    		/*
+				    		 * 총 (BTC 가격 / 구매 원하는 BTC 가격) * 코인 수
+				    		 */
+				    		Double realCoinAmount = 0.0;
+				    		realCoinAmount = ( BtcPrice / JKStringUtil.mathRound(resultPrice, 3)) * coinAmount;
+				    		
+				    		System.out.println(str + ":::" + JKStringUtil.mathRound(resultPrice, 8));
+				    		System.out.println("코인수 : " + realCoinAmount );
+				    		System.out.println("코인 평균가 : " + (BtcPrice / realCoinAmount)*7414443);
+				    		break;
+				    	}
+				    }
 				}
-			    break;
 			} catch (Exception e) {
 			    // e.printStackTrace();
 			}

@@ -35,7 +35,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=false)
-public class BinanceBidsResultEntity extends RestCommonVO{
+public class BinanceAskResultEntity extends RestCommonVO{
 	@JsonProperty("bids")
 	private List<List<Object>>  bids;
 	@JsonProperty("asks")
