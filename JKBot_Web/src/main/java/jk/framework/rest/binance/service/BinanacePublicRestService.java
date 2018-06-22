@@ -58,10 +58,10 @@ public class BinanacePublicRestService {
 	}
 	
 	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl){
-		return getBidAskPrice(apiUrl, null, "USDT");
+		return getBidAskPrice(apiUrl, null, "USDT", 0);
 	}
 	
-	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType){
+	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType, double exchangeRate){
 		
 		BinanceAskBidResultEntity entity = null;
 		List<BinanceAskResultEntity> resultList = new ArrayList<BinanceAskResultEntity>();
@@ -120,32 +120,10 @@ public class BinanacePublicRestService {
 				    			resultEntity.setCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,4)));
 				    		}
 				    		resultEntity.setCoinSymbolName(str);
-				    		resultEntity.setCoinAveragePrice(((BtcPrice*7300000)/coinAmount)+"");
+				    		resultEntity.setCoinAveragePrice(((BtcPrice*exchangeRate)/coinAmount)+"");
 				    		resultList.add(resultEntity);
-				    		// System.out.println(str + ":::coinAmount::" + coinAmount);
-				    		// System.out.println("purchasableAmount22::" + ((BtcPrice*7300000)/coinAmount));
 				    		break;
 				    	}
-				    	
-				    	/*
-				    	Double result22 = array1 * array2;
-				    	totalBuyPrice += JKStringUtil.mathRound(result22,9);
-				    	if(BtcPrice < totalBuyPrice) {
-				    		
-				    		 * 총 (BTC 가격 / 구매 원하는 BTC 가격) * 코인 수
-				    		 
-				    		Double realCoinAmount = 0.0;
-				    		realCoinAmount = ( BtcPrice / JKStringUtil.mathRound(totalBuyPrice, 3)) * coinAmount;
-				    		
-				    		System.out.println(str + ":::" + JKStringUtil.mathRound(totalBuyPrice, 8));
-				    		System.out.println("코인수 : " + realCoinAmount );
-				    		System.out.println("코인 평균가 : " + (BtcPrice / realCoinAmount)*7414443);
-				    		resultEntity.setCoinAmout(realCoinAmount.toString());
-				    		resultEntity.setCoinSymbolName(str);
-				    		resultEntity.setCoinAveragePrice(( ((BtcPrice / realCoinAmount)*7414443))+"");
-				    		resultList.add(resultEntity);
-				    		break;
-				    	}*/
 				    }
 			} catch (Exception e) {
 			    // e.printStackTrace();

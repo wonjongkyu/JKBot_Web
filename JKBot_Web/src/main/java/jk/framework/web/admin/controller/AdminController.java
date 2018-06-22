@@ -116,7 +116,7 @@ public class AdminController {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
     	// 환율 가져오기
-    	Double exchangeRate = 1065D;
+    	Double exchangeRate = 1107D;
     	if(sessionService.getAttributeStr("exchangeRate") != null) {
     		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
     	}
@@ -169,6 +169,7 @@ public class AdminController {
 				}
 				
 				if(!resultEntity.containsKey(entity.getCoinSymbol())){
+					System.out.println(entity.getCoinSymbol());
 					resultEntity.put(entity.getCoinSymbol(), entity);
 				}
  	 		}
@@ -176,11 +177,11 @@ public class AdminController {
  	 	
  	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
  	 	// 해당 결과값을 아래 binanceResultEntity에 merge
- 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
+ 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate);
  		for (BinanceAskResultEntity e : askEntityList) {
-			System.out.println("coin명:" + e.getCoinSymbolName());
-			System.out.println("coin 갯수:" + e.getCoinAmout());
-			System.out.println("coin 가격:" + e.getCoinAveragePrice());
+			// System.out.println("coin명:" + e.getCoinSymbolName());
+			// System.out.println("coin 갯수:" + e.getCoinAmout());
+			// System.out.println("coin 가격:" + e.getCoinAveragePrice());
 		}
   
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
