@@ -36,9 +36,12 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(callSuper=false)
 public class BinanceAskResultEntity extends RestCommonVO{
-	@JsonProperty("bids")
-	private List<List<Object>>  bids;
-	@JsonProperty("asks")
-	private List<List<Object>> asks;
+	// 코인 symbol, 평균가, 구매 개수 저장
+	private String coinSymbolName;		// 코인 심볼명
+	
+	private String coinAveragePrice;	// 코인 평균가격
+	
+	private String coinAmout;			// 구매가능 코인 개수
+	
 	
 }

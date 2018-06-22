@@ -128,6 +128,7 @@ public class AdminController {
  		Map<String, PriceCompareEntity> resultEntity = new HashMap<String, PriceCompareEntity>();
  		PriceExchangeInfoEntity param = new PriceExchangeInfoEntity();
  		param.setCoinExchangeType(symbolType);
+ 		// 거래소 정보 가져오기 (전송 수수료)
  		List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(param);
  		
  		// 가져올 코인 코드
@@ -175,8 +176,12 @@ public class AdminController {
  	 	
  	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
  	 	// 해당 결과값을 아래 binanceResultEntity에 merge
- 	 	List<BinanceAskResultEntity> binanceResultEntity2 = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
- 	 	
+ 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType);
+ 		for (BinanceAskResultEntity e : askEntityList) {
+			System.out.println("coin명:" + e.getCoinSymbolName());
+			System.out.println("coin 갯수:" + e.getCoinAmout());
+			System.out.println("coin 가격:" + e.getCoinAveragePrice());
+		}
   
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
