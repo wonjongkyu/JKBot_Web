@@ -46,4 +46,8 @@ public class PriceCompareEntity extends RestCommonVO{
 	private String lastPriceA;			// 이전 가격
 	private String lastPriceB;			// 이전 가격
 	private double priceGapPercent = 0D;	// 김프 (%)
+	private String priceKrwB2;		// 비교대상 코인 원화 가격
+	private String priceBtcB2;		// 비교대상 코인 BTC 가격
+	private String priceGapKrw2;		// 원화 가격 차이
+	private double priceGapPercent2 = 0D;	// 김프 (%)
 }

@@ -112,8 +112,11 @@ public class BinanacePublicRestService {
 			    			purchasableAmount = purchasableAmount - (array1*array2);	
 				    	}
 				    	
-				    	// System.out.println(str + ":::temp:::" + temp + ":::purchasableAmount::" + purchasableAmount);
 				    	if(purchasableAmount < 0.0) {
+				    		System.out.println(BtcPrice);
+				    		System.out.println(exchangeRate);
+				    		System.out.println( BtcPrice*exchangeRate );
+				    		System.out.println(str + ":::coinAmount:::" + coinAmount + ":::purchasableAmount::" + ((BtcPrice*exchangeRate)/coinAmount));
 				    		if(coinAmount > 0) {
 				    			resultEntity.setCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
 				    		}else {
