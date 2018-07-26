@@ -343,9 +343,9 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "GTO/STORM/TRX/GRS/NEO/STEEM/XRP/POWR/ONT/EOS/ICX/";
+				choiceCoinStr = "STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
 			}
-			
 			
 			var resultJsonArray = new Array();
 			var resultHtml = "";
@@ -383,7 +383,7 @@ function getCompareBTC() {
 				
 				resultJsonArray.push(resultVO);
 				// 텔레그램 메시지 전송
-				if( this.priceKrwA != null && this.priceKrwB != null && (this.priceGapPercent > telegram || this.priceGapPercent < 0)){
+				if( this.priceKrwA != null && this.priceKrwB != null && (this.priceGapPercent < telegram )){
 					sendMessage = "Y";
 				}
 				
