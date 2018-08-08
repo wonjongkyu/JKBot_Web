@@ -141,7 +141,12 @@ $(function(){
     	var exchangePrice = $('#exchangePrice').val();		// BTC-KRW 가격
     	var sathoshi = $('#sathoshi').val();				// 입력한 사토시 가격
     	var result = exchangePrice*sathoshi;
-    	result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
+    	if(context == 'admin'){
+    		result = result.toFixed(2)*1.03;				// 소숫점 둘째자리에서 반올림
+    		result = result.toFixed(2);
+    	}else {
+    		result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
+    	}
     	$("#sathoshiPrice").val(result);
     });
 });
@@ -343,7 +348,7 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
 				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
 			}
 			
