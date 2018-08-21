@@ -45,7 +45,7 @@ import jk.framework.rest.gopax.service.GopaxPublicRestService;
 public class GopaxPublicRestController{
 	private static final Logger logger = LoggerFactory.getLogger(GopaxPublicRestController.class);
     
-    @Value("${gopax.apiUrl}")
+    // @Value("${gopax.apiUrl}")
     private String apiUrl ;
 	
     @Autowired

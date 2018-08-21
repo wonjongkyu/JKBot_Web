@@ -1,5 +1,4 @@
 
-
 var highlightTransferFee = 4000;
 
 // 수익률 계산기 관련 function
@@ -142,7 +141,7 @@ $(function(){
     	var sathoshi = $('#sathoshi').val();				// 입력한 사토시 가격
     	var result = exchangePrice*sathoshi;
     	if(context == 'admin'){
-    		result = result.toFixed(2)*1.03;				// 소숫점 둘째자리에서 반올림
+    		result = result.toFixed(2)*1.021;				// 소숫점 둘째자리에서 반올림
     		result = result.toFixed(2);
     	}else {
     		result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
@@ -348,8 +347,8 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
-				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
+				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				// choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
 			}
 			
 			var resultJsonArray = new Array();
@@ -417,11 +416,17 @@ function getCompareBTC() {
 				}
 				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
 				
+				
+				// 실제 구매 가능한 금액 기준 평균 가격 출력
+				resultHtml += "<td>" + comma(this.priceBtcB2) + "</td>";
+				//  바이낸스 수수료 출력 (주석)
+				/*
 				if(this.transferFeeB <= highlightTransferFee){
 					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
 				}else {
 					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
 				}
+				*/
 				
 				if(this.coinPriceWeightA > maxPremium){
 					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';

@@ -176,15 +176,14 @@ public class AdminController {
  	 	
  	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
  	 	// 해당 결과값을 아래 binanceResultEntity에 merge
- 	 	/*
  	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate);
  		for (BinanceAskResultEntity e : askEntityList) {
  			if(resultEntity.containsKey(e.getCoinSymbolName())){
- 				// System.out.println( e.getCoinAveragePrice() );
- 				resultEntity.get(e.getCoinSymbolName()).setPriceBtcB2(e.getCoinAveragePrice());
+ 				// System.out.println(e.getCoinSymbolName() +"::::" +e.getCoinAveragePrice() );
+ 				resultEntity.get(e.getCoinSymbolName()).setPriceBtcB2(String.valueOf(JKStringUtil.mathRound(e.getCoinAveragePrice(),2)));
 			}
 		}
-		*/
+		
   
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
@@ -237,40 +236,29 @@ public class AdminController {
  		for (UpbitTickerResultEntity entity : upBitResultEntity) {
  			if(resultEntity.containsKey(entity.getTradeType())){
  				String priceKrwA = JKStringUtil.nvl(entity.getTradePrice(), "-");
- 				String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
- 				// String priceKrwB2 = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB2(), "-");
+ 				// String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
+ 				String priceKrwB2 = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceBtcB2(), "-");
  				// 업비트 원화 가격을 받아왔을때.
  				if(!("-").equals(priceKrwA)) {
  					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));
  					// 원화 차액을 계산하기 위해 바이낸스 가격을 가져왔을때. 원화차액 및 김프까지 계산
- 					if(!("-").equals(priceKrwB)) {
+ 					if(!("-").equals(priceKrwB2)) {
  						// 원화 차액 계산
- 						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
+ 						// double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
+ 						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2);
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
  						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
  						 */
- 						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
+ 						// double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
+ 						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2)) * 100) / Double.parseDouble(priceKrwB2);
  						resultEntity.get(entity.getTradeType()).setPriceGapPercent(JKStringUtil.mathRound(priceGapPercent,2));
  						
  						// 수수료 사토시 -> 원화 계산
  	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeA();
  	 					String transferFeeSum = JKStringUtil.mathKrwRound(JKStringUtil.parseDouble(priceKrwA) * JKStringUtil.parseDouble(transferFee));
  	 					resultEntity.get(entity.getTradeType()).setTransferFeeA(transferFeeSum);
- 	 					
- 	 					
- 	 					/*
- 	 					// 원화 차액 계산222222
- 						double krwGap2= Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2);
- 						resultEntity.get(entity.getTradeType()).setPriceGapKrw2(String.valueOf(JKStringUtil.mathRound(krwGap2,2)));
- 						
- 						 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
- 				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
- 						 
- 						double priceGapPercent2 = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2)) * 100) / Double.parseDouble(priceKrwB2);
- 						resultEntity.get(entity.getTradeType()).setPriceGapPercent2(JKStringUtil.mathRound(priceGapPercent2,2));
- 						*/
  					}
  				}
  			}

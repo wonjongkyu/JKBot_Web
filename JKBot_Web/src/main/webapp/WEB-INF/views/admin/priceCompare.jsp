@@ -197,7 +197,7 @@
 		                      <th>코인</th>
 		                      <th>binance(BTC)</th>
 		                      <th>binance(￦)</th>
-		                      <th>binance(수수료)</th>
+		                      <th>binance(실제￦)</th>
 		                      <th>upbit(￦)</th>
 		                      <th>upbit(수수료)</th>
 		                      <th>김치프리미엄(￦)</th>

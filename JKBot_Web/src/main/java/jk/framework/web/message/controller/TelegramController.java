@@ -30,10 +30,10 @@ import jk.framework.web.message.entity.TelegramMessageEntity;
 @Controller
 public class TelegramController {
 			
-	@Value("${telegram.botToken}")
+	// @Value("${telegram.botToken}")
 	private String telegramBotToken ;
 	
-	@Value("${telegram.chatId}")
+	// @Value("${telegram.chatId}")
 	private String chatId ;
 			
     @Autowired
