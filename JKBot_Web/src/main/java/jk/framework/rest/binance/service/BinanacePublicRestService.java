@@ -80,8 +80,7 @@ public class BinanacePublicRestService {
     	}
     	
 		// 현재 Binance BTC 가격 가져와서 500만원으로 몇 비트 살 수 있는지 계산
-		double BtcPrice = 4000000;					// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
-		double totalBuyPrice = 0.0;	// 구매 금액 누적치
+		double BtcPrice = 4000000;			// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
 		for(String str : coinList) {
 			try {
 					double purchasableAmount = BtcPrice;	// 구매 가능 금액
@@ -91,6 +90,7 @@ public class BinanacePublicRestService {
 					String param = "?symbol=" + str + symbolType;
 					String result = api.callUpbitApi("/v1/depth"+param, null);
 				    Gson gson = new Gson();
+				    
 				    entity = gson.fromJson(result, BinanceAskBidResultEntity.class ); 
 				    
 				    // API 리턴값 저장
@@ -148,13 +148,81 @@ public class BinanacePublicRestService {
 				    		System.out.println(str + ":::coinAmount:::" + coinAmount + ":::purchasableAmount::" + ((BtcPrice*exchangeRate*6300)/coinAmount));
 				    		*/
 				    		if(coinAmount > 0) {
-				    			resultEntity.setCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
+				    			resultEntity.setBidCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
 				    		}else {
-				    			resultEntity.setCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,4)));
+				    			resultEntity.setBidCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,4)));
 				    		}
 				    		
 				    		resultEntity.setCoinSymbolName(str);
-				    		resultEntity.setCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
+				    		resultEntity.setBidCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
+				    		resultList.add(resultEntity);
+				    		break;
+				    	}
+				    }
+				    
+				    
+				    // API 리턴값 저장
+				    Object[] asks = entity.getAsks().toArray();
+				    coinAmount = 0.0;		// 구매 가능 코인수
+				    /*
+				     * 구매 수량 계산 : 
+					 *	CASE 1
+					 *		구매 가능한 코인 수 > 현재 잔고/코인가격
+					 *		모두 매수 (구매 수량에 추가 및 현재 잔고 마이너스)
+					 *		
+					 *	CASE 2
+					 *		구매 가능한 코인 수 < 현재 잔고/코인가격
+					 *		일부 매수 (코인 수:코인 가격 / 현재 잔고)
+				     * 평균 단가 계산 : 구매한 코인 수 / 현재 잔고
+				     */
+				    for (Object object : asks) {
+				    	// ,로 자르고, 공백 [ 제거
+				    	String row = object.toString().replaceAll("\\[", "").replaceAll("\\]", "");
+				    	String[] priceArray = row.split(",");
+				    	// array1에서 0이 아닌 숫자가 나올떄까지 진행
+				    	String priceArray1 = priceArray[0].trim();
+				    	// 총 10자리 맞추기 0.00000001 사토시 
+				    	while(priceArray1.length() < 10) {
+				    		priceArray1 += "0";
+				    	}
+				    	String arrayStr = "";
+				    	char[] price0_char = priceArray1.toCharArray();
+				    	for (int i=2; i<price0_char.length; i++) {
+				    		if(price0_char[i] != '0' ) {
+				    			arrayStr = priceArray1.substring(i,priceArray1.length());
+				    			break;
+				    		}
+						}
+				    	
+				    	Double array1 = Double.parseDouble(arrayStr)* (BTCKRW/100000000);				// 사토시 (정수형으로 변환)
+				    	Double array2 = Double.parseDouble(priceArray[1].trim());	// 구매 가능 수량
+				    	Double temp = JKStringUtil.mathRound(array1*array2,9);
+				    	
+				    	// 로직 추가
+				    	if(purchasableAmount >= temp) {
+				    		coinAmount += array2;
+				    		purchasableAmount = purchasableAmount - (array1*array2);
+				    	}else if(purchasableAmount < temp){
+				    		coinAmount += (purchasableAmount / array1);
+			    			purchasableAmount = 0;
+				    	}
+				    	
+				    	
+				    	
+				    	if(purchasableAmount <= 0.0) {
+				    		/*System.out.println(BtcPrice);
+				    		System.out.println(exchangeRate);
+				    		System.out.println( BtcPrice*exchangeRate*6300 );
+				    		System.out.println(str + ":::coinAmount:::" + coinAmount + ":::purchasableAmount::" + ((BtcPrice*exchangeRate*6300)/coinAmount));
+				    		*/
+				    		if(coinAmount > 0) {
+				    			resultEntity.setAskCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
+				    		}else {
+				    			resultEntity.setAskCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,4)));
+				    		}
+				    		
+				    		resultEntity.setCoinSymbolName(str);
+				    		resultEntity.setAskCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
 				    		resultList.add(resultEntity);
 				    		break;
 				    	}

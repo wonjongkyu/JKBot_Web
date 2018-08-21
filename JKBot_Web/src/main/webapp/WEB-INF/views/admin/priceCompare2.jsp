@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/admin/admin.js'/>"></script>
+<script src="<c:url value='/js/views/admin/admin2.js'/>"></script>
 <script src="<c:url value='/js/views/common/compare.js'/>"></script>
 
 <div class="row">
@@ -195,12 +195,12 @@
 	                  		<tr>
 		                      <th>#</th>
 		                      <th>코인</th>
-		                      <th>binance(BTC)</th>
+		                      <th>binance(매수)</th>
+		                      <th>upbit(매도)</th>
+		                      <th>김치프리미엄1(%)</th>
 		                      <th>binance(￦)</th>
-		                      <th>binance(수수료)</th>
-		                      <th>upbit(￦)</th>
 		                      <th>upbit(수수료)</th>
-		                      <th>김치프리미엄(￦)</th>
+		                      <th>김치프리미엄2(￦)</th>
 	                     	</tr>
 	                    </thead>
 	                    <tbody id="priceTbodyBTC"></tbody>

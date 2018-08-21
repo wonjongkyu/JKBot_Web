@@ -25,10 +25,12 @@ import jk.framework.common.util.etc.SessionService;
 import jk.framework.rest.binance.entity.BinanceAskResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
+import jk.framework.rest.upbit.entity.UpbitAskBidResultEntity;
 import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
 import jk.framework.web.admin.entity.CommonInfoEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
+import jk.framework.web.admin.entity.PriceCompareAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
@@ -46,6 +48,8 @@ public class AdminController {
     private String binanceApiUrl ;
     @Value("${upbit.apiUrl}")
     private String upbitApiUrl ;
+    @Value("${upbit.apiUrl2}")
+    private String upbitApiUrl2 ;
 	
     @Autowired
     BinanacePublicRestService binancePublicService;
@@ -87,6 +91,32 @@ public class AdminController {
 		return mav;
     }
     
+    /**
+     * <pre>
+     * 1. 개요 : 김프 계산 페이지 연결
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : compare
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param model
+     * @return
+     */ 	
+    @RequestMapping(value = "/compare2", method = RequestMethod.GET)
+	public ModelAndView compare2(Model model) {
+		ModelAndView mav = new ModelAndView();
+		// 환율 가져오기
+		getExchangeRate(model);		
+		mav.setViewName("/admin/priceCompare2");
+		return mav;
+    }
     
     /**
      * <pre>
@@ -174,17 +204,6 @@ public class AdminController {
  	 		}
  		}
  	 	
- 	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
- 	 	// 해당 결과값을 아래 binanceResultEntity에 merge
- 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate);
- 		for (BinanceAskResultEntity e : askEntityList) {
- 			if(resultEntity.containsKey(e.getCoinSymbolName())){
- 				// System.out.println(e.getCoinSymbolName() +"::::" +e.getCoinAveragePrice() );
- 				resultEntity.get(e.getCoinSymbolName()).setPriceKrwB2(String.valueOf(JKStringUtil.mathRound(e.getCoinAveragePrice(),2)));
-			}
-		}
-		
-  
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
  			if("USDT".equals(symbolType)){
@@ -237,7 +256,6 @@ public class AdminController {
  			if(resultEntity.containsKey(entity.getTradeType())){
  				String priceKrwA = JKStringUtil.nvl(entity.getTradePrice(), "-");
  				String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
- 				String priceKrwB2 = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB2(), "-");
  				// 업비트 원화 가격을 받아왔을때.
  				if(!("-").equals(priceKrwA)) {
  					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));
@@ -258,6 +276,213 @@ public class AdminController {
  	 					String transferFeeSum = JKStringUtil.mathKrwRound(JKStringUtil.parseDouble(priceKrwA) * JKStringUtil.parseDouble(transferFee));
  	 					resultEntity.get(entity.getTradeType()).setTransferFeeA(transferFeeSum);
  					}
+ 				}
+ 			}
+ 		}
+ 		
+ 		// 값 정상 세팅 확인
+ 		for( String key : resultEntity.keySet() ){
+ 			result.add(resultEntity.get(key));
+ 	        // logger.info("키 : {}, 값 : {}", key, resultEntity.get(key));
+ 	    }
+ 		
+ 		// 상승률 내림차순 정렬
+ 		Collections.sort(result, new GapPercentDescCompare());
+ 		
+ 		if(symbolType.equals("BTC")) {
+	 		
+ 			// 1. 10분마다 시세 Update
+	 		if(sessionService.getAttributeInt("priceCompare") < 600) {
+	 			sessionService.setAttributeInt("priceCompare",sessionService.getAttributeInt("priceCompare") + 15);
+	 		}else {
+	 			adminService.updateCoinPriceInfo(result);
+	 			sessionService.setAttributeInt("priceCompare", 15);
+	 		}
+	 		
+	 		// 2. 2시간 마다 히스토리 삭제
+	 		if(sessionService.getAttributeInt("historyDeleteTime") < 7200) {
+	 			sessionService.setAttributeInt("historyDeleteTime",sessionService.getAttributeInt("historyDeleteTime") + 15);
+	 			// 30초마다 DB에 저장
+	 			if( sessionService.getAttributeInt("historyDeleteTime") % 30 == 0) {
+	 				adminService.insertPriceHistory(result);
+	 			}
+	 		}else {
+	 			adminService.deletePriceHistory(coinList);
+	 			sessionService.setAttributeInt("historyDeleteTime", 15);
+	 		}
+	 		result = adminService.getPriceHistory(result);
+	 		
+	 		
+	 		// logger.debug("compareTime:::{}", sessionService.getAttributeInt("priceCompare"));
+	 	}
+ 		
+ 		
+ 		if(symbolType.equals("BTC")) {
+ 			adminService.updateBtcCoinPrice(result);
+ 		}else if(symbolType.equals("USDT")) {
+ 			// adminService.updateUsdtCoinPrice(result);
+ 		}
+ 		
+ 		
+ 		return result;
+	}
+    
+    /**
+     * <pre>
+     * 1. 개요 : 김프 계산 컨트롤러
+     * 2. 처리내용 : 
+     * 	2.1 업비트의 코인들을 가져온다. (KRW)
+     * 	2.2 바이낸스의 코인들을 가져온다. (USDT 먼저..)
+     * 	2.3 두 개를 merge 하는 작업
+     * </pre>
+     * @Method Name : priceCompare
+     * @date : 2018. 4. 16.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 16.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param model
+     * @return
+     */ 	
+    @ResponseBody
+    @RequestMapping(value = "/priceCompare2/{symbolType}", method = RequestMethod.GET)
+   	public List<PriceCompareAskBidEntity> priceCompare2(Model model, @PathVariable String symbolType) {
+    	// 최종 리턴되는 결과
+    	List<PriceCompareAskBidEntity> result = new ArrayList<PriceCompareAskBidEntity>();
+    	
+    	// 환율 가져오기
+    	Double exchangeRate = 1107D;
+    	if(sessionService.getAttributeStr("exchangeRate") != null) {
+    		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
+    	}
+ 		
+ 		// USDT / BTC 전용 코인 symbol 리스트
+ 		HashSet<String> coinList = new HashSet<String>();
+ 	 	
+ 		// 거래소 최근 거래 가격 가져오기
+ 		Map<String, PriceCompareAskBidEntity> resultEntity = new HashMap<String, PriceCompareAskBidEntity>();
+ 		PriceExchangeInfoEntity param = new PriceExchangeInfoEntity();
+ 		param.setCoinExchangeType(symbolType);
+ 		// 거래소 정보 가져오기 (전송 수수료)
+ 		List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(param);
+ 		
+ 		// 가져올 코인 코드
+ 	 	for (PriceExchangeInfoEntity e : entityList) {
+ 	 		boolean listPut = false;
+ 	 		if("USDT".equals(symbolType)) {
+ 	 			if("USDT".equals(e.getCoinExchangeType())) {
+ 	 				listPut = true;
+ 	 			}
+ 	 		}else if("BTC".equals(symbolType)) {
+ 	 			if("BTC".equals(e.getCoinExchangeType()) || "KRW".equals(e.getCoinExchangeType())){
+ 	 				listPut = true;
+ 	 			}
+ 	 		}
+ 	 		
+ 	 		if(listPut) {
+	 	 		coinList.add( e.getCoinSymbolName());
+	 	 		PriceCompareAskBidEntity entity = new PriceCompareAskBidEntity();
+				entity.setCoinSymbol(e.getCoinSymbolName());
+							
+				if(!resultEntity.containsKey(entity.getCoinSymbol())){ 
+					resultEntity.put(entity.getCoinSymbol(), entity);
+				}
+ 	 		}
+ 		}
+ 	 	
+ 	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
+ 	 	// 해당 결과값을 아래 binanceResultEntity에 merge
+ 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate);
+ 	 	for (BinanceAskResultEntity e : askEntityList) {
+ 			if(resultEntity.containsKey(e.getCoinSymbolName())){
+ 				System.out.println(e.getCoinSymbolName() +"::::" +e.getBidCoinAveragePrice() );
+ 				System.out.println(e.getCoinSymbolName() +"::::" +e.getAskCoinAveragePrice() );
+ 				resultEntity.get(e.getCoinSymbolName()).setPriceBidKrwB(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
+ 				resultEntity.get(e.getCoinSymbolName()).setPriceAskKrwB(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+			}
+		}
+ 	 	
+ 	 	List<UpbitAskBidResultEntity> askEntityList2 = upbitPublicService.getBidAskPrice(upbitApiUrl2,coinList, symbolType, exchangeRate);
+ 		
+		
+  
+ 	 	/*List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList, symbolType);
+ 		for (BinanceTickerResultEntity entity : binanceResultEntity) {
+ 			if("USDT".equals(symbolType)){
+ 				if(resultEntity.containsKey(entity.getTradeType())){
+ 					// USDT or BTC
+ 					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
+ 					resultEntity.get(entity.getTradeType()).setPriceUsdtB(String.valueOf(JKStringUtil.mathRound(lastPrice,2)));
+ 					if(!("-").equals(lastPrice)) {
+ 						// 소수 셋째자리에서 반올림
+ 						double priceKrw = JKStringUtil.parseDouble(lastPrice) * exchangeRate;
+ 						resultEntity.get(entity.getTradeType()).setPriceKrwB(JKStringUtil.mathKrwRound(priceKrw) );
+ 					}
+ 				}
+ 				// BTC - KRW는 Session에 저장해 둔다.
+ 	 			if("BTCUSDT".equals(entity.getSymbol())){
+ 	 				sessionService.setAttribute("BTCKRW", resultEntity.get("BTC").getPriceKrwB());
+ 	 				sessionService.setAttribute("BTCKRW_UPDATE_DT", JKStringUtil.getNowTime());
+ 	 				logger.info("BTCKRW:::{}", sessionService.getAttribute("BTCKRW"));
+ 	 			}
+ 			}else if("BTC".equals(symbolType)) {
+ 				if(resultEntity.containsKey(entity.getTradeType())){
+ 					double btckrw = Double.parseDouble(sessionService.getAttributeStr("BTCKRW"));
+ 					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
+ 					resultEntity.get(entity.getTradeType()).setPriceBtcB(String.valueOf(lastPrice));
+ 					
+ 					// 차액도 계산 (최근 10분)
+ 					if(!("-").equals(lastPrice)) {
+ 						// 소수 셋째자리에서 반올림
+ 						double priceKrw = JKStringUtil.parseDouble(lastPrice) * btckrw;
+ 						resultEntity.get(entity.getTradeType()).setPriceKrwB(String.valueOf(JKStringUtil.mathRound(priceKrw,2)) );
+ 						
+ 						// 수수료 사토시 -> 원화 계산
+ 	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeB();
+ 	 					String transferFeeSum = JKStringUtil.mathKrwRound(priceKrw * JKStringUtil.parseDouble(transferFee));
+ 	 					resultEntity.get(entity.getTradeType()).setTransferFeeB(transferFeeSum);
+ 	 					
+ 	 					
+ 	 					double priceKrw2 = JKStringUtil.parseDouble(resultEntity.get(entity.getTradeType()).getPriceBtcB2()) * btckrw;
+ 	 					resultEntity.get(entity.getTradeType()).setPriceKrwB2(String.valueOf(JKStringUtil.mathRound(priceKrw2,2)) );
+ 	 					
+ 					}
+ 				}
+ 			}else {
+ 				return null;		// 예외처리 필요함
+ 			}
+ 		}
+
+ 		List<UpbitTickerResultEntity> upBitResultEntity = upbitPublicService.getTicker(upbitApiUrl, coinList);
+ 		for (UpbitTickerResultEntity entity : upBitResultEntity) {
+ 			if(resultEntity.containsKey(entity.getTradeType())){
+ 				String priceKrwA = JKStringUtil.nvl(entity.getTradePrice(), "-");
+ 				String priceKrwB = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB(), "-");
+ 				String priceKrwB2 = JKStringUtil.nvl(resultEntity.get(entity.getTradeType()).getPriceKrwB2(), "-");
+ 				// 업비트 원화 가격을 받아왔을때.
+ 				if(!("-").equals(priceKrwA)) {
+ 					resultEntity.get(entity.getTradeType()).setPriceKrwA(String.valueOf(JKStringUtil.mathRound(priceKrwA,2)));
+ 					// 원화 차액을 계산하기 위해 바이낸스 가격을 가져왔을때. 원화차액 및 김프까지 계산
+ 					if(!("-").equals(priceKrwB)) {
+ 						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB);
+ 						resultEntity.get(entity.getTradeType()).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
+ 						
+ 						 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
+ 				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
+ 						 
+ 						// double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
+ 						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB)) * 100) / Double.parseDouble(priceKrwB);
+ 						resultEntity.get(entity.getTradeType()).setPriceGapPercent(JKStringUtil.mathRound(priceGapPercent,2));
+ 						
+ 						// 수수료 사토시 -> 원화 계산
+ 	 					String transferFee = resultEntity.get(entity.getTradeType()).getTransferFeeA();
+ 	 					String transferFeeSum = JKStringUtil.mathKrwRound(JKStringUtil.parseDouble(priceKrwA) * JKStringUtil.parseDouble(transferFee));
+ 	 					resultEntity.get(entity.getTradeType()).setTransferFeeA(transferFeeSum);
+ 					}
  					
  					// 원화 차액을 계산하기 위해 바이낸스 가격을 가져왔을때. 원화차액 및 김프까지 계산
  					if(!("-").equals(priceKrwB2)) {
@@ -266,9 +491,9 @@ public class AdminController {
  						double krwGap = Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2);
  						resultEntity.get(entity.getTradeType()).setPriceGapKrw2(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
  						
- 						/* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
+ 						 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
  				         * 즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
- 						 */
+ 						 
  						double priceGapPercent = ((Double.parseDouble(priceKrwA) - Double.parseDouble(priceKrwB2)) * 100) / Double.parseDouble(priceKrwB2);
  						resultEntity.get(entity.getTradeType()).setPriceGapPercent2(JKStringUtil.mathRound(priceGapPercent,2));
  					}
@@ -317,7 +542,7 @@ public class AdminController {
  			adminService.updateBtcCoinPrice(result);
  		}else if(symbolType.equals("USDT")) {
  			// adminService.updateUsdtCoinPrice(result);
- 		}
+ 		}*/
  		
  		
  		return result;

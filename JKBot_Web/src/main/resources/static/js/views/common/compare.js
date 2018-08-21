@@ -1,4 +1,5 @@
 
+
 var highlightTransferFee = 4000;
 
 // 수익률 계산기 관련 function
@@ -141,7 +142,7 @@ $(function(){
     	var sathoshi = $('#sathoshi').val();				// 입력한 사토시 가격
     	var result = exchangePrice*sathoshi;
     	if(context == 'admin'){
-    		result = result.toFixed(2)*1.021;				// 소숫점 둘째자리에서 반올림
+    		result = result.toFixed(2)*1.03;				// 소숫점 둘째자리에서 반올림
     		result = result.toFixed(2);
     	}else {
     		result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
@@ -347,8 +348,8 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
-				// choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
@@ -373,13 +374,12 @@ function getCompareBTC() {
 				resultVO.priceBtcB = this.priceBtcB;
 				resultVO.priceUsdtB = this.priceUsdtB;
 				resultVO.priceGapKrw = this.priceGapKrw;
-				resultVO.priceGapKrw2 = this.priceGapKrw2;
 				resultVO.priceGapPercent = this.priceGapPercent;
-				resultVO.priceGapPercent2 = this.priceGapPercent2;
 				resultVO.coinPriceWeightA = this.coinPriceWeightA;
 				resultVO.coinPriceWeightB = this.coinPriceWeightB;
 				resultVO.status = this.status;
 				
+
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
 					resultHtml += "<tr class='alert-success'>";
 				}else {
@@ -406,61 +406,8 @@ function getCompareBTC() {
 				
 				resultHtml += "<td>-</td>";
 				resultHtml += "<td>" + this.coinSymbol + "</td>";
+				resultHtml += "<td>" + this.priceBtcB + "</td>";
 				
-				// ------------------------------------------ 바이낸스 매수 / 업비트 매도 김치 프리미엄 ------------------------------------------
-				// 실제 구매 가능한 금액 기준 평균 가격 출력
-				if(this.coinPriceWeightB > maxPremium){
-					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwB2) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightB < minPremium){
-					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwB2) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td>'  + comma(this.priceKrwB2);
-				}
-				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
-				
-				/* 바이낸스 수수료 출력 (주석)
-				if(this.transferFeeB <= highlightTransferFee){
-					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
-				}else {
-					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
-				}
-				*/
-				
-				if(this.coinPriceWeightA > maxPremium){
-					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightA < minPremium){
-					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td>'  + comma(this.priceKrwA);
-				}
-				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
-				
-				/*  업비트 수수료 출력 (주석)
-				if(this.transferFeeA <= highlightTransferFee){
-					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
-				}else {
-					resultHtml += "<td>" + comma(this.transferFeeA) + "</td>";
-				}
-				*/
-                 
-				var priceGapPercent2 = this.priceGapPercent2;
-				if(priceGapPercent2 == null){
-					priceGapPercent2 = '0';
-				}else {
-					priceGapPercent2 = priceGapPercent2 + '';
-				}
-				
-				if(priceGapPercent2.indexOf("-") > -1){
-					resultHtml += '<td class="text-success">' + comma(this.priceGapKrw2) + ' (' + comma(this.priceGapPercent2) + ') ' + '<i class="fa fa-level-down"></i></td>';
-				}else if(this.priceGapPercent == 0){
-					resultHtml += "<td>" + comma(this.priceGapKrw2) + ' (' + comma(this.priceGapPercent2) + ') ' + "</td>";
-				}else {
-					resultHtml += '<td class="text-danger">' + comma(this.priceGapKrw2) + ' (' + comma(this.priceGapPercent2) + ')   ' + '<i class="fa fa-level-up"></i></td>';
-				}
-				// ------------------------------------------ 바이낸스 매수 / 업비트 매도 김치 프리미엄 End------------------------------------------
-				
-				// ------------------------------------------ 바이낸스 매도 / 업비트 매수 김치 프리미엄2 ------------------------------------------
-				// 실제 구매 가능한 금액 기준 평균 가격 출력
 				if(this.coinPriceWeightB > maxPremium){
 					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
 				}else if(this.coinPriceWeightB < minPremium){
@@ -470,6 +417,12 @@ function getCompareBTC() {
 				}
 				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
 				
+				if(this.transferFeeB <= highlightTransferFee){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
+				}
+				
 				if(this.coinPriceWeightA > maxPremium){
 					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
 				}else if(this.coinPriceWeightA < minPremium){
@@ -478,6 +431,12 @@ function getCompareBTC() {
 					resultHtml += '<td>'  + comma(this.priceKrwA);
 				}
 				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				
+				if(this.transferFeeA <= highlightTransferFee){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeA) + "</td>";
+				}
                  
 				var priceGapPercent = this.priceGapPercent;
 				if(priceGapPercent == null){
@@ -493,8 +452,7 @@ function getCompareBTC() {
 				}else {
 					resultHtml += '<td class="text-danger">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ')   ' + '<i class="fa fa-level-up"></i></td>';
 				}
-				// ------------------------------------------ 바이낸스 매도 / 업비트 매수 김치 프리미엄2 End------------------------------------------
-				
+
 				resultHtml += '<td class="hide" id="binancePrice_' + this.coinSymbol +'">'+ this.priceKrwB +'</td>';
 				resultHtml += '<td class="hide" id="binanceTrans_' + this.coinSymbol +'">'+ this.transferFeeB+'</td>';
 				resultHtml += '<td class="hide" id="upbitPrice_' + this.coinSymbol  +'">'+ this.priceKrwA+'</td>';
@@ -522,3 +480,159 @@ function getCompareBTC() {
 }
 
 
+/*
+ * 업비트-바이낸스 가격 가져오는 function
+ */
+function getCompareBTC2() {
+	var data = {}
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/" + context + "/priceCompare2/BTC",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 60000,
+		success : function(data) {
+			var result = data;
+			
+			// 선택한 코인 조회하기
+			var choiceCoinList = $("ul.chosen-choices").find("li>span");
+			var choiceCoinStr = '';
+			$.each(choiceCoinList, function(){
+				var value = $(this).text();
+				choiceCoinStr += value + "/";
+			})
+			
+			
+			// 임시
+			if(context == 'admin2'){
+				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+			}
+			
+			var resultJsonArray = new Array();
+			var resultHtml = "";
+			var sendMessage = "N";
+			
+			// 김치 프리미엄 
+			var minPremium = Number($("#minPremium").val());
+			var maxPremium = Number($("#maxPremium").val());
+			
+			// 텔레그램 프리미엄
+			var telegram = $("#kimchPreminum").val();
+			
+			$("#priceTbodyBTC").html('');
+			
+			$.each(result, function(){
+				var name = this.closing_price;
+				var resultVO = new Object();
+				resultVO.coinSymbol = this.coinSymbol;
+				resultVO.priceKrwA = this.priceKrwA;
+				resultVO.priceKrwB = this.priceKrwB;
+				resultVO.priceBtcB = this.priceBtcB;
+				resultVO.priceUsdtB = this.priceUsdtB;
+				resultVO.priceGapKrw = this.priceGapKrw;
+				resultVO.priceGapPercent = this.priceGapPercent;
+				resultVO.coinPriceWeightA = this.coinPriceWeightA;
+				resultVO.coinPriceWeightB = this.coinPriceWeightB;
+				resultVO.status = this.status;
+				
+
+				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					resultHtml += "<tr class='alert-success'>";
+				}else {
+					resultHtml += "<tr>";
+				}
+				
+				resultJsonArray.push(resultVO);
+				// 텔레그램 메시지 전송
+				if( this.priceKrwA != null && this.priceKrwB != null && (this.priceGapPercent < telegram )){
+					sendMessage = "Y";
+				}
+				
+				/*if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					// 텔레그램 메시지 전송
+					if( this.priceGapPercent < telegram){
+						sendMessage = "Y";
+					}
+					resultJsonArray.push(resultVO);
+					
+					resultHtml += "<tr class='alert-success'>";
+				}else {
+					resultHtml += "<tr>";
+				}*/
+				
+				resultHtml += "<td>-</td>";
+				resultHtml += "<td>" + this.coinSymbol + "</td>";
+				resultHtml += "<td>" + this.priceBtcB + "</td>";
+				
+				if(this.coinPriceWeightB > maxPremium){
+					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
+				}else if(this.coinPriceWeightB < minPremium){
+					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwB) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
+				}else {
+					resultHtml += '<td>'  + comma(this.priceKrwB);
+				}
+				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
+				
+				if(this.transferFeeB <= highlightTransferFee){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeB) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeB) + "</td>";
+				}
+				
+				if(this.coinPriceWeightA > maxPremium){
+					resultHtml += '<td class="text-danger font-bold">' + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
+				}else if(this.coinPriceWeightA < minPremium){
+					resultHtml += '<td class="text-success font-bold">'  + comma(this.priceKrwA) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
+				}else {
+					resultHtml += '<td>'  + comma(this.priceKrwA);
+				}
+				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				
+				if(this.transferFeeA <= highlightTransferFee){
+					resultHtml += '<td class="text-danger">' + comma(this.transferFeeA) + "</td>";
+				}else {
+					resultHtml += "<td>" + comma(this.transferFeeA) + "</td>";
+				}
+                 
+				var priceGapPercent = this.priceGapPercent;
+				if(priceGapPercent == null){
+					priceGapPercent = '0';
+				}else {
+					priceGapPercent = priceGapPercent + '';
+				}
+				
+				if(priceGapPercent.indexOf("-") > -1){
+					resultHtml += '<td class="text-success">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + '<i class="fa fa-level-down"></i></td>';
+				}else if(this.priceGapPercent == 0){
+					resultHtml += "<td>" + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ') ' + "</td>";
+				}else {
+					resultHtml += '<td class="text-danger">' + comma(this.priceGapKrw) + ' (' + comma(this.priceGapPercent) + ')   ' + '<i class="fa fa-level-up"></i></td>';
+				}
+
+				resultHtml += '<td class="hide" id="binancePrice_' + this.coinSymbol +'">'+ this.priceKrwB +'</td>';
+				resultHtml += '<td class="hide" id="binanceTrans_' + this.coinSymbol +'">'+ this.transferFeeB+'</td>';
+				resultHtml += '<td class="hide" id="upbitPrice_' + this.coinSymbol  +'">'+ this.priceKrwA+'</td>';
+				resultHtml += '<td class="hide" id="upbitTrans_' + this.coinSymbol  +'">'+ this.transferFeeA+'</td>';
+				
+				resultHtml += "</tr>";
+				// 마이너스 빨간색 플러스 파란색 
+			});
+			
+			// 텔레그램 메시지 전송
+			if(context == 'price' && sendMessage == 'Y'){
+				sendTelegramMessage(resultJsonArray);
+			}
+			
+			$("#priceTbodyBTC").html(resultHtml);
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}

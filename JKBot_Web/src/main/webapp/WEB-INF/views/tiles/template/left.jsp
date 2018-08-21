@@ -37,7 +37,9 @@
             <li>
                 <a href="${contextPath}/admin/compare"><i class="fa fa-th-large"></i> <span class="nav-label">관리자(API)</span></a>
             </li>
-            
+            <li>
+                <a href="${contextPath}/admin/compare2"><i class="fa fa-th-large"></i> <span class="nav-label">관리자(매도,매수)</span></a>
+            </li>
             <li>
                 <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
