@@ -109,6 +109,8 @@ public class BinanacePublicRestService {
 					 *		일부 매수 (코인 수:코인 가격 / 현재 잔고)
 				     * 평균 단가 계산 : 구매한 코인 수 / 현재 잔고
 				     */
+				    
+				    int num = 0;
 				    for (Object object : bids) {
 				    	// ,로 자르고, 공백 [ 제거
 				    	String row = object.toString().replaceAll("\\[", "").replaceAll("\\]", "");
@@ -141,6 +143,11 @@ public class BinanacePublicRestService {
 			    			purchasableAmount = 0;
 				    	}
 				    	
+				    	if(num == 0) {
+				    		resultEntity.setAskCoinSatosiPrice( priceArray[0].trim() + "");
+				    		resultEntity.setAskCoinAveragePrice( array1+"");
+				    	}
+				    	
 				    	if(purchasableAmount <= 0.0) {
 				    		/*System.out.println(BtcPrice);
 				    		System.out.println(exchangeRate);
@@ -154,27 +161,19 @@ public class BinanacePublicRestService {
 				    		}
 				    		
 				    		resultEntity.setCoinSymbolName(str);
+				    		resultEntity.setBidCoinSatosiPrice(priceArray[0].trim() + "");
 				    		resultEntity.setBidCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
+				    		resultList.add(resultEntity);
 				    		break;
 				    	}
+				    	num++;
 				    }
 				    
 				    
-				    // API 리턴값 저장
+				    /*// API 리턴값 저장
 				    Object[] asks = entity.getAsks().toArray();
 				    coinAmount = 0.0;		// 구매 가능 코인수
 				    purchasableAmount = BtcPrice;
-				    /*
-				     * 구매 수량 계산 : 
-					 *	CASE 1
-					 *		구매 가능한 코인 수 > 현재 잔고/코인가격
-					 *		모두 매수 (구매 수량에 추가 및 현재 잔고 마이너스)
-					 *		
-					 *	CASE 2
-					 *		구매 가능한 코인 수 < 현재 잔고/코인가격
-					 *		일부 매수 (코인 수:코인 가격 / 현재 잔고)
-				     * 평균 단가 계산 : 구매한 코인 수 / 현재 잔고
-				     */
 				    for (Object object : asks) {
 				    	// ,로 자르고, 공백 [ 제거
 				    	String row = object.toString().replaceAll("\\[", "").replaceAll("\\]", "");
@@ -210,11 +209,11 @@ public class BinanacePublicRestService {
 				    	
 				    	
 				    	if(purchasableAmount <= 0.0) {
-				    		/*System.out.println(BtcPrice);
+				    		System.out.println(BtcPrice);
 				    		System.out.println(exchangeRate);
 				    		System.out.println( BtcPrice*exchangeRate*6300 );
 				    		System.out.println(str + ":::coinAmount:::" + coinAmount + ":::purchasableAmount::" + ((BtcPrice*exchangeRate*6300)/coinAmount));
-				    		*/
+				    		
 				    		if(coinAmount > 0) {
 				    			resultEntity.setAskCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
 				    		}else {
@@ -225,7 +224,7 @@ public class BinanacePublicRestService {
 				    		resultList.add(resultEntity);
 				    		break;
 				    	}
-				    }
+				    }*/
 			} catch (Exception e) {
 			    // e.printStackTrace();
 			}

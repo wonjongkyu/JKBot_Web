@@ -430,6 +430,8 @@ public class AdminController {
  			if(resultEntity.containsKey(e.getCoinSymbolName())){
  				resultEntity.get(e.getCoinSymbolName()).setBinanceBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
  				resultEntity.get(e.getCoinSymbolName()).setBinanceSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 				resultEntity.get(e.getCoinSymbolName()).setBinanceBuySatosiPrice(String.valueOf(e.getBidCoinSatosiPrice()));
+ 				resultEntity.get(e.getCoinSymbolName()).setBinanceSellSatosiPrice(String.valueOf(e.getAskCoinSatosiPrice()));
 			}
 		}
  	 	
@@ -486,6 +488,7 @@ public class AdminController {
  		
  		for(int i=0; i<result1.size(); i++) {
 			result1.get(i).setCoinSymbol2(result2.get(i).getCoinSymbol());
+			result1.get(i).setBinanceSellSatosiPrice(result2.get(i).getBinanceSellSatosiPrice());
 			result1.get(i).setUpbitBuyPrice(result2.get(i).getUpbitBuyPrice());
 			result1.get(i).setBinanceSellPrice(result2.get(i).getBinanceSellPrice());
 			result1.get(i).setPriceGapKrw2(result2.get(i).getPriceGapKrw2());

@@ -76,9 +76,10 @@ public class UpbitPublicRestService {
 				    entity = gson.fromJson(result, new TypeToken<List<UpbitAskBidResultEntity>>(){}.getType()); 
 				    
 	 
-				    // 업비트 매도물량 체크
+				    // 업비트 매수물량 체크
 				    List<ORDERBOOK> bids = entity.get(0).getOrderbook_units();
 				    Double coinAmount = 0.0;		// 구매 가능 코인수
+				    int num = 0;
 				    for (ORDERBOOK object : bids) {
 				    	Double array1 = Double.parseDouble(object.getBid_price());
 				    	Double array2 = Double.parseDouble(object.getBid_size());
@@ -93,6 +94,10 @@ public class UpbitPublicRestService {
 			    			purchasableAmount = 0;
 				    	}
 				    	
+				    	if(num == 0 ) {
+				    		resultEntity.setAskCoinAveragePrice(array1+"");
+				    	}
+
 				    	if(purchasableAmount <= 0.0) {
 				    		if(coinAmount > 0) {
 				    			resultEntity.setBidCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
@@ -102,12 +107,14 @@ public class UpbitPublicRestService {
 				    		
 				    		resultEntity.setCoinSymbolName(str);
 				    		resultEntity.setBidCoinAveragePrice(((BtcPrice)/coinAmount)+"");
+				    		resultList.add(resultEntity);
 				    		break;
 				    	}
+				    	num++;
 				    }
 				    
 				    // API 리턴값 저장
-				    purchasableAmount = BtcPrice;	// 구매 가능 금액
+				    /*purchasableAmount = BtcPrice;	// 구매 가능 금액
 				    List<ORDERBOOK> asks = entity.get(0).getOrderbook_units();
 				    coinAmount = 0.0;		// 구매 가능 코인수
 				    for (ORDERBOOK object : asks) {
@@ -134,7 +141,7 @@ public class UpbitPublicRestService {
 				    		resultList.add(resultEntity);
 				    		break;
 				    	}
-				    }
+				    }*/
 			} catch (Exception e) {
 			    // e.printStackTrace();
 			}

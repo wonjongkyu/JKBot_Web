@@ -22,7 +22,9 @@ public class PriceCompareAskBidEntity extends RestCommonVO{
 	private String coinSymbol;				// 코인명
 	private String coinSymbol2;				// 코인명2
 	private String binanceBuyPrice;			// 바이낸스 매수 가격(Bid)
-	private String binanceSellPrice;			// 바이낸스 매도 가격(Ask)
+	private String binanceBuySatosiPrice;	// 바이낸스 매수 가격(Bid)
+	private String binanceSellPrice;		// 바이낸스 매도 가격(Ask)
+	private String binanceSellSatosiPrice;		// 바이낸스 매도 가격(Ask)
 	private String upbitBuyPrice;			// 업비트 매수 가격(Bid)
 	private String upbitSellPrice;			// 업비트 매도 가격(Bid)
 
@@ -54,5 +56,7 @@ public class PriceCompareAskBidEntity extends RestCommonVO{
 		this.priceGapPercent2 	= f.priceGapPercent2;	// 김프 (%)
 		this.PriceUsdtB			= f.PriceUsdtB;	
 		this.PriceKrwB			= f.PriceKrwB;
+		this.binanceBuySatosiPrice = f.binanceBuySatosiPrice;
+		this.binanceSellSatosiPrice = f.binanceSellSatosiPrice;
 	}
 }

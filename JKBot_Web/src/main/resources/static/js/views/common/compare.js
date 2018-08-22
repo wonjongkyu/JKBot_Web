@@ -564,8 +564,11 @@ function getCompareBTC2() {
 				resultVO.priceGapKrw2 = this.priceGapKrw2;
 				resultVO.priceGapPercent = this.priceGapPercent;
 				resultVO.priceGapPercent2 = this.priceGapPercent2;
+				resultVO.binanceBuySatosiPrice = this.binanceBuySatosiPrice;
+				resultVO.binanceSellSatosiPrice = this.binanceSellSatosiPrice;
 				resultVO.status = this.status;
-
+				resultVO.status = this.status;
+				
 				var bgClass = "";
 				var bgClass2 = "";
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
@@ -593,7 +596,7 @@ function getCompareBTC2() {
 					resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
 				}
 				// binance 가중치
-				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
+				resultHtml += "  (" + this.binanceBuySatosiPrice +")" + "</td>";
 				
 				
 				// upbit (매도)
@@ -604,8 +607,10 @@ function getCompareBTC2() {
 				}else {
 					resultHtml += '<td class="' + bgClass + '">'  + comma(this.upbitSellPrice);
 				}
+				resultHtml += "</td>";
+				
 				// upbit 가중치
-				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				// resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
 				 
 				var priceGapPercent = this.priceGapPercent;
 				if(priceGapPercent == null){
@@ -634,7 +639,7 @@ function getCompareBTC2() {
 					resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.binanceSellPrice);
 				}
 				// binance 가중치
-				resultHtml += "  (" + this.coinPriceWeightB +")" + "</td>";
+				resultHtml += "  (" + this.binanceSellSatosiPrice +")" + "</td>";
 				
 				
 				// upbit (매도)
@@ -645,8 +650,9 @@ function getCompareBTC2() {
 				}else {
 					resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.upbitBuyPrice);
 				}
+				resultHtml += "</td>";
 				// upbit 가중치
-				resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				// resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
 				 
 				var priceGapPercent2 = this.priceGapPercent2;
 				if(priceGapPercent2 == null){
