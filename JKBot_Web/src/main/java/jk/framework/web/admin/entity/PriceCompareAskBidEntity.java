@@ -19,16 +19,40 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper=false)
 public class PriceCompareAskBidEntity extends RestCommonVO{
 	 
-	private String coinSymbol;		// 코인명
-	private String priceBidKrwA;		// 한국거래소 원화 가격  (Bid)
-	private String priceAskKrwA;		// 한국거래소 원화 가격  (Ask)
+	private String coinSymbol;				// 코인명
+	private String coinSymbol2;				// 코인명2
+	private String binanceBuyPrice;			// 바이낸스 매수 가격(Bid)
+	private String binanceSellPrice;			// 바이낸스 매도 가격(Ask)
+	private String upbitBuyPrice;			// 업비트 매수 가격(Bid)
+	private String upbitSellPrice;			// 업비트 매도 가격(Bid)
+
 	private String coinPriceWeightA = "0";	// 코인 변동폭
 	private String coinPriceWeightB = "0";	// 코인 변동폭
-
-	private String priceBidKrwB;			// 비교대상 코인 원화 가격 (Bid)
-	private String priceAskKrwB;			// 비교대상 코인 원화 가격 (Ask)
 	private String priceGapKrw;				// 원화 가격 차이
 	private String priceGapKrw2;			// 원화 가격 차이
 	private double priceGapPercent = 0D;	// 김프 (%)
 	private double priceGapPercent2 = 0D;	// 김프 (%)
+	
+	private String PriceUsdtB;
+	private String PriceKrwB;
+	
+	public PriceCompareAskBidEntity() {
+		
+	}
+	public PriceCompareAskBidEntity(PriceCompareAskBidEntity f) {
+		this.coinSymbol 		= f.coinSymbol;
+		this.coinSymbol2 		= f.coinSymbol2;		// 코인명2
+		this.binanceBuyPrice 	= f.binanceBuyPrice;	// 바이낸스 매수 가격(Bid)
+		this.binanceSellPrice 	= f.binanceSellPrice;	// 바이낸스 매도 가격(Ask)
+		this.upbitBuyPrice 		= f.upbitBuyPrice;		// 업비트 매수 가격(Bid)
+		this.upbitSellPrice 	= f.upbitSellPrice;		// 업비트 매도 가격(Bid)
+		this.coinPriceWeightA 	= f.coinPriceWeightA;	// 코인 변동폭
+		this.coinPriceWeightB 	= f.coinPriceWeightB;	// 코인 변동폭
+		this.priceGapKrw		= f.priceGapKrw;		// 원화 가격 차이
+		this.priceGapKrw2		= f.priceGapKrw2;		// 원화 가격 차이
+		this.priceGapPercent	= f.priceGapPercent;	// 김프 (%)
+		this.priceGapPercent2 	= f.priceGapPercent2;	// 김프 (%)
+		this.PriceUsdtB			= f.PriceUsdtB;	
+		this.PriceKrwB			= f.PriceKrwB;
+	}
 }

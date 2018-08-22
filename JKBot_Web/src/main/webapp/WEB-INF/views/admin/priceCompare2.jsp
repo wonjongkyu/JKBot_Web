@@ -196,10 +196,11 @@
 		                      <th>#</th>
 		                      <th>코인</th>
 		                      <th>binance(매수)</th>
-		                      <th>upbit(매도)</th>
+		                      <th>upbit(※매도※)</th>
 		                      <th>김치프리미엄1(%)</th>
-		                      <th>binance(￦)</th>
-		                      <th>upbit(수수료)</th>
+		                      <th>코인2</th>
+		                      <th>binance(※매도※)</th>
+		                      <th>upbit(매수)</th>
 		                      <th>김치프리미엄2(￦)</th>
 	                     	</tr>
 	                    </thead>

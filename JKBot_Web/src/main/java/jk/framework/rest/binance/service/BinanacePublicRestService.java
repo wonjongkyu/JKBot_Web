@@ -139,8 +139,6 @@ public class BinanacePublicRestService {
 			    			purchasableAmount = 0;
 				    	}
 				    	
-				    	
-				    	
 				    	if(purchasableAmount <= 0.0) {
 				    		/*System.out.println(BtcPrice);
 				    		System.out.println(exchangeRate);
@@ -155,7 +153,6 @@ public class BinanacePublicRestService {
 				    		
 				    		resultEntity.setCoinSymbolName(str);
 				    		resultEntity.setBidCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
-				    		resultList.add(resultEntity);
 				    		break;
 				    	}
 				    }
@@ -164,6 +161,7 @@ public class BinanacePublicRestService {
 				    // API 리턴값 저장
 				    Object[] asks = entity.getAsks().toArray();
 				    coinAmount = 0.0;		// 구매 가능 코인수
+				    purchasableAmount = BtcPrice;
 				    /*
 				     * 구매 수량 계산 : 
 					 *	CASE 1
@@ -221,7 +219,6 @@ public class BinanacePublicRestService {
 				    			resultEntity.setAskCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,4)));
 				    		}
 				    		
-				    		resultEntity.setCoinSymbolName(str);
 				    		resultEntity.setAskCoinAveragePrice( ((BtcPrice)/coinAmount)+"");
 				    		resultList.add(resultEntity);
 				    		break;
