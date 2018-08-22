@@ -51,6 +51,8 @@ public class AdminController {
     private String upbitApiUrl ;
     @Value("${upbit.apiUrl2}")
     private String upbitApiUrl2 ;
+    @Value("${buyPrice}")
+    private String buyPrice ;
 	
     @Autowired
     BinanacePublicRestService binancePublicService;
@@ -420,9 +422,10 @@ public class AdminController {
  			}
  		}
  	 	
+ 		Double buyPriceDouble = Double.valueOf(buyPrice);
  	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
  	 	// 해당 결과값을 아래 binanceResultEntity에 merge
- 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate);
+ 	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList, symbolType, exchangeRate, buyPriceDouble);
  	 	for (BinanceAskResultEntity e : askEntityList) {
  			if(resultEntity.containsKey(e.getCoinSymbolName())){
  				resultEntity.get(e.getCoinSymbolName()).setBinanceBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
@@ -430,7 +433,7 @@ public class AdminController {
 			}
 		}
  	 	
- 	 	List<UpbitResultEntity> askEntityList2 = upbitPublicService.getBidAskPrice(upbitApiUrl2,coinList, symbolType, exchangeRate);
+ 	 	List<UpbitResultEntity> askEntityList2 = upbitPublicService.getBidAskPrice(upbitApiUrl2,coinList, symbolType, exchangeRate, buyPriceDouble);
  		for (UpbitResultEntity e : askEntityList2) {
  			if(resultEntity.containsKey(e.getCoinSymbolName())){
  				resultEntity.get(e.getCoinSymbolName()).setUpbitBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));

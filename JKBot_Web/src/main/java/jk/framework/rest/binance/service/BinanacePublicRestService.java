@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sun.media.jfxmedia.logging.Logger;
 
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
@@ -64,23 +65,24 @@ public class BinanacePublicRestService {
 	}
 	
 	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl){
-		return getBidAskPrice(apiUrl, null, "USDT", 0);
+		return getBidAskPrice(apiUrl, null, "USDT", 0, 0);
 	}
 	
-	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType, double exchangeRate){
+	public List<BinanceAskResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType, double exchangeRate, double buyPrice){
 		
 		BinanceAskBidResultEntity entity = null;
 		List<BinanceAskResultEntity> resultList = new ArrayList<BinanceAskResultEntity>();
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		// BTC-KRW 가격 (해외)
-    	Double BTCKRW = 7151286D;
+    	Double BTCKRW = 7474676D;
     	if(sessionService.getAttributeStr("BTCKRW") != null) {
+    		System.out.println("[DEBUG]___BTCKRW=" + BTCKRW);
     		BTCKRW = Double.parseDouble(sessionService.getAttribute("BTCKRW"));
     	}
     	
 		// 현재 Binance BTC 가격 가져와서 500만원으로 몇 비트 살 수 있는지 계산
-		double BtcPrice = 4000000;			// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
+		double BtcPrice = buyPrice;			// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
 		for(String str : coinList) {
 			try {
 					double purchasableAmount = BtcPrice;	// 구매 가능 금액

@@ -55,14 +55,14 @@ public class UpbitPublicRestService {
 	}
 	
 	
-	public List<UpbitResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType, double exchangeRate){
+	public List<UpbitResultEntity> getBidAskPrice(String apiUrl, HashSet<String> coinList, String symbolType, double exchangeRate, double buyPrice){
 		
 		List<UpbitAskBidResultEntity> entity = null;
 		List<UpbitResultEntity> resultList = new ArrayList<UpbitResultEntity>();
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		// 현재 Upbit BTC 가격 가져와서 400만원으로 몇 비트 살 수 있는지 계산
-		double BtcPrice = 4000000;	// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
+		double BtcPrice = buyPrice;	// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
 		
 		for(String str : coinList) {
 			try {
