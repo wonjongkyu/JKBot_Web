@@ -75,6 +75,7 @@ public class UpbitPublicRestService {
 				    Gson gson = new Gson();
 				    entity = gson.fromJson(result, new TypeToken<List<UpbitAskBidResultEntity>>(){}.getType()); 
 				    
+	 
 				    // 업비트 매도물량 체크
 				    List<ORDERBOOK> bids = entity.get(0).getOrderbook_units();
 				    Double coinAmount = 0.0;		// 구매 가능 코인수

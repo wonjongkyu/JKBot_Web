@@ -481,7 +481,6 @@ public class AdminController {
  		// 상승률 오름 정렬 (뒤에꺼)
  		Collections.sort(result2, new GapPercent2DescCompare2());
  		
- 		System.out.println(result1.size() + "//" + result2.size() );
  		for(int i=0; i<result1.size(); i++) {
 			result1.get(i).setCoinSymbol2(result2.get(i).getCoinSymbol());
 			result1.get(i).setUpbitBuyPrice(result2.get(i).getUpbitBuyPrice());
