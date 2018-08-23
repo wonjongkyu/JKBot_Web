@@ -195,12 +195,14 @@
 	                  		<tr>
 		                      <th>#</th>
 		                      <th>코인</th>
-		                      <th>binance(매수)</th>
-		                      <th>upbit(※매도※)</th>
+		                      <th>binance (사토시)</th>
+		                      <th>binance (판매가)</th>
+		                      <th>upbit (구매가)</th>
 		                      <th>김치프리미엄1(%)</th>
 		                      <th>코인2</th>
-		                      <th>binance(※매도※)</th>
-		                      <th>upbit(매수)</th>
+		                      <th>binance (사토시)</th>
+		                      <th>binance (구매가)</th>
+		                      <th>upbit (판매가)</th>
 		                      <th>김치프리미엄2(￦)</th>
 	                     	</tr>
 	                    </thead>

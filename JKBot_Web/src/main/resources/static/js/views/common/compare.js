@@ -142,7 +142,6 @@ $(function(){
     	var sathoshi = $('#sathoshi').val();				// 입력한 사토시 가격
     	var result = exchangePrice*sathoshi;
     	if(context == 'admin'){
-    		result = result.toFixed(2)*1.02;				// 소숫점 둘째자리에서 반올림
     		result = result.toFixed(2);
     	}else {
     		result = result.toFixed(2);				// 소숫점 둘째자리에서 반올림
@@ -587,6 +586,8 @@ function getCompareBTC2() {
 				resultHtml += "<td class='" + bgClass +"'>" + this.coinSymbol + "</td>";
 
 				//----------------------------------------------------------------------------------------------------------------
+				// binance 사토시
+				resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
 				// binance (매수)
 				if(this.coinPriceWeightB > maxPremium){
 					resultHtml += '<td class="text-danger font-bold ' + bgClass +'">' + comma(this.binanceBuyPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
@@ -595,9 +596,6 @@ function getCompareBTC2() {
 				}else {
 					resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
 				}
-				// binance 가중치
-				resultHtml += "  (" + this.binanceBuySatosiPrice +")" + "</td>";
-				
 				
 				// upbit (매도)
 				if(this.coinPriceWeightA > maxPremium){
@@ -630,6 +628,8 @@ function getCompareBTC2() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				resultHtml += "<td class='" + bgClass2 +"'>" + this.coinSymbol2 + "</td>";
+				// binance 사토시
+				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice +"" + "</td>";
 				// binance (매수)
 				if(this.coinPriceWeightB > maxPremium){
 					resultHtml += '<td class="text-danger font-bold ' + bgClass2 +'">' + comma(this.binanceSellPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
@@ -638,9 +638,6 @@ function getCompareBTC2() {
 				}else {
 					resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.binanceSellPrice);
 				}
-				// binance 가중치
-				resultHtml += "  (" + this.binanceSellSatosiPrice +")" + "</td>";
-				
 				
 				// upbit (매도)
 				if(this.coinPriceWeightA > maxPremium){
