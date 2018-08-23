@@ -88,7 +88,7 @@ public class BinanacePublicRestService {
 					double purchasableAmount = BtcPrice;	// 구매 가능 금액
 					// 결과 리스트 저장할 VO
 					BinanceAskResultEntity resultEntity = new BinanceAskResultEntity();
-					Thread.sleep(10);	// 1000이 1초
+					Thread.sleep(50);	// 1000이 1초
 					String param = "?symbol=" + str + symbolType;
 					String result = api.callUpbitApi("/v1/depth"+param, null);
 				    Gson gson = new Gson();

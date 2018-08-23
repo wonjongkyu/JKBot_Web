@@ -532,7 +532,7 @@ function getCompareBTC2() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
@@ -571,11 +571,11 @@ function getCompareBTC2() {
 				var bgClass = "";
 				var bgClass2 = "";
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
-					bgClass = "alert-success";
+					bgClass = "font-bold alert-success";
 				}
 				
 				if(choiceCoinStr.indexOf(this.coinSymbol2 + '/') > -1){ 
-					bgClass2 = "alert alert-info";
+					bgClass2 = "font-bold alert-info";
 				}
 				resultHtml += "<tr>";
 				
@@ -589,26 +589,14 @@ function getCompareBTC2() {
 				// binance 사토시
 				resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
 				// binance (매수)
-				if(this.coinPriceWeightB > maxPremium){
-					resultHtml += '<td class="text-danger font-bold ' + bgClass +'">' + comma(this.binanceBuyPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightB < minPremium){
-					resultHtml += '<td class="text-success font-bold ' + bgClass +'">' + comma(this.binanceBuyPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
-				}
+				resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
 				
 				// upbit (매도)
-				if(this.coinPriceWeightA > maxPremium){
-					resultHtml += '<td class="text-danger font-bold ' + bgClass + '">' + comma(this.upbitSellPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightA < minPremium){
-					resultHtml += '<td class="text-success font-bold ' + bgClass + '">' + comma(this.upbitSellPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td class="' + bgClass + '">'  + comma(this.upbitSellPrice);
+				resultHtml += '<td class="' + bgClass +'">' + comma(this.upbitSellPrice);
+				if(bgClass != ''){
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
 				}
 				resultHtml += "</td>";
-				
-				// upbit 가중치
-				// resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
 				 
 				var priceGapPercent = this.priceGapPercent;
 				if(priceGapPercent == null){
@@ -628,28 +616,19 @@ function getCompareBTC2() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				resultHtml += "<td class='" + bgClass2 +"'>" + this.coinSymbol2 + "</td>";
+				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
-				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice +"" + "</td>";
-				// binance (매수)
-				if(this.coinPriceWeightB > maxPremium){
-					resultHtml += '<td class="text-danger font-bold ' + bgClass2 +'">' + comma(this.binanceSellPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightB < minPremium){
-					resultHtml += '<td class="text-success font-bold ' + bgClass2 + '">'  + comma(this.binanceSellPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.binanceSellPrice);
-				}
-				
-				// upbit (매도)
-				if(this.coinPriceWeightA > maxPremium){
-					resultHtml += '<td class="text-danger font-bold ' + bgClass2 + '">' + comma(this.upbitBuyPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-up"></i>';
-				}else if(this.coinPriceWeightA < minPremium){
-					resultHtml += '<td class="text-success font-bold ' + bgClass2 + '">'  + comma(this.upbitBuyPrice) + '&nbsp;&nbsp;<i class="fa fa-thumbs-o-down"></i>';
-				}else {
-					resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.upbitBuyPrice);
+				if(bgClass2 != ''){
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
 				}
 				resultHtml += "</td>";
-				// upbit 가중치
-				// resultHtml += "  (" + this.coinPriceWeightA +")" + "</td>";
+				
+				// binance (매수)
+				resultHtml += '<td class="font-bold ' + bgClass2 + '">'  + comma(this.binanceSellPrice);
+				
+				// upbit (매도)
+				resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.upbitBuyPrice);
+				resultHtml += "</td>";
 				 
 				var priceGapPercent2 = this.priceGapPercent2;
 				if(priceGapPercent2 == null){

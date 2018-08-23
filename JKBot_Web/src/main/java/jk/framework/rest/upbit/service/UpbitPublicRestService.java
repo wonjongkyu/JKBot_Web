@@ -69,7 +69,7 @@ public class UpbitPublicRestService {
 					double purchasableAmount = BtcPrice;	// 구매 가능 금액
 					// 결과 리스트 저장할 VO
 					UpbitResultEntity resultEntity = new UpbitResultEntity();
-					Thread.sleep(10);	// 1000이 1초
+					Thread.sleep(50);	// 1000이 1초
 					String param = "?markets=KRW-" + str;
 					String result = api.callUpbitApi("/v1/orderbook"+param, null);
 				    Gson gson = new Gson();
@@ -79,7 +79,7 @@ public class UpbitPublicRestService {
 				    // 업비트 매수물량 체크
 				    List<ORDERBOOK> bids = entity.get(0).getOrderbook_units();
 				    Double coinAmount = 0.0;		// 구매 가능 코인수
-				    int num = 0;
+				    int num = 1;
 				    for (ORDERBOOK object : bids) {
 				    	Double array1 = Double.parseDouble(object.getBid_price());
 				    	Double array2 = Double.parseDouble(object.getBid_size());
@@ -94,10 +94,10 @@ public class UpbitPublicRestService {
 			    			purchasableAmount = 0;
 				    	}
 				    	
-				    	if(num == 0 ) {
+				    	if(num == 1 ) {
 				    		resultEntity.setAskCoinAveragePrice(array1+"");
 				    	}
-
+				    	
 				    	if(purchasableAmount <= 0.0) {
 				    		if(coinAmount > 0) {
 				    			resultEntity.setBidCoinAmout(String.valueOf(JKStringUtil.mathRound(coinAmount,0)));
@@ -107,6 +107,13 @@ public class UpbitPublicRestService {
 				    		
 				    		resultEntity.setCoinSymbolName(str);
 				    		resultEntity.setBidCoinAveragePrice(((BtcPrice)/coinAmount)+"");
+				    		resultList.add(resultEntity);
+				    		break;
+				    	}
+				    	
+				    	if(num == bids.size()) {
+				    		resultEntity.setCoinSymbolName(str);
+				    		resultEntity.setBidCoinAveragePrice(0+"");
 				    		resultList.add(resultEntity);
 				    		break;
 				    	}
