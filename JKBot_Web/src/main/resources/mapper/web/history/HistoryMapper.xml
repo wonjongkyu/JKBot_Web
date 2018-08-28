@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.history.mapper.HistoryMapper">
+ 	 
+	<insert id="insertTradeHistory" parameterType="TradeHistoryEntity">
+		INSERT INTO JK_TRADE_HISTORY (
+			 EXCHANGE_NAME_A
+			,COIN_SYMBOL_A
+			,TOTAL_PRICE_A
+			,EXCHANGE_NAME_B
+			,COIN_SYMBOL_B
+			,TOTAL_PRICE_B
+			,PROFIT_PRICE
+			,PROFIT_RATE
+			,INSERT_DT
+			) 
+		VALUES 
+			(	 #{exchangeName_A}
+				,#{coinSymbol_A}
+				,#{totalPrice_A}
+				,#{exchangeName_B}
+				,#{coinSymbol_B}
+				,#{totalPrice_B}
+				,#{profitPrice}
+				,#{profitRate}
+				,NOW()
+			)
+	</insert>
+  
+</mapper>

@@ -1,0 +1,46 @@
+[토큰 값을 이용하여 아래와 같이 봇 정보를 조회할 수 있다]
+
+GET 'https://api.telegram.org/bot{token}/getMe'
+HTTP/1.1 200 OK
+{
+    "ok": true,
+    "result": {
+        "id": 472939985,
+        "is_bot": true,
+        "first_name": "{name}",
+        "username": "{username}"
+    }
+}
+
+#########################################################################################
+
+[텔레그램 채팅방 ID 발급]
+
+GET 'https://api.telegram.org/bot{token}/getUpdates'
+HTTP/1.1 200 OK
+{
+    "ok": true,
+    "result": [
+        {
+            "update_id": 653055795,
+            "message": {
+                "message_id": 3,
+                "from": {
+                    "id": 59524576,
+                    "is_bot": false,
+                    "first_name": "json",
+                    "last_name": "object",
+                    "language_code": "ko"
+                },
+                "chat": {
+                    "id": {chatId},
+                    "first_name": "json",
+                    "last_name": "object",
+                    "type": "private"
+                },
+                "date": 1510808019,
+                "text": "hello"
+            }
+        }
+    ]
+}

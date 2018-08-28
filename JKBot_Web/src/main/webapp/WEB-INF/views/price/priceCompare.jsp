@@ -1,140 +1,223 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-    
+<script src="<c:url value='/js/views/price/compare.js'/>"></script>
+<script src="<c:url value='/js/views/common/compare.js'/>"></script>
 
-<div id="page-wrapper" class="gray-bg">
-	<div class="row border-bottom">
-		<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-		 <div class="navbar-header">
-		     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-		     <form role="search" class="navbar-form-custom" action="search_results.html">
-		         <div class="form-group">
-		             <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-		         </div>
-		     </form>
-		 </div>
-		     <ul class="nav navbar-top-links navbar-right">
-		         <li>
-		             <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
-		         </li>
-		         <li class="dropdown">
-		             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-		                 <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-		             </a>
-		             <ul class="dropdown-menu dropdown-messages">
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="${contextPath}/img/a7.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right">46h ago</small>
-		                             <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-		                             <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="${contextPath}/img/a4.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right text-navy">5h ago</small>
-		                             <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-		                             <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="${contextPath}/img/profile.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right">23h ago</small>
-		                             <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-		                             <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="text-center link-block">
-		                         <a href="mailbox.html">
-		                             <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-		                         </a>
-		                     </div>
-		                 </li>
-		             </ul>
-		         </li>
-		         <li class="dropdown">
-		             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-		                 <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-		             </a>
-		             <ul class="dropdown-menu dropdown-alerts">
-		                 <li>
-		                     <a href="mailbox.html">
-		                         <div>
-		                             <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-		                             <span class="pull-right text-muted small">4 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <a href="profile.html">
-		                         <div>
-		                             <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-		                             <span class="pull-right text-muted small">12 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <a href="grid_options.html">
-		                         <div>
-		                             <i class="fa fa-upload fa-fw"></i> Server Rebooted
-		                             <span class="pull-right text-muted small">4 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="text-center link-block">
-		                         <a href="notifications.html">
-		                             <strong>See All Alerts</strong>
-		                             <i class="fa fa-angle-right"></i>
-		                         </a>
-		                     </div>
-		                 </li>
-		             </ul>
-		         </li>
-		
-		
-		         <li>
-		             <a href="login.html">
-		                 <i class="fa fa-sign-out"></i> Log out
-		             </a>
-		         </li>
-		         <li>
-		             <a class="right-sidebar-toggle">
-		                 <i class="fa fa-tasks"></i>
-		             </a>
-		         </li>
-		     </ul>
-		</nav>
-	</div>
-	
- 	<div class="wrapper wrapper-content  animated fadeInRight">
-		<!--  업비트-코인네스트 시세비교 -->
-		<%@include file="/WEB-INF/views/price/priceCompareContents.jsp"%>	
-	</div>
+<div class="row">
+	<div class="col-lg-5">
+	    <div class="ibox float-e-margins">
+	    <div class="ibox-title">
+	        <h5>코인 선택 </h5>
+	        <div class="ibox-tools">
+	            <a class="collapse-link">
+	                <i class="fa fa-chevron-up"></i>
+	            </a>
+	            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                <i class="fa fa-wrench"></i>
+	            </a>
+	            <ul class="dropdown-menu dropdown-user">
+	                <li><a href="#">Config option 1</a>
+	                </li>
+	                <li><a href="#">Config option 2</a>
+	                </li>
+	            </ul>
+	            <a class="close-link">
+	                <i class="fa fa-times"></i>
+	            </a>
+	        </div>
+	    </div>
+	   		<div class="ibox-content" style="display: none;">
+				<p>선택한 코인 하이라이팅</p>
+			    <div class="form-group">
+			    	<!-- <label class="font-normal">Multi select</label> -->
+				    <div id="coinSymbolList"> </div>
+			    </div>
+	    	</div>
+	    </div>
+	 </div>
 </div>
-        
-        
-        
-       
+   
+<div class="row">
+	<div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                
+                <h5>BTC-KRW 가격</h5>
+            </div>
+            <div class="ibox-content">
+				<input type="hidden" class="form-control" id="exchangePrice" /> 
+                <h2 class="no-margins" id="exchange_rate"></h2>
+                <!-- <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>  -->
+                <br/>
+                <!-- <small id="exchangeDate"></small> -->
+                <span class="label label-info pull-right" id="exchangePriceUpdateDt"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+            	<!-- <span class="label label-success pull-right">Monthly</span>  -->
+                <h5> 사토시 계산기 </h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="sathoshi"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="sathoshiBtn" > 사토시 계산</button> 
+	               	</span>
+            	</div>
+            	<div class="form-group has-error">
+            		<!-- <div class="form-group has-error"><label class="control-label"></label> -->
+	            	<div class=""><input type="text" disabled="" id="sathoshiPrice" class="form-control" /></div>
+	            </div>
+   			</div>
+    	</div>
+    </div>
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins ">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 김프 알람 (텔레그램)</h5>
+            </div>
+            <div class="ibox-content">
+               <div class="input-group">
+	               	<input type="text" class="form-control" id="kimchPreminum" value="8"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
+	               	</span>
+            	</div>
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<div class=""><input type="text" disabled="" id="kimchPreminumVal" class="form-control" value="8" /></div>
+	            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins ">
+            <div class="ibox-title">
+                <!-- <span class="label label-success pull-right">Monthly</span> -->
+                <h5> 김프 알람 (최대. 최소)</h5>
+            </div>
+            <div class="ibox-content">
+            	<div class="form-group has-error"><label class="control-label"></label>
+	            	<input type="text" disabled="" id="maxPremium" class="form-control" value="5" />
+	            </div>
+	            <div class="form-group has-error"><label class="control-label"></label>
+	            	<input type="text" disabled="" id="minPremium" class="form-control" value="-5" />
+	            </div>
+               <!-- <div class="input-group">
+	               	<input type="text" class="form-control" id="kimchPreminum" value="-1"> 
+	               	<span class="input-group-btn"> 
+	               		<button type="button" class="btn btn-primary" id="kimchPreminumBtn" > 김프 입력</button> 
+	               	</span>
+            	</div> -->
+            </div>
+        </div>
+    </div>
+</div>        
+
+<!-- 재정거래 등록 페이지 -->
+<%@include file="/WEB-INF/views/common/trade_insert.jsp"%>
+
+
+
+ 
+<!--  DashBoard 현재 시세 -->
+<!-- <div class="row col-lg-12"> -->
+<div class="row hide">
+    <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>업비트 - 바이낸스 김프 계산 (USDT)</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">Config option 1</a>
+                            </li>
+                            <li><a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="display: none;">
+	                <table class="table table-hover">
+	                    <thead>
+	                  		<tr>
+		                      <th>#</th>
+		                      <th>코인</th>
+		                      <th>binance(BTC)</th>
+		                      <th>binance($)</th>
+		                      <th>binance(￦)</th>
+		                      <th>upbit(￦)</th>
+		                      <th>BTC차액(￦)</th>
+		                      <th>김치프리미엄(￦)</th>
+	                     	</tr>
+	                    </thead>
+	                    <tbody id="priceTbody"></tbody>
+	                </table>
+     			</div>
+            </div>
+        </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>업비트 - 바이낸스 김프 계산 (BTC)</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">Config option 1</a>
+                            </li>
+                            <li><a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+	                <table class="table table-hover">
+	                    <thead>
+	                  		<tr>
+		                      <th>#</th>
+		                      <th>코인</th>
+		                      <th>binance(BTC)</th>
+		                      <th>binance(￦)</th>
+		                      <th>binance(수수료)</th>
+		                      <th>upbit(￦)</th>
+		                      <th>upbit(수수료)</th>
+		                      <th>김치프리미엄(￦)</th>
+	                     	</tr>
+	                    </thead>
+	                    <tbody id="priceTbodyBTC"></tbody>
+	                </table>
+     			</div>
+            </div>
+        </div>
+</div>
+<script>
+$('.dual_select').bootstrapDualListbox({
+    selectorMinimalHeight: 160
+});
+
+
+</script>

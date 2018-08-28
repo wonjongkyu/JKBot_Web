@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.media.jfxmedia.logging.Logger;
 
 
 @SuppressWarnings("unused")
@@ -58,11 +59,12 @@ public class Api_Client {
 		return String.valueOf(System.currentTimeMillis());
     }
 
-    private String request(String strHost, String strMemod, HashMap<String, String> rgParams,  HashMap<String, String> httpHeaders) {
+    @SuppressWarnings("null")
+	private String request(String strHost, String strMemod, HashMap<String, String> rgParams,  HashMap<String, String> httpHeaders) {
     	String response = "";
 
 		// SSL 여부
-		if (strHost.startsWith("https://")) {
+		if (!strHost.contains("binance.com") && strHost.startsWith("https://")) {
 		    HttpRequest request = HttpRequest.get(strHost);
 		    // Accept all certificates
 		    request.trustAllCerts();
@@ -71,34 +73,38 @@ public class Api_Client {
 		}
 	
 		if (strMemod.toUpperCase().equals("HEAD")) {
+		
 		} else {
 		    HttpRequest request = null;
 	
 		    // POST/GET 설정
 		    if (strMemod.toUpperCase().equals("POST")) {
-	
-			request = new HttpRequest(strHost, "POST");
-			request.readTimeout(2000);
-	
-			System.out.println("POST ==> " + request.url());
-	
-			if (httpHeaders != null && !httpHeaders.isEmpty()) {
-			    httpHeaders.put("api-client-type", "2");
-			    httpHeaders.put("cookie", "2");
-			    httpHeaders.put("Access-Control-Allow-Origin", "*");	// 추가
-			    request.headers(httpHeaders);
-			    System.out.println(httpHeaders.toString());
-			}
-			if (rgParams != null && !rgParams.isEmpty()) {
-			    request.form(rgParams);
-			    System.out.println(rgParams.toString());
-			}
+				request = new HttpRequest(strHost, "POST");
+				request.readTimeout(2000);
+		
+				System.out.println("POST ==> " + request.url());
+		
+				if (httpHeaders != null && !httpHeaders.isEmpty()) {
+				    httpHeaders.put("api-client-type", "2");
+				    httpHeaders.put("cookie", "2");
+				    httpHeaders.put("Access-Control-Allow-Origin", "*");	// 추가
+				    request.headers(httpHeaders);
+				    System.out.println(httpHeaders.toString());
+				}
+				if (rgParams != null && !rgParams.isEmpty()) {
+				    request.form(rgParams);
+				    System.out.println(rgParams.toString());
+				}
 		    } else {
-			request = HttpRequest.get(strHost
-				+ Util.mapToQueryString(rgParams));
-			request.readTimeout(2000);
-	
-			System.out.println("Response was: " + response);
+		    	// request.headers(httpHeaders);
+				request = HttpRequest.get(strHost + Util.mapToQueryString(rgParams));
+				// System.out.println("request:" + request);
+				if(strHost.contains("http://api.manana.kr")) {
+					request.readTimeout(30000);
+				}else {
+					request.readTimeout(500);
+				}
+				// System.out.println("Response was: " + response);
 		    }
 	
 		    if (request.ok()) {
@@ -143,24 +149,21 @@ public class Api_Client {
 	    	
 		String strData = Util.mapToQueryString(rgData).replace("?", "");
 		String nNonce = usecTime();
-		
-		strData = strData.substring(0, strData.length()-1);
-	
-	
-		System.out.println("1 : " + strData);
-		
-		strData = encodeURIComponent(strData);
-		
 		HashMap<String, String> array = new HashMap<String, String>();
-	
+		String str = endpoint + ";" + nNonce;
 		
-		String str = endpoint + ";"	+ strData + ";" + nNonce;
+		if(!strData.isEmpty()) {
+			strData = strData.substring(0, strData.length()-1);
+			strData = encodeURIComponent(strData);
+			str += ";"	+ strData;
+		}
+		
 		//String str = "/info/balance;order_currency=BTC&payment_currency=KRW&endpoint=%2Finfo%2Fbalance;272184496";
 		
 		// public일때는 제외
 		System.out.println(str);
 		String encoded = "";
-		if(!str.contains("/pub")){
+		if(str.contains("/bithumb/pri")){
 			encoded = asHex(hmacSha512(str, apiSecret));
 		}
 		
@@ -205,6 +208,25 @@ public class Api_Client {
 	    return new String(Base64.encodeBase64(bytes));
 	}
 
+    /**
+     * <pre>
+     * 1. 개요 : 빗썸 API 전용
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : callApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
     @SuppressWarnings("unchecked")
     public String callApi(String endpoint, HashMap<String, String> params) {
 		String rgResultDecode = "";
@@ -233,6 +255,140 @@ public class Api_Client {
 			e.printStackTrace();
 		    }
 		}
+		return rgResultDecode;
+    }
+    
+   
+    /**
+     * <pre>
+     * 1. 개요 : 기본 API 적용
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : callCommonApi
+     * @date : 2018. 4. 16.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 16.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callCommonApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+		
+		String api_host = api_url + endpoint;
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
+	
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+		return rgResultDecode;
+    }
+    
+    /**
+     * <pre>
+     * 1. 개요 : 바이낸스 API 전용
+     * 2. 처리내용 : GET 방식으로 변경
+     * </pre>
+     * @Method Name : callBinanceApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		jongkyu.won				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callBinanceApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+ 
+		String api_host = api_url + endpoint;
+		// HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Accept", "application/json, text/javascript, */*; q=0.01");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
+	
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+	
+		// 예외처리 필요함 { "code": -1121, "msg":"Invalid symbol." }
+		/*if (rgResultDecode.startsWith("error")) {
+		    // json 파싱
+		    HashMap<String, String> result;
+		    try {
+				result = new ObjectMapper().readValue(rgResultDecode, HashMap.class);
+		
+				System.out.println("==== 결과 출력 ====");
+				System.out.println(result.get("msg"));
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
+		}*/
+		return rgResultDecode;
+    }
+    
+    /**
+     * <pre>
+     * 1. 개요 : 업비트 API 전용
+     * 2. 처리내용 : GET 방식으로 변경
+     * </pre>
+     * @Method Name : callBinanceApi
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		jongkyu.won				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param endpoint
+     * @param params
+     * @return
+     */ 	
+    @SuppressWarnings("unchecked")
+    public String callUpbitApi(String endpoint, HashMap<String, String> params) {
+		String rgResultDecode = "";
+		HashMap<String, String> rgParams = new HashMap<String, String>();
+ 
+		String api_host = api_url + endpoint;
+		// HashMap<String, String> httpHeaders = getHttpHeaders(endpoint, rgParams, api_key, api_secret);
+		HashMap<String, String> httpHeaders = new HashMap<String, String>();
+		String nNonce = usecTime();
+		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
+		
+		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+	
+		// 예외처리 필요함 { "code": -1121, "msg":"Invalid symbol." }
+		/*if (!rgResultDecode.startsWith("code")) {
+		    // json 파싱
+		    HashMap<String, String> result;
+		    try {
+				result = new ObjectMapper().readValue(rgResultDecode, HashMap.class);
+		
+				System.out.println("==== 결과 출력 ====");
+				System.out.println(result.get("msg"));
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
+		}*/
 		return rgResultDecode;
     }
 }

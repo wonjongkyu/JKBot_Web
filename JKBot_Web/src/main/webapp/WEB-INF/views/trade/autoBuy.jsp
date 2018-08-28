@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<script src="<c:url value='js/views/trade/autoBuy.js'/>"></script>
+
 <!-- 
 	- form은 밖으로 나갈 수 있음  
 	- 필요한 정보 : 매수 가능 금액, 매수 금액을 통한 최대 매수 가능 개수
@@ -23,6 +25,21 @@
 	                <div id="tab-1" class="tab-pane active">
 	                	<div class="row">
 		                    <div class="panel-body">
+			                	<div class="col-md-6">
+			                       	<div class="form-group">
+			                       		<label class="col-md-4 control-label">Basic example </label>
+			                        	<div class="col-md-6">
+			                        		 <div>
+			                        		 	<select data-placeholder="Choose a Country..." class="chosen-select"  tabindex="2">
+									                <option value="">Select</option>
+									                <option value="Zambia">Zambia</option>
+									                <option value="Zimbabwe">Zimbabwe</option>
+								                </select>
+								            </div>
+			                        	</div>
+			                       	</div>
+		                    	</div>
+                
 		                    	<div class="col-md-6">
 			                       	<div class="form-group">
 			                       		<label class="col-md-3 control-label">매수 가격</label>
@@ -32,6 +49,10 @@
 			                        	</div>
 			                       	</div>
 		                    	</div>
+		                    </div>
+	                    </div>
+	                    <div class="row">
+		                    <div class="panel-body">
 		                    	<div class="col-md-6">
 			                       	<div class="form-group">
 			                       		<label class="col-md-4 control-label">전일대비 퍼센트(%) </label>
@@ -40,10 +61,6 @@
 			                        	</div>
 			                       	</div>
 		                    	</div>
-		                    </div>
-	                    </div>
-	                    <div class="row">
-		                    <div class="panel-body">
 		                    	<div class="col-md-6">
 			                       	<div class="form-group">
 			                       		<label class="col-md-3 control-label">매수 수량</label>
@@ -52,15 +69,19 @@
 			                        	</div>
 			                       	</div>
 		                    	</div>
-		                    	<div class="col-md-6">
-			                       	<div class="form-group">
-			                       		<div class="col-md-6 col-md-offset-6">
-			                       			<label class="control-label">주문 총액 : 50,000 KRW </label>
-			                       		</div>
-			                       	</div>
-		                    	</div>
 		                    </div>
 	                    </div>
+	                    
+	                    <div class="row">
+		                    <div class="col-md-6">
+		                       	<div class="form-group">
+		                       		<div class="col-md-6 col-md-offset-6">
+		                       			<label class="control-label">주문 총액 : 50,000 KRW </label>
+		                       		</div>
+		                       	</div>
+	                    	</div>
+		               	</div>     	
+		               	
 	                    <div class="row">
 		                    <div class="panel-body">
 		                    	<div class="col-md-2 col-md-offset-10">
@@ -71,6 +92,9 @@
 	                    	</div>
 	                    </div>
 	                </div>
+	                
+	                
+	                
 	                
 	                <div id="tab-2" class="tab-pane">
 	                    <div class="panel-body">
@@ -101,3 +125,10 @@
 	</div>	<!--  자동 매수 End -->
 </form>
         
+
+<!--  chosen-select 적용 -->
+<script>
+	$('.chosen-select').chosen({width: "100%"});
+</script>
+        
+         

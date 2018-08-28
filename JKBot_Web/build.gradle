@@ -54,5 +54,16 @@ dependencies {
 	compile("org.apache.tiles:tiles-servlet:3.0.5")
 	compile("org.apache.tiles:tiles-jsp:3.0.5")
 	
+	// common-lang
+	compile("org.apache.commons:commons-lang3:3.0")
+	
+	// Kakao lib
+	compile("com.fasterxml.jackson.core:jackson-databind:2.8.4")
+	compile("org.apache.httpcomponents:httpcore:4.4.6")
+	compile("org.apache.httpcomponents:httpclient:4.5.2")
+	
+	// Telegram lib
+	compile("com.github.pengrad:java-telegram-bot-api:3.4.0")
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
 }

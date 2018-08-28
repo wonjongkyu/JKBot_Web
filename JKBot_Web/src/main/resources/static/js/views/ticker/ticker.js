@@ -6,7 +6,6 @@
 		});*/
 		getBithumbTicker();
 		setInterval(function(){
-			
 			getBithumbTicker();
 		}, 5000);
 	});
@@ -47,7 +46,7 @@
 		        $("#bithumbTicker_table").jqGrid({
 		            data: resultJsonArray,
 		            datatype: "local",
-		            height: 340,
+		            height: 430,
 		            autowidth: true,
 		            shrinkToFit: true,
 		            rowNum: 15,

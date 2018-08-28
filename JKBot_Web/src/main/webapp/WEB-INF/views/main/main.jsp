@@ -4,139 +4,73 @@
     
 <script src="<c:url value='js/views/main/main.js'/>"></script>
 
-<div id="page-wrapper" class="gray-bg">
-	<div class="row border-bottom">
-		<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-		 <div class="navbar-header">
-		     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-		     <form role="search" class="navbar-form-custom" action="search_results.html">
-		         <div class="form-group">
-		             <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-		         </div>
-		     </form>
-		 </div>
-		     <ul class="nav navbar-top-links navbar-right">
-		         <li>
-		             <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
-		         </li>
-		         <li class="dropdown">
-		             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-		                 <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-		             </a>
-		             <ul class="dropdown-menu dropdown-messages">
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="img/a7.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right">46h ago</small>
-		                             <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-		                             <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="img/a4.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right text-navy">5h ago</small>
-		                             <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-		                             <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="dropdown-messages-box">
-		                         <a href="profile.html" class="pull-left">
-		                             <img alt="image" class="img-circle" src="img/profile.jpg">
-		                         </a>
-		                         <div>
-		                             <small class="pull-right">23h ago</small>
-		                             <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-		                             <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-		                         </div>
-		                     </div>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="text-center link-block">
-		                         <a href="mailbox.html">
-		                             <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-		                         </a>
-		                     </div>
-		                 </li>
-		             </ul>
-		         </li>
-		         <li class="dropdown">
-		             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-		                 <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-		             </a>
-		             <ul class="dropdown-menu dropdown-alerts">
-		                 <li>
-		                     <a href="mailbox.html">
-		                         <div>
-		                             <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-		                             <span class="pull-right text-muted small">4 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <a href="profile.html">
-		                         <div>
-		                             <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-		                             <span class="pull-right text-muted small">12 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <a href="grid_options.html">
-		                         <div>
-		                             <i class="fa fa-upload fa-fw"></i> Server Rebooted
-		                             <span class="pull-right text-muted small">4 minutes ago</span>
-		                         </div>
-		                     </a>
-		                 </li>
-		                 <li class="divider"></li>
-		                 <li>
-		                     <div class="text-center link-block">
-		                         <a href="notifications.html">
-		                             <strong>See All Alerts</strong>
-		                             <i class="fa fa-angle-right"></i>
-		                         </a>
-		                     </div>
-		                 </li>
-		             </ul>
-		         </li>
-		
-		
-		         <li>
-		             <a href="login.html">
-		                 <i class="fa fa-sign-out"></i> Log out
-		             </a>
-		         </li>
-		         <li>
-		             <a class="right-sidebar-toggle">
-		                 <i class="fa fa-tasks"></i>
-		             </a>
-		         </li>
-		     </ul>
-		</nav>
-	</div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
+<title>Login Demo - Kakao JavaScript SDK</title>
+<script src="<c:url value='js/kakao.min.js'/>"></script>
 
-	<div class="wrapper wrapper-content  animated fadeInRight">
-		<!--  빗썸 시세 -->
-		<%@include file="/WEB-INF/views/ticker/bithumbTicker.jsp"%>	
-		<!--  빗썸 개인 계좌 정보 조회 -->		
-		<%@include file="/WEB-INF/views/info/account/bithumbInfoAccount.jsp"%>	
-		<!--  빗썸 자동 매수 -->
-		<%@include file="/WEB-INF/views/trade/autoBuy.jsp"%>				
-	</div>
-</div>
-        
+</head>
+<body>
+<a id="kakao-login-btn"></a>
+<a href="http://developers.kakao.com/logout"></a>
+<body>
+ 
+ 
+<a id="kakao-link-btn" href="javascript:;">
+<img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+</a>
+<script type='text/javascript'>
+  //<![CDATA[
+    // 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init('fad841a6440735562e73d03a1f2482a0');
+    // 카카오 로그인 버튼을 생성합니다.
+    Kakao.Auth.createLoginButton({
+      container: '#kakao-login-btn',
+      success: function(authObj) {
+    	  console.log(authObj.access_token);
+        alert(JSON.stringify(authObj));
+      },
+      fail: function(err) {
+         alert(JSON.stringify(err));
+      }
+    });
+    
+ 	/* // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+    Kakao.Link.createCustomButton({
+      container: '#kakao-link-btn',
+      templateId: 9196,
+      templateArgs: {
+        'title': '제목 영역입니다.',
+        'description': '설명 영역입니다.'
+      }
+    }); */
+ 
+ 
+    Kakao.API.request({
+        url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
+        data: {
+            template_object:   {
+          	  "object_type": "feed",
+        	  "content": {
+        	    "title": "코인 가격",
+        	    "description": "프리미엄 얼마",
+        	    "image_url": "",
+        	    "link": {
+        	      "web_url": "",
+        	      "mobile_web_url": ""
+        	    }
+        	  }
+        	}
+        }
+    });
+
+  //]]>
+</script>
+
+</body>
+</html>
+ 

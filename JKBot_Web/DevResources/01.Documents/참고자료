@@ -1,1 +1,62 @@
+mysql 다중 update
+url에 ?allowMultiQueries=true  붙여줘야함
+
+
+
 참고자료 :http://ssoonidev.tistory.com/59
+
+
+
+[개선사항]
+
+ver. 2.3
+
+* 버벅임 개선 + 속도 개선
+
+* 약1.6~1.7초마다 갱신
+
+* 바이낸스 거래량 표시기능 추가 - 파란 색 계열로 표시. BTC 마켓 거래량만 집계함.
+
+* 코인 목록 고정기능 더블클릭 -> 그냥 클릭으로 변경
+
+ 
+
+[사용하는 API, 환율정보]
+[환율정보]
+참고 사이트 : http://pureani.tistory.com/4919
+http://api.manana.kr/exchange/rate/KRW/USD.json (현재 사용중)
+임시 : http://fx.kebhana.com/fxportal/jsp/RS/DEPLOY_EXRATE/fxrate_B_v2.html (KEB 기준 환율)
+		
+
+업비트 현재가(체결가 기준) : https://crix-api-endpoint.upbit.com/v1/crix/candles/minutes/1?code=CRIX.UPBIT.KRW-(코인명)
+
+바이낸스 현재가(체결가 기준) : https://api.binance.com/api/v3/ticker/price
+
+ 
+
+ 
+
+────────────────────────────────────────────────────────────
+
+[실행시 필요사항]
+
+* dll 파일은 실행파일과 같은 경로에 놓아야 합니다.
+
+* 닷넷 프레임워크 4.6이 설치되어있어야 합니다.
+
+ 
+
+ 
+
+────────────────────────────────────────────────────────────
+
+[가격 산출 공식]
+
+* 비트코인 : USDT 마켓가 x 기준환율
+
+* 그외 코인 : BTC마켓 사토시 x 비트코인
+
+* 김프 : ((업비트 - 바이낸스) x 100) / 바이낸스 (%)
+            즉, 바이낸스 가격을 기준으로 김프를 산출합니다.
+
+ 

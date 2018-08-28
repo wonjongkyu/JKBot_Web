@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.admin.mapper.AdminMapper">
+ 	
+ 	<select id="getAllExchangeInfo" parameterType="PriceExchangeInfoEntity" resultType="PriceExchangeInfoEntity">
+		SELECT 
+			EXCHANGE_NAME
+		   ,COIN_KOR_NAME
+		   ,COIN_SYMBOL_NAME
+		   ,COIN_EXCHANGE_TYPE
+		   ,COIN_TRANS_FEE_KRW
+		   ,COIN_PRICE_KRW
+		   ,COIN_PRICE_UPDATE_DT
+		FROM jk_exchange_info 
+		WHERE USE_YN = 'Y'
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbolName)">
+			AND COIN_SYMBOL_NAME = #{coinSymbolName}
+		</if>		
+	</select>
+
+	<update id="updateCoinPriceInfo" parameterType="java.util.List">
+	    <foreach collection="list" item="entity" index="index" separator=";">
+	        UPDATE jk_exchange_info 
+	        SET COIN_PRICE_KRW = #{entity.priceKrw},
+	        COIN_PRICE_UPDATE_DT = now()
+	        WHERE EXCHANGE_NAME = #{entity.exchangeName}
+	        AND COIN_SYMBOL_NAME = #{entity.coinSymbol} 
+	    </foreach>
+	</update>
+	
+	
+	<update id="updateOneBtcCoinPrice" parameterType="PriceCompareEntity">
+        UPDATE jk_service_coin_price 
+        SET
+	        PRICE_KRW_A = #{priceKrwA}
+	       ,PRICE_KRW_B = #{priceKrwB}
+	       ,PRICE_BTC_B = #{priceBtcB}
+	       ,PRICE_USDT_B = #{priceUsdtB}
+	       ,PRICE_GAP_KRW = #{priceGapKrw}
+	       ,PRICE_GAP_PERCENT = #{priceGapPercent}
+           ,UPDATE_DT = now()
+        WHERE  COIN_EXCHANGE_TYPE = 'BTC'
+        AND COIN_SYMBOL = #{coinSymbol}
+	</update>
+	
+	<update id="updateBtcCoinPrice" parameterType="java.util.List">
+	    <foreach collection="list" item="entity" index="index" separator=";">
+	        UPDATE jk_service_coin_price 
+	        SET
+		        PRICE_KRW_A = #{entity.priceKrwA}
+		       ,PRICE_KRW_B = #{entity.priceKrwB}
+		       ,PRICE_BTC_B = #{entity.priceBtcB}
+		       ,PRICE_USDT_B = #{entity.priceUsdtB}
+		       ,PRICE_GAP_KRW = #{entity.priceGapKrw}
+		       ,PRICE_GAP_PERCENT = #{entity.priceGapPercent}
+	           ,UPDATE_DT = now()
+	        WHERE  COIN_EXCHANGE_TYPE = 'BTC'
+	        AND COIN_SYMBOL = #{entity.coinSymbol}
+	    </foreach>
+	</update>
+	
+	<update id="updateUsdtCoinPrice" parameterType="java.util.List">
+	    <foreach collection="list" item="entity" index="index" separator=";">
+	        UPDATE jk_service_coin_price 
+	        SET
+		        PRICE_KRW_A = #{entity.priceKrwA}
+		       ,PRICE_KRW_B = #{entity.priceKrwB}
+		       ,PRICE_BTC_B = #{entity.priceBtcB}
+		       ,PRICE_USDT_B = #{entity.priceUsdtB}
+		       ,PRICE_GAP_KRW = #{entity.priceGapKrw}
+		       ,PRICE_GAP_PERCENT = #{entity.priceGapPercent}
+	           ,UPDATE_DT = now()
+	        WHERE COIN_EXCHANGE_TYPE = 'USDT'
+	        AND COIN_SYMBOL = #{entity.coinSymbol}
+	    </foreach>
+	</update>
+	
+	<select id="getAllPriceHistory" resultType="PriceHistoryEntity">
+		SELECT COIN_SYMBOL_NAME
+			  ,COIN_PRICE_KRW_A
+			  ,COIN_PRICE_KRW_B
+		FROM 
+			(SELECT 
+				COIN_SYMBOL_NAME
+			   ,COIN_PRICE_KRW_A
+			   ,COIN_PRICE_KRW_B
+				FROM jk_exchange_price_history
+				ORDER BY INSERT_DT DESC
+			) A
+		GROUP BY A.COIN_SYMBOL_NAME
+	</select>
+	
+	<select id="getOnePriceHistory" resultType="PriceCompareEntity">
+		SELECT 
+			SUM(A.COIN_PRICE_WEIGHT_A) AS COIN_PRICE_WEIGHT_A, 
+		 	SUM(A.COIN_PRICE_WEIGHT_B) AS COIN_PRICE_WEIGHT_B
+		FROM (
+			select COIN_SYMBOL_NAME, 
+					 COIN_PRICE_WEIGHT_A, 
+					 COIN_PRICE_WEIGHT_B, 
+					 INSERT_DT
+			from jk_exchange_price_history 
+			WHERE COIN_SYMBOL_NAME = #{coinSymbol}
+			ORDER BY INSERT_DT DESC
+			LIMIT 10
+		) A
+	</select>
+	
+	<insert id="insertPriceHistory" parameterType="java.util.List">
+		<!--  작업해야 함 -->
+		INSERT INTO JK_EXCHANGE_PRICE_HISTORY (
+			 COIN_SYMBOL_NAME
+			,COIN_PRICE_KRW_A
+			,COIN_PRICE_KRW_B
+			,COIN_PRICE_WEIGHT_A
+			,COIN_PRICE_WEIGHT_B
+			,INSERT_DT
+			,UPDATE_DT
+		) VALUES 
+			<foreach item="data" index="index" collection="list" open="" separator="," close="">
+				(#{data.coinSymbol}, #{data.priceKrwA}, #{data.priceKrwB}, #{data.coinPriceWeightA}, #{data.coinPriceWeightB}, NOW(), NOW() )
+			</foreach>	  
+	</insert>
+ 
+	<delete id="deletePriceHistory" parameterType="java.util.Set">
+		DELETE
+		FROM JK_EXCHANGE_PRICE_HISTORY
+		<!-- <foreach collection="list" item="entity" index="index" separator=";">
+			 entity
+			WHERE 
+		</foreach>  -->
+	</delete>
+	
+	 	
+</mapper>

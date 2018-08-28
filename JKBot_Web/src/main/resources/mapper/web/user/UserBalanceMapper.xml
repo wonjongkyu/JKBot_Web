@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.user.mapper.UserBalanceMapper">
+ 	
+ 	<select id="selectOne" parameterType="UserBalanceEntity" resultType="UserBalanceEntity">
+		SELECT 
+			USER_ID
+		   ,EXCHANGE_NAME
+		   ,COIN_SYMBOL_NAME
+		   ,TOTAL_CURRENCY
+		   ,IN_USE_CURRENCY
+		   ,AVAILABLE_CURRENCY
+		   ,XOIN_LAST
+		FROM jk_user_balance 
+		WHERE USER_ID = #{userId}
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbolName)">
+			AND COIN_EXCHANGE_TYPE = #{coinSymbolName}
+		</if>		
+	</select>
+	
+	<update id="update" parameterType="UserBalanceEntity">
+		UPDATE INTO
+		jk_user_info VALUE ('',) 
+	</update>
+</mapper>

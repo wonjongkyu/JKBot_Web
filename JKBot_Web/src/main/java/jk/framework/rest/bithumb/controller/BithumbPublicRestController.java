@@ -37,7 +37,7 @@ import jk.framework.rest.bithumb.service.BithumbPublicRestService;
 @ResponseBody
 @RequestMapping("/api/bithumb/publicapi")
 @Controller
-public class BithumbPublicRestController {
+public class BithumbPublicRestController{
 	private static final Logger logger = LoggerFactory.getLogger(BithumbPublicRestController.class);
     
     @Value("${bithumb.apiUrl}")

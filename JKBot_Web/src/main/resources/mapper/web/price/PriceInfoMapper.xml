@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="jk.framework.web.price.mapper.PriceInfoMapper">
+ 	
+ 	<select id="selectAllCoinPrice" parameterType="String" resultType="PriceCompareEntity">
+		SELECT 
+			COIN_EXCHANGE_TYPE
+		   ,COIN_SYMBOL
+		   ,PRICE_KRW_A
+		   ,PRICE_KRW_B
+		   ,PRICE_BTC_B
+		   ,PRICE_USDT_B
+		   ,PRICE_GAP_KRW
+		   ,TRANSFER_FEE_A
+		   ,TRANSFER_FEE_B
+		   ,PRICE_GAP_PERCENT
+		   ,UPDATE_DT
+		FROM jk_service_coin_price 
+		WHERE USE_YN = 'Y'
+		AND COIN_EXCHANGE_TYPE = #{coinSymbol}
+	</select>
+	
+ 	<select id="getAllExchangeInfo" parameterType="PriceExchangeInfoEntity" resultType="PriceExchangeInfoEntity">
+		SELECT 
+			EXCHANGE_NAME
+		   ,COIN_KOR_NAME
+		   ,COIN_SYMBOL_NAME
+		   ,COIN_EXCHANGE_TYPE
+		   ,COIN_TRANS_FEE_KRW
+		   ,COIN_PRICE_KRW
+		   ,COIN_PRICE_UPDATE_DT
+		FROM jk_exchange_info 
+		WHERE USE_YN = 'Y'
+		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbolName)">
+			AND COIN_SYMBOL_NAME = #{coinSymbolName}
+		</if>		
+	</select>
+
+	<update id="updateCoinPriceInfo" parameterType="java.util.List">
+	    <foreach collection="list" item="entity" index="index" separator=";">
+	        UPDATE jk_exchange_info 
+	        SET COIN_PRICE_KRW = #{entity.priceKrw},
+	        COIN_PRICE_UPDATE_DT = now()
+	        WHERE EXCHANGE_NAME = #{entity.exchangeName}
+	        AND COIN_SYMBOL_NAME = #{entity.coinSymbol} 
+	    </foreach>
+	</update>
+</mapper>
