@@ -529,10 +529,10 @@ function getCompareBTC2() {
 				choiceCoinStr += value + "/";
 			})
 			
-			
+			var choiceCoinStrFixed = '';
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
+				choiceCoinStrFixed = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
@@ -570,11 +570,17 @@ function getCompareBTC2() {
 				
 				var bgClass = "";
 				var bgClass2 = "";
+				
 				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					bgClass = "font-bold alert-warning";
+				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol + '/') > -1){ 
 					bgClass = "font-bold alert-success";
 				}
 				
+				
 				if(choiceCoinStr.indexOf(this.coinSymbol2 + '/') > -1){ 
+					bgClass2 = "font-bold alert-warning";
+				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol2 + '/') > -1){ 
 					bgClass2 = "font-bold alert-info";
 				}
 				resultHtml += "<tr>";

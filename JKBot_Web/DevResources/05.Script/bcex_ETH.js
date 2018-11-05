@@ -27,6 +27,15 @@ function getBithumbEthPrice(){
  				krw_price +='원';
  				$(this).next().text(krw_price);
 			});
+ 			
+			var etosi2 = $(".list-top").children().find('.price');
+ 			$.each(etosi2, function(){
+ 				var etosi_price = $(this).text();
+ 				var krw_price = price * etosi_price;
+ 				krw_price = krw_price.toFixed(2); // 소숫점 둘째자리에서 반올림
+ 				krw_price +='원';
+ 				$(this).next().text(krw_price);
+			});
  
 		},
 		error : function(e) {
