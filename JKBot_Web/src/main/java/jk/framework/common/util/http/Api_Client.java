@@ -1,36 +1,58 @@
 package jk.framework.common.util.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-
-import jk.framework.common.util.etc.Util;
-import jk.framework.common.util.lib.HttpRequest;
-
-import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_10;
+import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.media.jfxmedia.logging.Logger;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.neovisionaries.ws.client.WebSocket;
+import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketException;
+import com.neovisionaries.ws.client.WebSocketExtension;
+import com.neovisionaries.ws.client.WebSocketFactory;
+
+import jdk.nashorn.internal.parser.JSONParser;
+import jk.framework.common.util.etc.Util;
+import jk.framework.common.util.lib.HttpRequest;
 
 
 @SuppressWarnings("unused")
 public class Api_Client {
-
+	
+	 /**
+     * The echo server on websocket.org.
+     */
+    private static final String SERVER = "wss://api.upbit.com/websocket/v1";
+ 
+    /**
+     * The timeout value in milliseconds for socket connection.
+     */
+    private static final int TIMEOUT = 50000;
+    
     protected String api_url;
     protected String api_key;
     protected String api_secret;
+    
+    public static String websocketResult = "";
 
     public Api_Client(String api_url, String api_key, String api_secret) {
     	this.api_url = api_url;
@@ -391,4 +413,50 @@ public class Api_Client {
 		}*/
 		return rgResultDecode;
     }
+    
+   /* // Connect to the echo server.
+    WebSocket ws;
+    String coinListStr = "";
+    for(String str : coinList) {
+    	coinListStr = "\"KRW-"+ str + "\"," + coinListStr;
+    }
+    if(coinListStr.length() > 0){
+    	coinListStr = coinListStr.substring(0,coinListStr.length()-1);
+    }
+    
+    try {
+		ws = connect();
+		String text = "[{\"ticket\":\"UNIQUE_TICKET\"},{\"type\":\"orderbook\",\"codes\":["+ coinListStr + "],\"isOnlySnapshot\":\"false\"}]";
+		System.out.println("text:" + text);
+        ws.sendText(text);
+        result = websocketResult;
+        websocketResult = "";
+        System.out.println("result:"  + result);
+        ws.disconnect();
+	} catch (IOException | WebSocketException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+    
+	private WebSocket connect() throws IOException, WebSocketException {
+		System.out.println("Start get data from upbit");
+		return new WebSocketFactory().setConnectionTimeout(TIMEOUT).createSocket(SERVER)
+				.addListener(new WebSocketAdapter() {
+
+					// binary message arrived from the server
+					public void onBinaryMessage(WebSocket websocket, byte[] binary) {
+						String str = new String(binary);
+						System.out.println(str);
+						websocketResult = str + websocketResult +","; // 배열로 변환
+					}
+
+					// A text message arrived from the server.
+					public void onTextMessage(WebSocket websocket, String message) {
+						websocketResult = websocketResult+ "[" + message + "]"; // 배열로 변환
+					}
+
+				}).addExtension(WebSocketExtension.PERMESSAGE_DEFLATE).connect();
+	}*/
+
+    
 }

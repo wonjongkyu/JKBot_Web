@@ -43,7 +43,19 @@ public class UpbitAskBidResultEntity extends RestCommonVO{
 	private String total_bid_size;	// 25651.39285036
 	@JsonProperty("orderbook_units")
 	private List<ORDERBOOK> orderbook_units;	// KRW-EOS
-
+	
+	/*
+	@JsonProperty("code")
+	private String market;			// KRW-EOS
+	@JsonProperty("timestamp")
+	private String timestamp;		// 1534852568326
+	@JsonProperty("total_ask_size")
+	private String total_ask_size;	// 12130.20473323
+	@JsonProperty("total_bid_size")
+	private String total_bid_size;	// 25651.39285036
+	@JsonProperty("orderbook_units")
+	private List<ORDERBOOK> orderbook_units;	// KRW-EOS
+	*/
 	@Getter
 	@Setter
 	public static class ORDERBOOK {
