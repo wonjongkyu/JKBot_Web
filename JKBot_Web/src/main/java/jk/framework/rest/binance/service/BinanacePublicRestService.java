@@ -77,8 +77,8 @@ public class BinanacePublicRestService {
 		// BTC-KRW 가격 (해외)
     	Double BTCKRW = 7474676D;
     	if(sessionService.getAttributeStr("BTCKRW") != null) {
-    		System.out.println("[DEBUG]___BTCKRW=" + BTCKRW);
     		BTCKRW = Double.parseDouble(sessionService.getAttribute("BTCKRW"));
+    		System.out.println("[DEBUG]___BTCKRW=" + sessionService.getAttribute("BTCKRW") );
     	}
     	
 		// 현재 Binance BTC 가격 가져와서 500만원으로 몇 비트 살 수 있는지 계산

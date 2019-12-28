@@ -311,7 +311,7 @@ public class Api_Client {
 		httpHeaders.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
 		httpHeaders.put("Api-Nonce", String.valueOf(nNonce));
 	
-		rgResultDecode = request(api_host, "GET", rgParams, httpHeaders);
+		rgResultDecode = request(api_host, "POST", rgParams, httpHeaders);
 		return rgResultDecode;
     }
     

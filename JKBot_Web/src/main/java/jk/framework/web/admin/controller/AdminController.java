@@ -123,6 +123,33 @@ public class AdminController {
     
     /**
      * <pre>
+     * 1. 개요 : 김프 계산 페이지 연결 (업비트-gateIO)
+     * 2. 처리내용 : 
+     * </pre>
+     * @Method Name : compare
+     * @date : 2018. 4. 13.
+     * @author : Hyundai
+     * @history : 
+     *	-----------------------------------------------------------------------
+     *	변경일				작성자						변경내용  
+     *	----------- ------------------- ---------------------------------------
+     *	2018. 4. 13.		Hyundai				최초 작성 
+     *	-----------------------------------------------------------------------
+     * 
+     * @param model
+     * @return
+     */ 	
+    @RequestMapping(value = "/compare3", method = RequestMethod.GET)
+	public ModelAndView compare3(Model model) {
+		ModelAndView mav = new ModelAndView();
+		// 환율 가져오기
+		getExchangeRate(model);		
+		mav.setViewName("/admin/priceCompare3");
+		return mav;
+    }
+    
+    /**
+     * <pre>
      * 1. 개요 : 김프 계산 컨트롤러
      * 2. 처리내용 : 
      * 	2.1 업비트의 코인들을 가져온다. (KRW)
@@ -149,7 +176,7 @@ public class AdminController {
     	List<PriceCompareEntity> result = new ArrayList<PriceCompareEntity>();
     	
     	// 환율 가져오기
-    	Double exchangeRate = 1107D;
+    	Double exchangeRate = 1190D;
     	if(sessionService.getAttributeStr("exchangeRate") != null) {
     		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
     	}
@@ -358,7 +385,7 @@ public class AdminController {
     	List<PriceCompareAskBidEntity> result = new ArrayList<PriceCompareAskBidEntity>();
     	
     	// 환율 가져오기
-    	Double exchangeRate = 1107D;
+    	Double exchangeRate = 1190D;
     	if(sessionService.getAttributeStr("exchangeRate") != null) {
     		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
     	}
@@ -529,6 +556,7 @@ public class AdminController {
     		}
     	    
     	    // jk_common_infomation에 업데이트 작업 수행
+    	    logger.info("환율::::{}", String.valueOf(exchangeRate) );
 			sessionService.setAttribute("exchangeRate", String.valueOf(exchangeRate) );
 		}
 		return result;

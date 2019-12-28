@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.http.Api_Client;
+import jk.framework.web.admin.controller.AdminController;
 import jk.framework.web.admin.entity.ExchangeCoinPriceEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
@@ -24,6 +27,8 @@ import jk.framework.web.admin.mapper.AdminMapper;
 
 @Service
 public class AdminService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 	
 	// exchange apiKey
     @Value("${exchange.apiUrl}")
@@ -134,6 +139,7 @@ public class AdminService {
 		    entity = gson.fromJson(result, new TypeToken<List<ExchangeRateEntity>>(){}.getType()); 
 
 		} catch (Exception e) {
+			logger.info("환율 못가져옴");
 		   // e.printStackTrace();
 		}
 		return entity;

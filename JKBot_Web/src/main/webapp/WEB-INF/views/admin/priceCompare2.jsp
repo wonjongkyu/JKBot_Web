@@ -76,7 +76,7 @@
    			</div>
     	</div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3" style="display:none;">
         <div class="ibox float-e-margins ">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3" style="display:none;">
         <div class="ibox float-e-margins ">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -217,5 +217,11 @@ $('.dual_select').bootstrapDualListbox({
     selectorMinimalHeight: 160
 });
 
+
+
+
+// 상단 GNB 메뉴 최소화
+console.log('test');
+$("body").addClass("mini-navbar");
 
 </script>
