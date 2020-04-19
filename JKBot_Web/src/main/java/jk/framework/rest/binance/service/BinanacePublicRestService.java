@@ -1,6 +1,5 @@
 package jk.framework.rest.binance.service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sun.media.jfxmedia.logging.Logger;
 
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
@@ -36,28 +34,30 @@ public class BinanacePublicRestService {
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		for(String str : coinList) {
-			try {
-				Thread.sleep(10);	// 1000이 1초
-				String param = "?symbol=" + str + symbolType;
-				String result = api.callUpbitApi("/v3/ticker/price"+param, null);
-			    Gson gson = new Gson();
-			    entity = gson.fromJson(result, BinanceTickerResultEntity.class ); 
-			    
-			    String symbol = entity.getSymbol();
-			    if("BTC".equals(symbolType)) {
-	    			if(symbol.substring(symbol.length()-3).indexOf("BTC") > -1){
-	    				symbol = symbol.replaceAll(symbolType, "");
-	    			}		    			
-	    		}else if("USDT".equals(symbolType)) {
-	    			if(symbol.substring(symbol.length()-4).indexOf("USDT") > -1){
-	    				symbol = symbol.replaceAll(symbolType, "");
-	    			}
-	    		}
-				entity.setLastPrice(entity.getPrice());
-				entity.setTradeType(symbol);
-			    returnEntity.add(entity);
-			} catch (Exception e) {
-			    // e.printStackTrace();
+			if(!str.equals(symbolType)) {
+				try {
+					Thread.sleep(10);	// 1000이 1초
+					String param = "?symbol=" + str + symbolType;
+					String result = api.callUpbitApi("/v3/ticker/price"+param, null);
+				    Gson gson = new Gson();
+				    entity = gson.fromJson(result, BinanceTickerResultEntity.class ); 
+				    
+				    String symbol = entity.getSymbol();
+				    if("BTC".equals(symbolType)) {
+		    			if(symbol.substring(symbol.length()-3).indexOf("BTC") > -1){
+		    				symbol = symbol.replaceAll(symbolType, "");
+		    			}		    			
+		    		}else if("USDT".equals(symbolType)) {
+		    			if(symbol.substring(symbol.length()-4).indexOf("USDT") > -1){
+		    				symbol = symbol.replaceAll(symbolType, "");
+		    			}
+		    		}
+					entity.setLastPrice(entity.getPrice());
+					entity.setTradeType(symbol);
+				    returnEntity.add(entity);
+				} catch (Exception e) {
+				    // e.printStackTrace();
+				}
 			}
 		}
 		
@@ -81,16 +81,28 @@ public class BinanacePublicRestService {
     		System.out.println("[DEBUG]___BTCKRW=" + sessionService.getAttribute("BTCKRW") );
     	}
     	
+    	String USDT_LIST = "MFT/STORM/BTT/ANKR/TFUEL/NPXS/";
+    	
 		// 현재 Binance BTC 가격 가져와서 500만원으로 몇 비트 살 수 있는지 계산
 		double BtcPrice = buyPrice;			// 400만원 (추후 실제 구매 가능 금액으로 변경 필요함)
+		int c = 0;
 		for(String str : coinList) {
 			try {
+					if(c == 30) {
+						Thread.sleep(2000);	// 1000이 1초
+					}
+					c++;
 					double purchasableAmount = BtcPrice;	// 구매 가능 금액
 					// 결과 리스트 저장할 VO
 					BinanceAskResultEntity resultEntity = new BinanceAskResultEntity();
 					Thread.sleep(50);	// 1000이 1초
-					String param = "?symbol=" + str + symbolType;
-					String result = api.callUpbitApi("/v1/depth"+param, null);
+					String param = "?limit=50&symbol=" + str;
+					if(USDT_LIST.indexOf(str) <= -1) {
+						param += symbolType;
+					}else {
+						param += "USDT";
+					}
+					String result = api.callUpbitApi("/v3/depth"+param, null);
 				    Gson gson = new Gson();
 				    
 				    entity = gson.fromJson(result, BinanceAskBidResultEntity.class ); 
@@ -129,8 +141,13 @@ public class BinanacePublicRestService {
 				    			break;
 				    		}
 						}
-				    	
-				    	Double array1 = Double.parseDouble(arrayStr)* (BTCKRW/100000000);				// 사토시 (정수형으로 변환)
+
+				    	Double array1 = 0D;
+				    	if(USDT_LIST.indexOf(str) <= -1) {
+				    		array1 = Double.parseDouble(arrayStr)* (BTCKRW/100000000);				// 사토시 (정수형으로 변환)
+				    	}else {
+				    		array1 = Double.parseDouble(arrayStr)* (  Double.parseDouble(sessionService.getAttributeStr("exchangeRate"))/100000000);	
+				    	}
 				    	Double array2 = Double.parseDouble(priceArray[1].trim());	// 구매 가능 수량
 				    	Double temp = JKStringUtil.mathRound(array1*array2,9);
 				    	
@@ -226,6 +243,7 @@ public class BinanacePublicRestService {
 				    	}
 				    }*/
 			} catch (Exception e) {
+				System.out.println("====================================error");
 			    // e.printStackTrace();
 			}
 		}
@@ -244,7 +262,7 @@ public class BinanacePublicRestService {
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		try {
-		    String result = api.callBinanceApi("/v1/ticker/24hr", null);
+		    String result = api.callBinanceApi("/v3/ticker/24hr", null);
 		    Gson gson = new Gson();
 		    
 		    entity = gson.fromJson(result, new TypeToken<List<BinanceTickerResultEntity>>(){}.getType()); 

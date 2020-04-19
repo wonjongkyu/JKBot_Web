@@ -2,7 +2,7 @@
 
 var highlightTransferFee = 4000;
 
-// 수익률 계산기 관련 function
+// 수익률 계산기 관련 function22
 
 $(function(){
     $('#saveTradeBtn').click(function(){
@@ -373,7 +373,7 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/GNT/";
+				choiceCoinStr = "MFT/STORM/BTT/ANKR/TFUEL/NPXS/";
 				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
 			}
 			
@@ -509,6 +509,8 @@ function getCompareBTC() {
  * 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareBTC2() {
+	var exceptCoinList = "GTO/KMD/STRAT/IOTA/";
+	var defaultPremium = 5;
 	var data = {}
 	
 	$.ajax({
@@ -532,7 +534,8 @@ function getCompareBTC2() {
 			var choiceCoinStrFixed = '';
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStrFixed = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
+				choiceCoinStrFixed = "MFT/STORM/BTT/ANKR/TFUEL/NPXS/";
+				// choiceCoinStrFixed = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
@@ -585,7 +588,7 @@ function getCompareBTC2() {
 				}
 				resultHtml += "<tr>";
 				
-				resultJsonArray.push(resultVO);
+				// resultJsonArray.push(resultVO);
 				
 				// 코인 심볼명
 				resultHtml += "<td>-</td>";
@@ -658,14 +661,47 @@ function getCompareBTC2() {
 				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
+				
+				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
+					if( this.priceGapPercent > 5){
+						resultJsonArray.push(resultVO);
+					}
+				}
 			});
-			
+
 			// 텔레그램 메시지 전송
-			if(context == 'price' && sendMessage == 'Y'){
+			if(context == 'admin' && sendMessage == 'Y'){
 				sendTelegramMessage(resultJsonArray);
 			}
-			
+
 			$("#priceTbodyBTC").html(resultHtml);
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+
+
+
+function sendTelegramMessage(param) {
+	console.log(param)
+	var data = param;
+	$.ajax({
+		type : "POST",
+		contentType : "application/json",
+		url : "/telegram/sendMessage",
+		data : JSON.stringify(data),
+		dataType : 'json',
+		// tradtional : true,				// json List로 받기 위한 설정
+		timeout : 5000,
+		success : function(data) {
+			
+			
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
