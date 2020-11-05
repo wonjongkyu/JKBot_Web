@@ -373,13 +373,13 @@ function getCompareBTC() {
 			
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStr = "MFT/STORM/BTT/ANKR/TFUEL/NPXS/";
+				choiceCoinStr = "MFT/STMX/BTT/ANKR/TFUEL/NPXS/SC/";
 				// choiceCoinStr = "ADA/PIVX/KMD/GRS/WAVES/ICX/NEO/ONT/QTUM/DASH/GTO/ETH/ETC/EOS/TRX/LSK/LTC/BTG/BCH/XRP/POWR/SNT/STORJ/OMG/ZRX/MCO/GNT/STORM/REP/MTL/ZIL/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
 			var resultHtml = "";
-			var sendMessage = "N";
+			var sendMessage = "Y";
 			
 			// 김치 프리미엄 
 			var minPremium = Number($("#minPremium").val());
@@ -509,9 +509,10 @@ function getCompareBTC() {
  * 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareBTC2() {
-	var exceptCoinList = "GTO/KMD/STRAT/IOTA/";
+	var exceptCoinList = "GTO/NPXS/QKC/ETC/ADX/IOTA/HIVE/ZIL/";
 	var defaultPremium = 5;
 	var data = {}
+	var teleType = '1';
 	
 	$.ajax({
 		type : "GET",
@@ -534,13 +535,13 @@ function getCompareBTC2() {
 			var choiceCoinStrFixed = '';
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStrFixed = "MFT/STORM/BTT/ANKR/TFUEL/NPXS/";
+				choiceCoinStrFixed = "MFT/STMX/BTT/ANKR/TFUEL/NPXS/MBL/VET/SC/";
 				// choiceCoinStrFixed = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
 			}
 			
 			var resultJsonArray = new Array();
 			var resultHtml = "";
-			var sendMessage = "N";
+			var sendMessage = "Y";
 			
 			// 김치 프리미엄 
 			var minPremium = Number($("#minPremium").val());
@@ -661,9 +662,15 @@ function getCompareBTC2() {
 				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
+				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
+					if( this.priceGapPercent2 > 5 ){
+						resultJsonArray.push(resultVO);
+					}
+				}
 				
 				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
-					if( this.priceGapPercent > 5){
+					if( this.priceGapPercent < -5){
+						teleType = '2';
 						resultJsonArray.push(resultVO);
 					}
 				}
@@ -671,7 +678,7 @@ function getCompareBTC2() {
 
 			// 텔레그램 메시지 전송
 			if(context == 'admin' && sendMessage == 'Y'){
-				sendTelegramMessage(resultJsonArray);
+				sendTelegramMessage(resultJsonArray, teleType);
 			}
 
 			$("#priceTbodyBTC").html(resultHtml);
@@ -688,13 +695,18 @@ function getCompareBTC2() {
 
 
 
-function sendTelegramMessage(param) {
+function sendTelegramMessage(param, type) {
 	console.log(param)
 	var data = param;
+	var vUrl = "/telegram/sendMessage";
+	if(type == '2'){
+		vUrl = "/telegram/sendMessage2";
+	}
+	
 	$.ajax({
 		type : "POST",
 		contentType : "application/json",
-		url : "/telegram/sendMessage",
+		url : vUrl,
 		data : JSON.stringify(data),
 		dataType : 'json',
 		// tradtional : true,				// json List로 받기 위한 설정

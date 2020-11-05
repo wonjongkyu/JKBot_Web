@@ -124,7 +124,7 @@ public class Api_Client {
 				if(strHost.contains("http://api.manana.kr")) {
 					request.readTimeout(30000);
 				}else {
-					request.readTimeout(500);
+					request.readTimeout(600);
 				}
 				// System.out.println("Response was: " + response);
 		    }

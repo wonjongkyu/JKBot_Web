@@ -1,4 +1,4 @@
-package jk.framework.rest.binance.service;
+package jk.framework.rest.huobi.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import jk.framework.rest.binance.entity.BinanceAskResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 
 @Service
-public class BinanacePublicRestService {
+public class HuobiPublicRestService {
 	
     @Autowired
     SessionService sessionService;

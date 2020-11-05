@@ -51,6 +51,8 @@ public class AdminController {
     private String upbitApiUrl ;
     @Value("${upbit.apiUrl2}")
     private String upbitApiUrl2 ;
+    @Value("${huobi.apiUrl}")
+    private String huobiApiUrl ;
     @Value("${buyPrice}")
     private String buyPrice ;
 	

@@ -30,10 +30,10 @@ import jk.framework.web.message.entity.TelegramMessageEntity;
 @Controller
 public class TelegramController {
 			
-	// @Value("${telegram.botToken}")
+	@Value("${telegram.botToken}")
 	private String telegramBotToken ;
 	
-	// @Value("${telegram.chatId}")
+	@Value("${telegram.chatId}")
 	private String chatId ;
 			
     @Autowired
@@ -43,7 +43,8 @@ public class TelegramController {
 	 
 	@RequestMapping(value = "/sendMessage",  method = {RequestMethod.GET, RequestMethod.POST})
 	public void sendMessage(@RequestBody String result) throws Exception{
-		
+		System.out.println("텔레그램 메시지 발송");
+		System.out.println(result);
 		Gson gson = new Gson();
 		List<PriceCompareEntity> entityList = gson.fromJson(result, new TypeToken<List<PriceCompareEntity>>(){}.getType()); 
 		
@@ -51,10 +52,71 @@ public class TelegramController {
 		TelegramMessageEntity messageEntity = new TelegramMessageEntity();
 		for (PriceCompareEntity entity : entityList) {
 			if(index == 1) {
-				messageEntity.setMaxCoinSymbol(entity.getCoinSymbol());
-				messageEntity.setMaxPriceKrwA(entity.getPriceKrwA());
-				messageEntity.setMaxPriceKrwB(entity.getPriceKrwB());
-				messageEntity.setMaxPriceGapPercent(String.valueOf(entity.getPriceGapPercent()));
+				messageEntity.setMaxCoinSymbol(entity.getCoinSymbol2());
+				messageEntity.setMaxPriceKrwA(entity.getBinanceSellPrice());
+				messageEntity.setMaxPriceKrwB(entity.getUpbitBuyPrice());
+				messageEntity.setMaxPriceGapPercent(String.valueOf(entity.getPriceGapPercent2()));
+			}
+			if(index == entityList.size()) {
+				messageEntity.setMinCoinSymbol(entity.getCoinSymbol());
+				messageEntity.setMinPriceKrwA(entity.getPriceKrwA());
+				messageEntity.setMinPriceKrwB(entity.getPriceKrwB());
+				messageEntity.setMinPriceGapPercent(String.valueOf(entity.getPriceGapPercent2()));
+			}
+			index++;
+			logger.debug("sendMessage.getPriceGapPercent::{}", entity.getPriceGapPercent());
+		}
+		StringBuffer message = new StringBuffer();
+
+		if(messageEntity.getMaxCoinSymbol() != null) {
+		message.append("[바이낸스 구매 추천 <b>").append(messageEntity.getMaxCoinSymbol()).append("</b>]\r\n");
+		message.append("[김프] ").append(messageEntity.getMaxCoinSymbol()).append(" (" + messageEntity.getMaxPriceGapPercent() + "%)").append("\r\n");
+		message.append(" 바이낸스 : ").append(messageEntity.getMaxPriceKrwA() + "원").append("\r\n");
+		message.append(" 업비트    :  ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
+		/*
+		message.append("[업비트 구매 추천 <b>").append(messageEntity.getMinCoinSymbol()).append("</b>]\r\n");
+		message.append("2018.04.27 금요일 오후 2:20").append("\r\n");
+		message.append("[최고] ").append(messageEntity.getMaxCoinSymbol()).append(" (" + messageEntity.getMaxPriceGapPercent() + "%)").append("\r\n");
+		message.append(" 바이낸스 : ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
+		message.append(" 업비트    :  ").append(messageEntity.getMaxPriceKrwA() + "원").append("\r\n");
+		message.append("[최저] ").append(messageEntity.getMinCoinSymbol()).append(" (<b>" + messageEntity.getMinPriceGapPercent() + "</b>%)").append("\r\n");
+		message.append(" 바이낸스 : ").append(messageEntity.getMinPriceKrwB() + "원").append("\r\n");
+		message.append(" 업비트    :  ").append(messageEntity.getMinPriceKrwA() + "원").append("\r\n");
+		*/
+		
+		TelegramBot bot = new TelegramBot(telegramBotToken); 
+		SendMessage request = new SendMessage(chatId, message.toString()) 
+									.parseMode(ParseMode.HTML) 
+									.disableWebPagePreview(true) 
+									.disableNotification(false);
+		SendResponse sendResponse = bot.execute(request); 
+		
+		boolean ok = sendResponse.isOk(); 
+		Message message2 = sendResponse.message();
+		}
+
+		
+		/*logger.info("message:::{}", model.getMenuPath());
+		String RequestUrl = authorizeApiUrl + "?client_id="+clientId+"&redirect_uri="+redirectUrl+"&response_type=code";
+		sessionService.setAttribute("kakaoMessage", model.getMenuPath());*/
+	}
+	
+	
+	@RequestMapping(value = "/sendMessage2",  method = {RequestMethod.GET, RequestMethod.POST})
+	public void sendMessage2(@RequestBody String result) throws Exception{
+		System.out.println("텔레그램 메시지 발송");
+		System.out.println(result);
+		Gson gson = new Gson();
+		List<PriceCompareEntity> entityList = gson.fromJson(result, new TypeToken<List<PriceCompareEntity>>(){}.getType()); 
+		
+		int index = 1;
+		TelegramMessageEntity messageEntity = new TelegramMessageEntity();
+		for (PriceCompareEntity entity : entityList) {
+			if(index == 1) {
+                messageEntity.setMaxCoinSymbol(entity.getCoinSymbol());
+                messageEntity.setMaxPriceKrwA(entity.getBinanceBuyPrice());
+                messageEntity.setMaxPriceKrwB(entity.getUpbitSellPrice());
+                messageEntity.setMaxPriceGapPercent(String.valueOf(entity.getPriceGapPercent()));
 			}
 			if(index == entityList.size()) {
 				messageEntity.setMinCoinSymbol(entity.getCoinSymbol());
@@ -66,24 +128,23 @@ public class TelegramController {
 			logger.debug("sendMessage.getPriceGapPercent::{}", entity.getPriceGapPercent());
 		}
 		StringBuffer message = new StringBuffer();
-		message.append("[업비트 구매 추천 <b>").append(messageEntity.getMinCoinSymbol()).append("</b>]\r\n");
-		message.append("2018.04.27 금요일 오후 2:20").append("\r\n");
-		message.append("[최고] ").append(messageEntity.getMaxCoinSymbol()).append(" (" + messageEntity.getMaxPriceGapPercent() + "%)").append("\r\n");
-		message.append(" 바이낸스 : ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
-		message.append(" 업비트    :  ").append(messageEntity.getMaxPriceKrwA() + "원").append("\r\n");
-		message.append("[최저] ").append(messageEntity.getMinCoinSymbol()).append(" (<b>" + messageEntity.getMinPriceGapPercent() + "</b>%)").append("\r\n");
-		message.append(" 바이낸스 : ").append(messageEntity.getMinPriceKrwB() + "원").append("\r\n");
-		message.append(" 업비트    :  ").append(messageEntity.getMinPriceKrwA() + "원").append("\r\n");
+
+		if(messageEntity.getMaxCoinSymbol() != null) {
+			message.append("[업비트 구매 추천 <b>").append(messageEntity.getMinCoinSymbol()).append("</b>]\r\n");
+			message.append("[김프] ").append(messageEntity.getMinCoinSymbol()).append(" (" + messageEntity.getMinPriceGapPercent() + "%)").append("\r\n");
+			message.append(" 업비트    :  ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
+			message.append(" 바이낸스 : ").append(messageEntity.getMaxPriceKrwA() + "원").append("\r\n");
 		
-		TelegramBot bot = new TelegramBot(telegramBotToken); 
-		SendMessage request = new SendMessage(chatId, message.toString()) 
-									.parseMode(ParseMode.HTML) 
-									.disableWebPagePreview(true) 
-									.disableNotification(false);
-		SendResponse sendResponse = bot.execute(request); 
-		
-		boolean ok = sendResponse.isOk(); 
-		Message message2 = sendResponse.message();
+			TelegramBot bot = new TelegramBot(telegramBotToken); 
+			SendMessage request = new SendMessage(chatId, message.toString()) 
+										.parseMode(ParseMode.HTML) 
+										.disableWebPagePreview(true) 
+										.disableNotification(false);
+			SendResponse sendResponse = bot.execute(request); 
+			
+			boolean ok = sendResponse.isOk(); 
+			Message message2 = sendResponse.message();
+		}
 
 		
 		/*logger.info("message:::{}", model.getMenuPath());
