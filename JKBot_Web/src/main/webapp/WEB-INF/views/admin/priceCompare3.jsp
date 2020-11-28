@@ -76,7 +76,7 @@
    			</div>
     	</div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3" style="display:none;">
         <div class="ibox float-e-margins ">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3" style="display:none;">
         <div class="ibox float-e-margins ">
             <div class="ibox-title">
                 <!-- <span class="label label-success pull-right">Monthly</span> -->
@@ -123,7 +123,7 @@
 <!--  DashBoard 현재 시세 -->
 <!-- <div class="row col-lg-12"> -->
 <div class="row hide">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>업비트 - 바이낸스 김프 계산 (USDT)</h5>
@@ -167,10 +167,54 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-12">
+
+  		<div class="col-lg-5">
+           <div class="ibox float-e-margins">
+               <div class="ibox-title">
+                   <h5>업비트 - <font color="blue">빗썸</font> 김프 계산</h5>
+                   <div class="ibox-tools">
+                       <a class="collapse-link">
+                           <i class="fa fa-chevron-up"></i>
+                       </a>
+                       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                           <i class="fa fa-wrench"></i>
+                       </a>
+                       <ul class="dropdown-menu dropdown-user">
+                           <li><a href="#">Config option 1</a>
+                           </li>
+                           <li><a href="#">Config option 2</a>
+                           </li>
+                       </ul>
+                       <a class="close-link">
+                           <i class="fa fa-times"></i>
+                       </a>
+                   </div>
+               </div>
+               <div class="ibox-content">
+                <table class="table table-hover">
+                    <thead>
+                  		<tr>
+	                      <!-- <th>#</th> -->
+	                      <th>코인</th>
+	                      <th>빗썸 (sell)</th>
+	                      <th>업비트 (buy)</th>
+	                      <th>역프(%)</th>
+	                      <th>코인2</th>
+	                      <th>빗썸 (buy)</th>
+	                      <th>업비트 (sell)</th>
+	                      <th>김프(%)</th>
+                     	</tr>
+                    </thead>
+                    <tbody id="priceTbodyBTC2"></tbody>
+                </table>
+    			</div>
+           </div>
+       </div>
+        
+    <div class="col-lg-7">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>업비트 - 바이낸스 김프 계산 (BTC)</h5>
+                    <h5>업비트 - <font color="blue">바이낸스</font>  김프 계산 (BTC)</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -193,17 +237,17 @@
 	                <table class="table table-hover">
 	                    <thead>
 	                  		<tr>
-		                      <th>#</th>
+		                     <!--  <th>#</th> -->
 		                      <th>코인</th>
-		                      <th>binance (사토시)</th>
-		                      <th>binance (판매가)</th>
-		                      <th>upbit (구매가)</th>
-		                      <th>김치프리미엄1(%)</th>
+		                      <th>사토시 </th>
+		                      <th>바낸 (sell)</th>
+		                      <th>업비트 &nbsp; (buy)</th>
+		                      <th>역프(%)</th>
 		                      <th>코인2</th>
-		                      <th>binance (사토시)</th>
-		                      <th>binance (구매가)</th>
-		                      <th>upbit (판매가)</th>
-		                      <th>김치프리미엄2(￦)</th>
+		                      <th>사토시 </th>
+		                      <th>바낸 (buy)</th>
+		                      <th>업비트 &nbsp;(sell)</th>
+		                      <th>김프(%)</th>
 	                     	</tr>
 	                    </thead>
 	                    <tbody id="priceTbodyBTC"></tbody>
@@ -211,11 +255,22 @@
      			</div>
             </div>
         </div>
+        
+      
 </div>
+
+
+ 
 <script>
 $('.dual_select').bootstrapDualListbox({
     selectorMinimalHeight: 160
 });
 
+
+
+
+// 상단 GNB 메뉴 최소화
+console.log('test');
+$("body").addClass("mini-navbar");
 
 </script>

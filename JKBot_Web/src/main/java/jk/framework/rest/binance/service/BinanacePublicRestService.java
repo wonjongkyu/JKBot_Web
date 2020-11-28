@@ -88,6 +88,9 @@ public class BinanacePublicRestService {
 		int c = 0;
 		for(String str : coinList) {
 			try {
+					if("BTC".equals(symbolType) && str.equals("BTC")) {
+						continue;
+					}
 					if(c == 30) {
 						Thread.sleep(2000);	// 1000이 1초
 					}
