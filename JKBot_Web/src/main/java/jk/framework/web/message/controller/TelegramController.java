@@ -59,12 +59,15 @@ public class TelegramController {
 		}else if(type.equals("3") || type.equals("4")) {
 			site1 = "업비트";
 			site2 = "빗썸";
+		}else if(type.equals("5") || type.equals("6")) {
+			site1 = "빗썸";
+			site2 = "바이낸스";
 		}
 		
 		TelegramMessageEntity messageEntity = new TelegramMessageEntity();
 		StringBuffer message = new StringBuffer();
 		int index = 1;
-		if(type.equals("1") || type.equals("3")) {
+		if(type.equals("1") || type.equals("3") || type.equals("5")) {
 			for (PriceCompareEntity entity : entityList) {
 				if(index == 1) {
 					messageEntity.setMaxCoinSymbol(entity.getCoinSymbol2());
@@ -89,7 +92,7 @@ public class TelegramController {
 				message.append(" " + site1 + " :  ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
 			}
 			
-		}else if(type.equals("2") || type.equals("4")) {
+		}else if(type.equals("2") || type.equals("4") || type.equals("6")) {
 			for (PriceCompareEntity entity : entityList) {
 				if(index == 1) {
 	                messageEntity.setMaxCoinSymbol(entity.getCoinSymbol());
@@ -108,7 +111,7 @@ public class TelegramController {
 			}
 			if(messageEntity.getMaxCoinSymbol() != null) {
 				message.append("[" + site1 + "] 구매 추천 <b>").append(messageEntity.getMinCoinSymbol()).append("</b>]\r\n");
-				message.append("[역프] ").append(messageEntity.getMinCoinSymbol()).append(" (" + messageEntity.getMinPriceGapPercent() + "%)").append("\r\n");
+				message.append("[김프] ").append(messageEntity.getMinCoinSymbol()).append(" (" + messageEntity.getMinPriceGapPercent() + "%)").append("\r\n");
 				message.append(" " + site1 + " :  ").append(messageEntity.getMaxPriceKrwB() + "원").append("\r\n");
 				message.append(" " + site2 + " : ").append(messageEntity.getMaxPriceKrwA() + "원").append("\r\n");
 			}

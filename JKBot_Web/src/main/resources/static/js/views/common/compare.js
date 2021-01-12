@@ -346,6 +346,32 @@ function getCompareUSDT2() {
 		}
 	});
 }
+
+/*
+ * 업비트-바이낸스 가격 가져오는 function
+ */
+function getCompareUSDT3() {
+	var data = {}
+	
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/" + context + "/priceCompare3/USDT",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 60000,
+		success : function(data) {
+			 
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
 /*
  * 업비트-바이낸스 가격 가져오는 function
  */
@@ -509,7 +535,7 @@ function getCompareBTC() {
  * 현재 사용중 : 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareBTC2() {
-	var exceptCoinList = "GTO/NPXS/QKC/ETC/STRAT/BCH/GNT/";
+	var exceptCoinList = "GTO/NPXS/QKC/ETC/STRAT/BCH/";
 	var defaultPremium = 5;
 	var data = {}
 	var teleType = '1';
@@ -604,7 +630,7 @@ function getCompareBTC2() {
 				// upbit (매도)
 				resultHtml += '<td class="' + bgClass +'">' + comma(this.upbitSellPrice);
 				if(bgClass != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				 
@@ -629,7 +655,7 @@ function getCompareBTC2() {
 				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
 				if(bgClass2 != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				
@@ -699,10 +725,14 @@ function getCompareBTC2() {
  * 현재 사용중 : 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareBTC3() {
-	var exceptCoinList = "GTO/NPXS/QKC/ETC/STRAT/BCH/GNT/";
+	var exceptCoinList = "GTO/NPXS/QKC/STRAT/BCH/BTG/";
 	var defaultPremium = 5;
 	var data = {}
 	var teleType = '1';
+	
+	// 김프 퍼센트
+	var pre1 = 7;
+	var pre2 = 1;
 	
 	$.ajax({
 		type : "GET",
@@ -742,10 +772,15 @@ function getCompareBTC3() {
 			
 			$("#priceTbodyBTC").html('');
 			$("#priceTbodyBTC2").html('');
+			$("#priceTbodyBTC3").html('');
 			
 			
-			var result1 = result.binance;
+			var result1 = result.upbit;
+			var showCount = $("#viewType2").val();
+			var showflag = 0;
+			
 			$.each(result1, function(){
+				
 				var name = this.closing_price;
 				var resultVO = new Object();
 				resultVO.coinSymbol = this.coinSymbol;
@@ -780,8 +815,12 @@ function getCompareBTC3() {
 				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol2 + '/') > -1){ 
 					bgClass2 = "font-bold alert-info";
 				}
-				resultHtml += "<tr>";
 				
+				if(showflag < showCount){
+					resultHtml += "<tr>";
+				}else {
+					resultHtml += "<tr style='display:none;'>";
+				}
 				// resultJsonArray.push(resultVO);
 				
 				// 코인 심볼명
@@ -797,7 +836,7 @@ function getCompareBTC3() {
 				// upbit (매도)
 				resultHtml += '<td class="' + bgClass +'">' + comma(this.upbitSellPrice);
 				if(bgClass != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				 
@@ -822,7 +861,7 @@ function getCompareBTC3() {
 				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
 				if(bgClass2 != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				
@@ -856,21 +895,25 @@ function getCompareBTC3() {
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
 				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
-					if( this.priceGapPercent2 > 5 ){
+					if( this.priceGapPercent2 > pre1 ){
+						teleType = '1';
 						resultJsonArray.push(resultVO);
 					}
 				}
 				
 				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
-					if( this.priceGapPercent < -5){
+					if( this.priceGapPercent < pre2 ){
 						teleType = '2';
 						resultJsonArray.push(resultVO);
 					}
 				}
+				
+				// 보여주는 코인
+				showflag++;
 			});
 
 			// 텔레그램 메시지 전송
-			if(context == 'admin' && sendMessage == 'Y'){
+			if(sendMessage == 'Y'){
 				sendTelegramMessage(resultJsonArray, teleType);
 			}
 
@@ -882,8 +925,12 @@ function getCompareBTC3() {
 			var result2 = result.bithumb;
 			resultHtml = '';
 			choiceCoinStrFixed = '';
-			exceptCoinList = "NPXS/LOOM/ETC/BCHA/";
-			choiceCoinStrFixed = "LOOM/ETC/BCHA/";
+			exceptCoinList = "NPXS/BCHA/BTG/";
+			choiceCoinStrFixed = "BCHA/";
+			
+			showCount = $("#viewType1").val();
+			showflag = 0;
+			resultJsonArray = new Array();
 			
 			$.each(result2, function(){
 				var name = this.closing_price;
@@ -920,7 +967,12 @@ function getCompareBTC3() {
 				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol2 + '/') > -1){ 
 					bgClass2 = "font-bold alert-info";
 				}
-				resultHtml += "<tr>";
+				
+				if(showflag < showCount){
+					resultHtml += "<tr>";
+				}else {
+					resultHtml += "<tr style='display:none;'>";
+				}
 				
 				// resultJsonArray.push(resultVO);
 				
@@ -937,7 +989,7 @@ function getCompareBTC3() {
 				// upbit (매도)
 				resultHtml += '<td class="' + bgClass +'">' + comma(this.upbitSellPrice);
 				if(bgClass != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				 
@@ -962,7 +1014,7 @@ function getCompareBTC3() {
 				// resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
 				if(bgClass2 != ''){
-					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"><i class="fa fa-bomb"></i></span>';
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				resultHtml += "</td>";
 				
@@ -1003,19 +1055,176 @@ function getCompareBTC3() {
 				}
 				
 				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
-					if( this.priceGapPercent < -5){
+					if( this.priceGapPercent < -5 ){
 						teleType = '4';
 						resultJsonArray.push(resultVO);
 					}
 				}
+				
+				// 보여주는 코인
+				showflag++;
 			});
 
+			console.log(resultJsonArray.size);
 			// 텔레그램 메시지 전송
-			if(context == 'admin' && sendMessage == 'Y'){
+			if(sendMessage == 'Y'){
 				sendTelegramMessage(resultJsonArray, teleType);
 			}
 
 			$("#priceTbodyBTC2").html(resultHtml);
+			
+			
+			
+			// 빗썸 - 바이낸스 페어
+			var result3 = result.binance;
+			resultHtml = '';
+			choiceCoinStrFixed = '';
+			exceptCoinList = "AE/BTG/BCD/";
+			choiceCoinStrFixed = "WTC/AE/AION/";
+			
+			showCount = $("#viewType3").val();
+			showflag = 0;
+			resultJsonArray = new Array();
+		
+			$.each(result3, function(){
+				
+				var name = this.closing_price;
+				var resultVO = new Object();
+				resultVO.coinSymbol = this.coinSymbol;
+				resultVO.coinSymbol2 = this.coinSymbol2;
+				resultVO.binanceBuyPrice = this.binanceBuyPrice;
+				resultVO.binanceSellPrice = this.binanceSellPrice;
+				resultVO.upbitBuyPrice = this.upbitBuyPrice;
+				resultVO.upbitSellPrice = this.upbitSellPrice;
+				resultVO.coinPriceWeightA = this.coinPriceWeightA;
+				resultVO.coinPriceWeightB = this.coinPriceWeightB;
+				resultVO.priceGapKrw = this.priceGapKrw;
+				resultVO.priceGapKrw2 = this.priceGapKrw2;
+				resultVO.priceGapPercent = this.priceGapPercent;
+				resultVO.priceGapPercent2 = this.priceGapPercent2;
+				resultVO.binanceBuySatosiPrice = this.binanceBuySatosiPrice;
+				resultVO.binanceSellSatosiPrice = this.binanceSellSatosiPrice;
+				resultVO.status = this.status;
+				resultVO.status = this.status;
+				
+				var bgClass = "";
+				var bgClass2 = "";
+				
+				if(choiceCoinStr.indexOf(this.coinSymbol + '/') > -1){ 
+					bgClass = "font-bold alert-warning";
+				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol + '/') > -1){ 
+					bgClass = "font-bold alert-success";
+				}
+				
+				
+				if(choiceCoinStr.indexOf(this.coinSymbol2 + '/') > -1){ 
+					bgClass2 = "font-bold alert-warning";
+				}else if(choiceCoinStrFixed.indexOf(this.coinSymbol2 + '/') > -1){ 
+					bgClass2 = "font-bold alert-info";
+				}
+				
+				if(showflag < showCount){
+					resultHtml += "<tr>";
+				}else {
+					resultHtml += "<tr style='display:none;'>";
+				}
+				// resultJsonArray.push(resultVO);
+				
+				// 코인 심볼명
+				// resultHtml += "<td>-</td>";
+				resultHtml += "<td class='" + bgClass +"'>" + this.coinSymbol + "</td>";
+
+				//----------------------------------------------------------------------------------------------------------------
+				// binance 사토시
+				resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
+				// binance (매수)
+				resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
+				
+				// upbit (매도)
+				resultHtml += '<td class="' + bgClass +'">' + comma(this.upbitSellPrice);
+				if(bgClass != ''){
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
+				}
+				resultHtml += "</td>";
+				 
+				var priceGapPercent = this.priceGapPercent;
+				if(priceGapPercent == null){
+					priceGapPercent = '0';
+				}else {
+					priceGapPercent = priceGapPercent + '';
+				}
+				
+				if(priceGapPercent.indexOf("-") > -1){
+					resultHtml += '<td class="text-success ' + bgClass + '">' + comma(this.priceGapPercent) +'%</td>';
+				}else if(this.priceGapPercent == 0){
+					resultHtml += "<td class='" + bgClass + "'>" + comma(this.priceGapPercent) +'%</td>';
+				}else {
+					resultHtml += '<td class="text-danger '+ bgClass +'">' + comma(this.priceGapPercent) +'%</td>';
+				}
+				//----------------------------------------------------------------------------------------------------------------
+
+				//----------------------------------------------------------------------------------------------------------------
+				resultHtml += "<td class='" + bgClass2 +"'>" + this.coinSymbol2 + "</td>";
+				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
+				// binance 사토시
+				if(bgClass2 != ''){
+					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
+				}
+				resultHtml += "</td>";
+				
+				// binance (매수)
+				resultHtml += '<td class="font-bold ' + bgClass2 + '">'  + comma(this.binanceSellPrice);
+				
+				// upbit (매도)
+				resultHtml += '<td class="' + bgClass2 + '">'  + comma(this.upbitBuyPrice);
+				resultHtml += "</td>";
+				 
+				var priceGapPercent2 = this.priceGapPercent2;
+				if(priceGapPercent2 == null){
+					priceGapPercent2 = '0';
+				}else {
+					priceGapPercent2 = priceGapPercent2 + '';
+				}
+				
+				if(priceGapPercent2.indexOf("-") > -1){
+					resultHtml += '<td class="text-success ' + bgClass2 + '">' + comma(this.priceGapPercent2) +'%</td>';
+				}else if(this.priceGapPercent2 == 0){
+					resultHtml += "<td class='" + bgClass2 + "'>" + comma(this.priceGapPercent2) +'%</td>';
+				}else {
+					resultHtml += '<td class="text-danger ' + bgClass2 + '">' + comma(this.priceGapPercent2) +'%</td>';
+				}
+
+				//----------------------------------------------------------------------------------------------------------------
+				
+				resultHtml += '<td class="hide" id="binancePrice_' + this.coinSymbol +'">'+ this.binanceBidPrice +'</td>';
+				resultHtml += '<td class="hide" id="upbitPrice_' + this.coinSymbol  +'">'+ this.upbitBidPrice+'</td>';
+				
+				resultHtml += "</tr>";
+				// 마이너스 빨간색 플러스 파란색 
+				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
+					if( this.priceGapPercent2 > pre1){
+						teleType = '5';
+						resultJsonArray.push(resultVO);
+					}
+				}
+				
+				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
+					if( this.priceGapPercent < pre2){
+						teleType = '6';
+						resultJsonArray.push(resultVO);
+					}
+				}
+				
+				// 보여주는 코인
+				showflag++;
+			});
+
+			// 텔레그램 메시지 전송
+			if(sendMessage == 'Y'){
+				sendTelegramMessage(resultJsonArray, teleType);
+			}
+
+			$("#priceTbodyBTC3").html(resultHtml);
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
@@ -1027,6 +1236,14 @@ function getCompareBTC3() {
 	});
 }
 
+
+/*
+ * type : 1: 빗썸-업비트 / 2: 바이낸스-업비트 / 3: 바이낸스-빗썸
+ * mode : 1: 모두 / 2: 요약
+ */
+function viewtype_change(type, mode){
+	$('#' + type).val(mode);
+}
 
 function sendTelegramMessage(param, type) {
 	console.log(param)

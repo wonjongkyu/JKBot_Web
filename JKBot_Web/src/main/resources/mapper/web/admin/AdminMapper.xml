@@ -13,7 +13,7 @@
 		   ,COIN_TRANS_FEE_KRW
 		   ,COIN_PRICE_KRW
 		   ,COIN_PRICE_UPDATE_DT
-		FROM jk_exchange_info 
+		FROM jk_exchange_info2 
 		WHERE USE_YN = 'Y'
 		<if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(coinSymbolName)">
 			AND COIN_SYMBOL_NAME = #{coinSymbolName}
@@ -22,7 +22,7 @@
 
 	<update id="updateCoinPriceInfo" parameterType="java.util.List">
 	    <foreach collection="list" item="entity" index="index" separator=";">
-	        UPDATE jk_exchange_info 
+	        UPDATE jk_exchange_info2
 	        SET COIN_PRICE_KRW = #{entity.priceKrw},
 	        COIN_PRICE_UPDATE_DT = now()
 	        WHERE EXCHANGE_NAME = #{entity.exchangeName}

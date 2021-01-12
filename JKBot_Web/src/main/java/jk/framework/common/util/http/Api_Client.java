@@ -1,11 +1,7 @@
 package jk.framework.common.util.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -16,21 +12,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_10;
-import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketException;
-import com.neovisionaries.ws.client.WebSocketExtension;
-import com.neovisionaries.ws.client.WebSocketFactory;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import jk.framework.common.util.etc.Util;
 import jk.framework.common.util.lib.HttpRequest;
 

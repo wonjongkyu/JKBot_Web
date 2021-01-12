@@ -87,6 +87,9 @@ public class UpbitPublicRestService {
 		
         String coinListStr = "";
         for(String str : coinList) {
+        	if(str.equals("FCT")) {
+        		str = "FCT2";
+        	}
         	coinListStr = "KRW-"+ str + "," + coinListStr;
         }
         if(coinListStr.length() > 0){
@@ -104,6 +107,10 @@ public class UpbitPublicRestService {
 	        for (UpbitAskBidResultEntity upbitEntity : entity) {
 	        	String market = upbitEntity.getMarket();
 	        	market = market.split("-")[1];
+	        	
+	        	if(market.equals("FCT2")) {
+	        		market = "FCT";
+	        	}
 				if(!tempEntity.containsKey(market)) {  
 					tempEntity.put(market, upbitEntity);
 				}

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
 import jk.framework.rest.binance.entity.BinanceAskResultEntity;
@@ -34,6 +36,7 @@ import jk.framework.web.admin.entity.CommonInfoEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
 import jk.framework.web.admin.entity.PriceCompareAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity;
+import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity2;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.service.AdminService;
@@ -579,88 +582,81 @@ public class AdminController {
      * @return
      */ 	
     @ResponseBody
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @RequestMapping(value = "/priceCompare3/{symbolType}", method = RequestMethod.GET)
    	public HashMap<String, Object> priceCompare3(Model model, @PathVariable String symbolType) {
     	// 최종 리턴되는 결과
     	List<PriceCompareAskBidEntity> result = new ArrayList<PriceCompareAskBidEntity>();
     	
     	// 환율 가져오기
-    	Double exchangeRate = 1190D;
+    	Double exchangeRate = 1105D;
     	if(sessionService.getAttributeStr("exchangeRate") != null) {
     		exchangeRate = Double.parseDouble(sessionService.getAttributeStr("exchangeRate"));
     	}
     	
-    	// BTC 전용 코인 symbol 리스트
+    	
+    	// 업비트 상장 코인 symbol 리스트
  		HashSet<String> coinList = new HashSet<String>();
  		// USDT 전용 코인 symbol 리스트
  		HashSet<String> coinList2 = new HashSet<String>();
+ 		coinList2.add("BTC");
+ 		
  		// Bithumb 상장 코인 symbol 리스트
  		HashSet<String> coinList3 = new HashSet<String>();
  		// binance 상장 코인 symbol 리스트
  		HashSet<String> coinList4 = new HashSet<String>();
- 	 	coinList2.add("BTC");
  		
- 		// 거래소 최근 거래 가격 가져오기
+ 	 	
+ 		// 업비트 - 바이낸스 결과값 저장
  		Map<String, PriceCompareAskBidEntity> resultEntity = new HashMap<String, PriceCompareAskBidEntity>();
- 		
- 		// 바이낸스 USDT 가격 가져오는 부분 수정해야 함
- 		Map<String, PriceCompareAskBidEntity> resultEntity2 = new HashMap<String, PriceCompareAskBidEntity>();
- 		
- 		// 빗썸 시세 가져오는 부분
+ 		// 빗썸 - 바이낸스 결과값 저장
+ 		Map<String, PriceCompareCommonAskBidEntity2> resultEntity2 = new HashMap<String, PriceCompareCommonAskBidEntity2>();
+ 		// 업비트 - 빗썸 결과값 저장
  		Map<String, PriceCompareCommonAskBidEntity> resultEntity3 = new HashMap<String, PriceCompareCommonAskBidEntity>();
  		
  		PriceExchangeInfoEntity param = new PriceExchangeInfoEntity();
  		param.setCoinExchangeType(symbolType);
+ 		
  		// 거래소 정보 가져오기 (전송 수수료)
  		List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(param);
  		
- 		// 가져올 코인 코드
- 	 	for (PriceExchangeInfoEntity e : entityList) {
- 	 		boolean listPut = false;
- 	 		if("binance".equals(e.getExchangeName()) || "upbit".equals(e.getExchangeName()) ) {
-	 	 		if("USDT".equals(symbolType)) {
-	 	 			if("USDT".equals(e.getCoinExchangeType())) {
-	 	 				listPut = true;
-	 	 			}
-	 	 		}else if("BTC".equals(symbolType)) {
-	 	 			if("BTC".equals(e.getCoinExchangeType()) || "KRW".equals(e.getCoinExchangeType())){
-	 	 				listPut = true;
-	 	 			}
-	 	 		}
- 	 		}else if("bithumb".equals(e.getExchangeName())) {
- 	 			listPut = true;
- 	 		}
- 	 		
- 	 		if("binance".equals(e.getExchangeName())){
- 	 			coinList4.add( e.getCoinSymbolName());
- 	 		}
- 	 		
- 	 		if(listPut) {
- 	 			if("binance".equals(e.getExchangeName()) || "upbit".equals(e.getExchangeName()) ) {
-		 	 		coinList.add( e.getCoinSymbolName());
-		 	 		PriceCompareAskBidEntity entity = new PriceCompareAskBidEntity();
-					entity.setCoinSymbol(e.getCoinSymbolName());
-								
-					if(!resultEntity.containsKey(entity.getCoinSymbol())){ 
-						resultEntity.put(entity.getCoinSymbol(), entity);
-					}
- 	 			}
+ 		for (PriceExchangeInfoEntity e : entityList) {
+			if("upbit".equals(e.getExchangeName())){
+				PriceCompareAskBidEntity entity = new PriceCompareAskBidEntity();
+				entity.setCoinSymbol(e.getCoinSymbolName());
+				resultEntity.put(entity.getCoinSymbol(), entity);
 				
-				if("bithumb".equals(e.getExchangeName())) {
-					coinList3.add( e.getCoinSymbolName());
-					PriceCompareCommonAskBidEntity entity2 = new PriceCompareCommonAskBidEntity();
-					entity2.setCoinSymbol(e.getCoinSymbolName());
-					if(!resultEntity3.containsKey(entity2.getCoinSymbol())){ 
-						resultEntity3.put(entity2.getCoinSymbol(), entity2);
-					}
-	 	 		}
- 	 		}
+				coinList.add(e.getCoinSymbolName());		
+			 }
+			if("binance".equals(e.getExchangeName())){
+			/*	PriceCompareAskBidEntity entity = new PriceCompareAskBidEntity();
+				entity.setCoinSymbol(e.getCoinSymbolName());
+				resultEntity2.put(entity.getCoinSymbol(), entity);*/
+				
+				coinList4.add(e.getCoinSymbolName());
+			}
+ 			if("bithumb".equals(e.getExchangeName())){
+ 				PriceCompareCommonAskBidEntity entity = new PriceCompareCommonAskBidEntity();
+				entity.setCoinSymbol(e.getCoinSymbolName());
+				resultEntity3.put(entity.getCoinSymbol(), entity);
+				
+				PriceCompareCommonAskBidEntity2 entity2 = new PriceCompareCommonAskBidEntity2();
+				entity2.setCoinSymbol(e.getCoinSymbolName());
+				resultEntity2.put(entity2.getCoinSymbol(), entity2);
+				
+				coinList3.add(e.getCoinSymbolName());
+ 			}
  		}
  	 	
  	 	// 바이낸스 USDT-BTC 가져오는 기능 개발 필요함
  	 	List<BinanceTickerResultEntity> binanceResultEntity = binancePublicService.getTicker(binanceApiUrl,coinList2, symbolType);
  		for (BinanceTickerResultEntity entity : binanceResultEntity) {
  			if("USDT".equals(symbolType)){
+ 				resultEntity = new HashMap<String, PriceCompareAskBidEntity>();
+	 	 		PriceCompareAskBidEntity entityTemp = new PriceCompareAskBidEntity();
+	 	 		entityTemp.setCoinSymbol("BTC");
+				resultEntity.put(entityTemp.getCoinSymbol(), entityTemp);
+				
  				if(resultEntity.containsKey(entity.getTradeType())){
  					// USDT or BTC
  					String lastPrice = JKStringUtil.nvl(entity.getLastPrice(), "-");
@@ -676,6 +672,8 @@ public class AdminController {
  	 				sessionService.setAttribute("BTCKRW_UPDATE_DT", JKStringUtil.getNowTime());
  	 				logger.info("BTCKRW:::{}", sessionService.getAttribute("BTCKRW"));
  	 			}
+ 	 			HashMap<String, Object> resultData = new HashMap<String, Object>();
+ 	 			return resultData;
  			}
  		}
  	 	
@@ -694,8 +692,20 @@ public class AdminController {
  			}
  		}
  		
- 	 	// 해당 값으로 김프 계산하도록 변경 (옵셔널 하게.. 바꾸자)
- 	 	// 해당 결과값을 아래 binanceResultEntity에 merge
+ 		// 빗썸 시세 가져오기
+ 		List<BithumbResultEntity> askEntityList3 = bithumbPublicService.getBidAskPrice(bithumbApiUrl,coinList3, symbolType, exchangeRate, buyPriceDouble);
+ 		for (BithumbResultEntity e : askEntityList3) {
+ 			if(resultEntity3.containsKey(e.getCoinSymbolName())){
+ 				resultEntity3.get(e.getCoinSymbolName()).setBinanceBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
+ 				resultEntity3.get(e.getCoinSymbolName()).setBinanceSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 			}
+ 			
+ 			if(resultEntity2.containsKey(e.getCoinSymbolName())){
+ 				resultEntity2.get(e.getCoinSymbolName()).setUpbitBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
+ 				resultEntity2.get(e.getCoinSymbolName()).setUpbitSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 			}
+ 		}
+
  		// 바이낸스 시세 가져오기
  	 	List<BinanceAskResultEntity> askEntityList = binancePublicService.getBidAskPrice(binanceApiUrl,coinList4, symbolType, exchangeRate, buyPriceDouble);
  	 	for (BinanceAskResultEntity e : askEntityList) {
@@ -705,16 +715,15 @@ public class AdminController {
  				resultEntity.get(e.getCoinSymbolName()).setBinanceBuySatosiPrice(String.valueOf(e.getBidCoinSatosiPrice()));
  				resultEntity.get(e.getCoinSymbolName()).setBinanceSellSatosiPrice(String.valueOf(e.getAskCoinSatosiPrice()));
 			}
-		}
- 	 	
- 		// 빗썸 시세 가져오기
- 		List<BithumbResultEntity> askEntityList3 = bithumbPublicService.getBidAskPrice(bithumbApiUrl,coinList3, symbolType, exchangeRate, buyPriceDouble);
- 		for (BithumbResultEntity e : askEntityList3) {
- 			if(resultEntity3.containsKey(e.getCoinSymbolName())){
- 				resultEntity3.get(e.getCoinSymbolName()).setBinanceBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
- 				resultEntity3.get(e.getCoinSymbolName()).setBinanceSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 			
+ 			if(resultEntity2.containsKey(e.getCoinSymbolName())){
+ 				resultEntity2.get(e.getCoinSymbolName()).setBinanceBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
+ 				resultEntity2.get(e.getCoinSymbolName()).setBinanceSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 				resultEntity2.get(e.getCoinSymbolName()).setBinanceBuySatosiPrice(String.valueOf(e.getBidCoinSatosiPrice()));
+ 				resultEntity2.get(e.getCoinSymbolName()).setBinanceSellSatosiPrice(String.valueOf(e.getAskCoinSatosiPrice()));
 			}
 		}
+ 	 	
 		
  	
  		for (String str : coinList) {
@@ -740,6 +749,7 @@ public class AdminController {
  			}
 		}
  		
+ 		// 업비트 - 빗썸 페어
  		for (String str : coinList3) {
  			if(resultEntity3.containsKey(str)){
  				String bithumbBuyPrice = JKStringUtil.nvl(resultEntity3.get(str).getBinanceBuyPrice(), "-");
@@ -761,7 +771,33 @@ public class AdminController {
  				}
  			}
 		}
+ 		
+ 		// 빗썸 - 바이낸스 페어
+ 		for (String str : coinList3) {
+ 			if(resultEntity2.containsKey(str)){
+ 				String binanceBuyPrice = JKStringUtil.nvl(resultEntity2.get(str).getBinanceBuyPrice(), "-");
+ 				String binanceSellPrice = JKStringUtil.nvl(resultEntity2.get(str).getBinanceSellPrice(), "-");
+ 				String bithumbBuyPrice = JKStringUtil.nvl(resultEntity2.get(str).getUpbitBuyPrice(), "-");
+ 				String bithumbSellPrice = JKStringUtil.nvl(resultEntity2.get(str).getUpbitSellPrice(), "-");
 
+ 				// 원화 차액 / 김프 계산
+ 				if(!("-").equals(binanceBuyPrice) && (!("-").equals(bithumbSellPrice))) {
+ 					double krwGap = Double.parseDouble(bithumbSellPrice) - Double.parseDouble(binanceBuyPrice);
+					resultEntity2.get(str).setPriceGapKrw(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
+					double priceGapPercent = ((Double.parseDouble(bithumbSellPrice) - Double.parseDouble(binanceBuyPrice)) * 100) / Double.parseDouble(binanceBuyPrice);
+					resultEntity2.get(str).setPriceGapPercent(JKStringUtil.mathRound(priceGapPercent,2));
+ 				}
+ 				if(!("-").equals(binanceSellPrice) && (!("-").equals(bithumbBuyPrice))) {
+					double krwGap = Double.parseDouble(bithumbBuyPrice) - Double.parseDouble(binanceSellPrice);
+					resultEntity2.get(str).setPriceGapKrw2(String.valueOf(JKStringUtil.mathRound(krwGap,2)));
+					double priceGapPercent = ((Double.parseDouble(bithumbBuyPrice) - Double.parseDouble(binanceSellPrice)) * 100) / Double.parseDouble(binanceSellPrice);
+					resultEntity2.get(str).setPriceGapPercent2(JKStringUtil.mathRound(priceGapPercent,2));
+ 				}
+ 			}
+		}
+
+ 		
+ 		//----------- 업비트 - 바이낸스 페어 --------------------------------------------------------------------//
     	List<PriceCompareAskBidEntity> result1 = new ArrayList<PriceCompareAskBidEntity>();
     	List<PriceCompareAskBidEntity> result2 = new ArrayList<PriceCompareAskBidEntity>();
     	
@@ -792,9 +828,11 @@ public class AdminController {
 			result1.get(i).setPriceGapPercent2(result2.get(i).getPriceGapPercent2());
 		}
  		HashMap<String, Object> resultData = new HashMap<String, Object>();
- 		resultData.put("binance", result1);
- 		
+ 		resultData.put("upbit", result1);
+ 		//----------- 업비트 - 바이낸스 페어 --------------------------------------------------------------------//
 
+ 		
+ 		//----------- 업비트 - 빗썸 페어 --------------------------------------------------------------------//
  		// 빗썸-업비트 정렬
     	List<PriceCompareCommonAskBidEntity> result3 = new ArrayList<PriceCompareCommonAskBidEntity>();
     	List<PriceCompareCommonAskBidEntity> result4 = new ArrayList<PriceCompareCommonAskBidEntity>();
@@ -827,6 +865,43 @@ public class AdminController {
  			result3.get(i).setPriceGapPercent2(result4.get(i).getPriceGapPercent2());
 		}
  		resultData.put("bithumb", result3);
+ 		//----------- 업비트 - 빗썸 페어 --------------------------------------------------------------------//
+ 		
+ 		
+ 		//----------- 업비트 - 빗썸 페어 --------------------------------------------------------------------//
+ 		// 빗썸-업비트 정렬
+    	List<PriceCompareCommonAskBidEntity2> result5 = new ArrayList<PriceCompareCommonAskBidEntity2>();
+    	List<PriceCompareCommonAskBidEntity2> result6 = new ArrayList<PriceCompareCommonAskBidEntity2>();
+    	
+    	// 값 정상 세팅 확인
+ 		for( String key : resultEntity2.keySet() ){
+ 			if( (resultEntity2.get(key).getUpbitBuyPrice() != null) && ( resultEntity2.get(key).getBinanceBuyPrice() != null) ) {
+ 				if( !resultEntity2.get(key).getBinanceBuyPrice().equals("0.0")) {
+ 					result5.add(resultEntity2.get(key));
+ 				}
+ 				// logger.info("키 : {}, 값 : {}", key, resultEntity3.get(key));
+ 			}
+ 	    }
+ 		
+ 		// 깊은 복사 (deep copy)
+ 		for(int i=0; i<result5.size(); i++) {
+ 			result6.add(new PriceCompareCommonAskBidEntity2(result5.get(i)));
+ 		}
+ 		
+ 		// 상승률 내림차순 정렬 (앞에꺼)
+ 		Collections.sort(result5, new GapPercentAscCompare4());
+ 		// 상승률 오름 정렬 (뒤에꺼)
+ 		Collections.sort(result6, new GapPercent2DescCompare4());
+ 		
+ 		for(int i=0; i<result5.size(); i++) {
+ 			result5.get(i).setCoinSymbol2(result6.get(i).getCoinSymbol());
+ 			result5.get(i).setUpbitBuyPrice(result6.get(i).getUpbitBuyPrice());
+ 			result5.get(i).setBinanceSellPrice(result6.get(i).getBinanceSellPrice());
+ 			result5.get(i).setPriceGapKrw2(result6.get(i).getPriceGapKrw2());
+ 			result5.get(i).setPriceGapPercent2(result6.get(i).getPriceGapPercent2());
+		}
+ 		resultData.put("binance", result5);
+ 		//----------- 업비트 - 빗썸 페어 --------------------------------------------------------------------//
  		
  		return resultData;
 	}
@@ -896,16 +971,20 @@ public class AdminController {
      */ 	
     @ResponseBody
     @RequestMapping(value = "/priceExchangeInfo", method = RequestMethod.GET)
-   	public List<PriceExchangeInfoEntity> priceExchangeInfo(Model model) {
+	public List<PriceExchangeInfoEntity> priceExchangeInfo(Model model) {
+    	Map<String, PriceExchangeInfoEntity> templistEntity = new HashMap<String, PriceExchangeInfoEntity>();
     	List<PriceExchangeInfoEntity> listEntity = new ArrayList<PriceExchangeInfoEntity>();
     	PriceExchangeInfoEntity entity = new PriceExchangeInfoEntity();
     	List<PriceExchangeInfoEntity> entityList = adminService.getAllExchangeInfo(entity);
     	for (PriceExchangeInfoEntity resultEntity : entityList) {
     		sessionService.setAttribute(resultEntity.getExchangeName() + "_" + resultEntity.getCoinSymbolName(), resultEntity.getCoinTransFeeKrw());
-    		if(resultEntity.getExchangeName().equals("upbit")) {
-    			listEntity.add(resultEntity);
-    		}
+ 
+			if(!templistEntity.containsKey(resultEntity.getCoinSymbolName())){ 
+				templistEntity.put(resultEntity.getCoinSymbolName(), resultEntity);
+				listEntity.add(resultEntity);
+			}
 		}
+    	
     	return listEntity;
     }
   
@@ -998,6 +1077,29 @@ public class AdminController {
 			return d1 < d2 ? -1 : d1 > d2 ? 1:0;
 		}
 	}
+
+	/**
+	 * <pre> 상승률 ASC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:45:45
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercentAscCompare4 implements Comparator<PriceCompareCommonAskBidEntity2> {
+		/**
+		 * 오름차순(ASC)
+		 */
+		@Override
+		public int compare(PriceCompareCommonAskBidEntity2 arg0, PriceCompareCommonAskBidEntity2 arg1) {
+			double d1 = arg0.getPriceGapPercent();
+			double d2 = arg1.getPriceGapPercent();
+			return d1 < d2 ? -1 : d1 > d2 ? 1:0;
+		}
+	}
+	
 	
 	/**
 	 * <pre> 상승률 DESC
@@ -1059,6 +1161,28 @@ public class AdminController {
 		 */
 		@Override
 		public int compare(PriceCompareCommonAskBidEntity arg0, PriceCompareCommonAskBidEntity arg1) {
+			double d1 = arg0.getPriceGapPercent2();
+			double d2 = arg1.getPriceGapPercent2();
+			return d1 > d2 ? -1 : d1 < d2 ? 1:0;
+		}
+	}
+	
+	/**
+	 * <pre> 상승률 ASC
+	 * jk.framework.web.price.controller 
+	 *    |_ PriceController.java
+	 * 
+	 * </pre>
+	 * @date : 2018. 4. 17. 오전 9:45:45
+	 * @version : 
+	 * @author : Hyundai
+	 */
+	static class GapPercent2DescCompare4 implements Comparator<PriceCompareCommonAskBidEntity2> {
+		/**
+		 * 내림차순(DESC)
+		 */
+		@Override
+		public int compare(PriceCompareCommonAskBidEntity2 arg0, PriceCompareCommonAskBidEntity2 arg1) {
 			double d1 = arg0.getPriceGapPercent2();
 			double d2 = arg1.getPriceGapPercent2();
 			return d1 > d2 ? -1 : d1 < d2 ? 1:0;
