@@ -34,6 +34,7 @@ import jk.framework.rest.upbit.entity.UpbitTickerResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
 import jk.framework.web.admin.entity.CommonInfoEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
+import jk.framework.web.admin.entity.KimpEntity;
 import jk.framework.web.admin.entity.PriceCompareAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity2;
@@ -585,6 +586,7 @@ public class AdminController {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @RequestMapping(value = "/priceCompare3/{symbolType}", method = RequestMethod.GET)
    	public HashMap<String, Object> priceCompare3(Model model, @PathVariable String symbolType) {
+   	
     	// 최종 리턴되는 결과
     	List<PriceCompareAskBidEntity> result = new ArrayList<PriceCompareAskBidEntity>();
     	
@@ -950,6 +952,20 @@ public class AdminController {
     	entity.setBinanceBtcKrwPrice(sessionService.getAttribute("BTCKRW"));
     	entity.setBtcUpdateDt(sessionService.getAttribute("BTCKRW_UPDATE_DT"));
     	return entity;
+    }
+    
+    /**
+     * 김프 알람용
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getKimp", method = RequestMethod.GET)
+	public KimpEntity getKimp(Model model) {
+    	
+    	// 환율
+    	KimpEntity result = adminService.getKimp();
+		return result;
     }
     
     /**

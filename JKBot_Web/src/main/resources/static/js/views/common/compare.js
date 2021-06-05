@@ -2,6 +2,10 @@
 
 var highlightTransferFee = 4000;
 
+var pre1 = 1;
+var pre2 = -5;
+
+
 // 수익률 계산기 관련 function22
 
 $(function(){
@@ -725,14 +729,16 @@ function getCompareBTC2() {
  * 현재 사용중 : 업비트-바이낸스 가격 가져오는 function
  */
 function getCompareBTC3() {
-	var exceptCoinList = "GTO/NPXS/QKC/STRAT/BCH/BTG/";
+	var exceptCoinList = "BTG/QKC/STRAT/BCH/IOTA/KAVA/";
+	var exceptCoinList2 = "BCHA/BTG/ORBS/THETA/";		// 빗썸-업비트 페어 (알람 제거)
+	var exceptCoinList3 = "AE/BTG/BCD/PIVX/CTXC/BTG/THETA/DASH/";	// 빗썸-바이낸스 페어 (알람 제거)
 	var defaultPremium = 5;
 	var data = {}
 	var teleType = '1';
 	
+
+	
 	// 김프 퍼센트
-	var pre1 = 7;
-	var pre2 = 1;
 	
 	$.ajax({
 		type : "GET",
@@ -743,7 +749,6 @@ function getCompareBTC3() {
 		timeout : 60000,
 		success : function(data) {
 			var result = data;
-			console.log(result);
 			// 선택한 코인 조회하기
 			var choiceCoinList = $("ul.chosen-choices").find("li>span");
 			var choiceCoinStr = '';
@@ -755,7 +760,7 @@ function getCompareBTC3() {
 			var choiceCoinStrFixed = '';
 			// 임시
 			if(context == 'admin'){
-				choiceCoinStrFixed = "MFT/STMX/BTT/ANKR/TFUEL/NPXS/MBL/VET/SC/";
+				// choiceCoinStrFixed = "MFT/STMX/BTT/ANKR/TFUEL/NPXS/MBL/VET/SC/";
 				// choiceCoinStrFixed = "ONT/XEM/STEEM/IOST/XLM/ICX/GTO/STORM/TRX/NEO/XRP/POWR/ZIL/EOS/SNT/LOOM/";
 			}
 			
@@ -829,7 +834,7 @@ function getCompareBTC3() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				// binance 사토시
-				resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
+				// resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
 				// binance (매수)
 				resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
 				
@@ -858,7 +863,7 @@ function getCompareBTC3() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				resultHtml += "<td class='" + bgClass2 +"'>" + this.coinSymbol2 + "</td>";
-				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
+				// resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
 				if(bgClass2 != ''){
 					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
@@ -892,12 +897,16 @@ function getCompareBTC3() {
 				resultHtml += '<td class="hide" id="binancePrice_' + this.coinSymbol +'">'+ this.binanceBidPrice +'</td>';
 				resultHtml += '<td class="hide" id="upbitPrice_' + this.coinSymbol  +'">'+ this.upbitBidPrice+'</td>';
 				
+				// console.log("pre1111!:"+pre1);
+				// console.log("pre222!:"+pre2);
+				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
 				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
 					if( this.priceGapPercent2 > pre1 ){
 						teleType = '1';
 						resultJsonArray.push(resultVO);
+						console.log('111');
 					}
 				}
 				
@@ -905,6 +914,7 @@ function getCompareBTC3() {
 					if( this.priceGapPercent < pre2 ){
 						teleType = '2';
 						resultJsonArray.push(resultVO);
+						console.log('222');
 					}
 				}
 				
@@ -925,7 +935,6 @@ function getCompareBTC3() {
 			var result2 = result.bithumb;
 			resultHtml = '';
 			choiceCoinStrFixed = '';
-			exceptCoinList = "NPXS/BCHA/BTG/";
 			choiceCoinStrFixed = "BCHA/";
 			
 			showCount = $("#viewType1").val();
@@ -1047,15 +1056,15 @@ function getCompareBTC3() {
 				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
-				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
-					if( this.priceGapPercent2 > 5 ){
+				if(exceptCoinList2.indexOf(this.coinSymbol2 + '/') <= -1){ 
+					if( this.priceGapPercent2 > 3 ){
 						teleType = '3';
 						resultJsonArray.push(resultVO);
 					}
 				}
 				
-				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
-					if( this.priceGapPercent < -5 ){
+				if(exceptCoinList2.indexOf(this.coinSymbol + '/') <= -1){ 
+					if( this.priceGapPercent < -3 ){
 						teleType = '4';
 						resultJsonArray.push(resultVO);
 					}
@@ -1065,7 +1074,6 @@ function getCompareBTC3() {
 				showflag++;
 			});
 
-			console.log(resultJsonArray.size);
 			// 텔레그램 메시지 전송
 			if(sendMessage == 'Y'){
 				sendTelegramMessage(resultJsonArray, teleType);
@@ -1079,7 +1087,6 @@ function getCompareBTC3() {
 			var result3 = result.binance;
 			resultHtml = '';
 			choiceCoinStrFixed = '';
-			exceptCoinList = "AE/BTG/BCD/";
 			choiceCoinStrFixed = "WTC/AE/AION/";
 			
 			showCount = $("#viewType3").val();
@@ -1136,7 +1143,7 @@ function getCompareBTC3() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				// binance 사토시
-				resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
+				// resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
 				// binance (매수)
 				resultHtml += '<td class="' + bgClass +'">' + comma(this.binanceBuyPrice);
 				
@@ -1165,7 +1172,7 @@ function getCompareBTC3() {
 
 				//----------------------------------------------------------------------------------------------------------------
 				resultHtml += "<td class='" + bgClass2 +"'>" + this.coinSymbol2 + "</td>";
-				resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
+				// resultHtml += '<td class="' + bgClass2 +'">' + this.binanceSellSatosiPrice;
 				// binance 사토시
 				if(bgClass2 != ''){
 					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
@@ -1201,14 +1208,14 @@ function getCompareBTC3() {
 				
 				resultHtml += "</tr>";
 				// 마이너스 빨간색 플러스 파란색 
-				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
+				if(exceptCoinList3.indexOf(this.coinSymbol2 + '/') <= -1){ 
 					if( this.priceGapPercent2 > pre1){
 						teleType = '5';
 						resultJsonArray.push(resultVO);
 					}
 				}
 				
-				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
+				if(exceptCoinList3.indexOf(this.coinSymbol + '/') <= -1){ 
 					if( this.priceGapPercent < pre2){
 						teleType = '6';
 						resultJsonArray.push(resultVO);
@@ -1244,6 +1251,33 @@ function getCompareBTC3() {
 function viewtype_change(type, mode){
 	$('#' + type).val(mode);
 }
+
+
+function getKimp(param, type) {
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/" + context + "/getKimp",
+		// data : JSON.stringify(data),
+		dataType : 'json',
+		timeout : 60000,
+		success : function(data) {
+			pre2 = Number(data.kimp1);
+			pre1 = Number(data.kimp2);
+			
+		},
+		error : function(e) {
+			console.log("error");
+			console.log("ERROR: ", e);
+			display(e);
+		},
+		done : function(e) {
+			console.log("DONE");
+		}
+	});
+}
+
+
 
 function sendTelegramMessage(param, type) {
 	console.log(param)

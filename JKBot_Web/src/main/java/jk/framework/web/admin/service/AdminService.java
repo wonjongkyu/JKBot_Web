@@ -17,9 +17,9 @@ import com.google.gson.reflect.TypeToken;
 
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.http.Api_Client;
-import jk.framework.web.admin.controller.AdminController;
 import jk.framework.web.admin.entity.ExchangeCoinPriceEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
+import jk.framework.web.admin.entity.KimpEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.entity.PriceHistoryEntity;
@@ -142,6 +142,16 @@ public class AdminService {
 			logger.info("환율 못가져옴");
 		   // e.printStackTrace();
 		}
+		return entity;
+	}
+	
+	/**
+	 * @return
+	 * 김프 알람용 
+	 */
+	public KimpEntity getKimp(){
+		
+		KimpEntity entity = mapper.getKimp();
 		return entity;
 	}
 	

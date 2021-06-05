@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/admin/admin3.js?v=20210103_16'/>"></script>
-<script src="<c:url value='/js/views/common/compare.js?v=20210103_16'/>"></script>
+<script src="<c:url value='/js/views/admin/admin3.js?v=20210103_419'/>"></script>
+<script src="<c:url value='/js/views/common/compare.js?v=20210103_419'/>"></script>
 
 <input type="hidden" class="form-control" id="viewType1" value="3"/> 
 <input type="hidden" class="form-control" id="viewType2" value="3"/> 
@@ -234,7 +234,7 @@
            </div>
        </div>
         
-    <div class="col-lg-7">
+    <div class="col-lg-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>업비트 - <font color="blue">바이낸스</font>  김프 계산 (BTC)</h5>
@@ -262,12 +262,10 @@
 	                  		<tr>
 		                     <!--  <th>#</th> -->
 		                      <th>코인</th>
-		                      <th>사토시 </th>
 		                      <th>바낸 (sell)</th>
 		                      <th>업비트 &nbsp; (buy)</th>
 		                      <th>김프(%)</th>
 		                      <th>코인2</th>
-		                      <th>사토시 </th>
 		                      <th>바낸 (buy)</th>
 		                      <th>업비트 &nbsp;(sell)</th>
 		                      <th>김프(%)</th>
@@ -284,7 +282,7 @@
 		<div class="col-lg-5">
            
        </div>
-         <div class="col-lg-7">
+         <div class="col-lg-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>빗썸 - <font color="blue">바이낸스</font>  김프 계산 (BTC)</h5>
@@ -312,12 +310,10 @@
 	                  		<tr>
 		                     <!--  <th>#</th> -->
 		                      <th>코인</th>
-		                      <th>사토시 </th>
 		                      <th>바낸 (sell)</th>
 		                      <th>빗썸 &nbsp; (buy)</th>
 		                      <th>김프(%)</th>
 		                      <th>코인2</th>
-		                      <th>사토시 </th>
 		                      <th>바낸 (buy)</th>
 		                      <th>빗썸 &nbsp;(sell)</th>
 		                      <th>김프(%)</th>

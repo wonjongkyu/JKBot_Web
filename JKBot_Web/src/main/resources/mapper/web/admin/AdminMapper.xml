@@ -133,5 +133,12 @@
 		</foreach>  -->
 	</delete>
 	
+	<select id="getKimp" resultType="KimpEntity">
+		SELECT 
+			kimp1,
+			kimp2
+		FROM  
+		   jk_premium 
+	</select>
 	 	
 </mapper>

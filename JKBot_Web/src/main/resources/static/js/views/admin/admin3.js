@@ -9,6 +9,7 @@ $(document).ready(function() {
 	
 	getExchangeRate();
 	setTimeout(function() {
+		  getKimp();
 		  getPriceExchangeInfo();		// DB에 있는 코인 리스트 가져오기
 		  getCompareUSDT3();			// USDT API 호출
 		  setBtcKrwPrice();
@@ -23,6 +24,7 @@ $(document).ready(function() {
 	}, 15000);
 	
 	setInterval(function(){		// 15초마다 BTC 호출
+		getKimp();
 		getCompareBTC3();
 		setBtcKrwPrice();
 	}, 15000);

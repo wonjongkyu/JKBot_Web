@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 
 import jk.framework.web.admin.entity.ExchangeCoinPriceEntity;
+import jk.framework.web.admin.entity.KimpEntity;
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.entity.PriceHistoryEntity;
@@ -179,5 +180,7 @@ public interface AdminMapper {
 	 * @throws DataAccessException
 	 */ 	
 	public void deletePriceHistory(HashSet<String> coinList) throws DataAccessException;
+	
+	public KimpEntity getKimp() throws DataAccessException;
 }
 
