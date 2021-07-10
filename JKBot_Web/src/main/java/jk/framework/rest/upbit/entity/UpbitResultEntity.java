@@ -39,6 +39,7 @@ public class UpbitResultEntity extends RestCommonVO{
 	private String askCoinAmout;			// 구매가능 코인 개수
 	private String bidCoinAveragePrice;		// 코인 평균가격
 	private String bidCoinAmout;			// 구매가능 코인 개수
+	private String buyRecommend;			// 구매 추천
 	
 	
 }

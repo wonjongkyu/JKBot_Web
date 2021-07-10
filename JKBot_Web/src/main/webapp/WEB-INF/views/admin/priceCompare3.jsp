@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<script src="<c:url value='/js/views/admin/admin3.js?v=20210103_419'/>"></script>
-<script src="<c:url value='/js/views/common/compare.js?v=20210103_419'/>"></script>
+<script src="<c:url value='/js/views/admin/admin3.js?v=20210103_420'/>"></script>
+<script src="<c:url value='/js/views/common/compare.js?v=20210103_420'/>"></script>
 
 <input type="hidden" class="form-control" id="viewType1" value="3"/> 
 <input type="hidden" class="form-control" id="viewType2" value="3"/> 

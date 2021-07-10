@@ -446,10 +446,12 @@ public class AdminService {
  			if(resultEntity.containsKey(e.getCoinSymbolName())){
  				resultEntity.get(e.getCoinSymbolName()).setUpbitBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
  				resultEntity.get(e.getCoinSymbolName()).setUpbitSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 				resultEntity.get(e.getCoinSymbolName()).setBuyRecommend(e.getBuyRecommend());
  			}
  			if(resultEntity3.containsKey(e.getCoinSymbolName())){
  				resultEntity3.get(e.getCoinSymbolName()).setUpbitBuyPrice(String.valueOf(JKStringUtil.mathRound(e.getBidCoinAveragePrice(),2)));
 				resultEntity3.get(e.getCoinSymbolName()).setUpbitSellPrice(String.valueOf(JKStringUtil.mathRound(e.getAskCoinAveragePrice(),2)));
+ 				resultEntity.get(e.getCoinSymbolName()).setBuyRecommend(e.getBuyRecommend());
  			}
  		}
  		

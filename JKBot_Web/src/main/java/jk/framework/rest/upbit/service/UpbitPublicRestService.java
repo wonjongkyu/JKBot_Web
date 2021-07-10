@@ -148,6 +148,10 @@ public class UpbitPublicRestService {
 			    	}
 			    	
 			    	if(num == 1 ) {
+			    		// bid가 매수 가능 걸려있는 금액이 2천만원 이하인 경우에 화면에 표현하기 위한 구분값을 하나 준다.
+			    		if(temp < 10000000) {
+			    			resultEntity.setBuyRecommend("Y");
+			    		}
 			    		resultEntity.setAskCoinAveragePrice(array1+"");
 			    	}
 			    	

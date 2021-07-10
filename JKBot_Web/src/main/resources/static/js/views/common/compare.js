@@ -804,6 +804,7 @@ function getCompareBTC3() {
 				resultVO.binanceSellSatosiPrice = this.binanceSellSatosiPrice;
 				resultVO.status = this.status;
 				resultVO.status = this.status;
+				resultVO.buyRecommend = this.buyRecommend;
 				
 				var bgClass = "";
 				var bgClass2 = "";
@@ -831,7 +832,7 @@ function getCompareBTC3() {
 				// 코인 심볼명
 				// resultHtml += "<td>-</td>";
 				resultHtml += "<td class='" + bgClass +"'>" + this.coinSymbol + "</td>";
-
+				
 				//----------------------------------------------------------------------------------------------------------------
 				// binance 사토시
 				// resultHtml += '<td class="' + bgClass +'">' + this.binanceBuySatosiPrice +"" + "</td>";
@@ -843,6 +844,11 @@ function getCompareBTC3() {
 				if(bgClass != ''){
 					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
+				
+				if(resultVO.buyRecommend == 'Y'){
+					resultHtml += '&nbsp;<span class="badge badge-primary">!</span>';
+				}		
+				
 				resultHtml += "</td>";
 				 
 				var priceGapPercent = this.priceGapPercent;
@@ -906,7 +912,6 @@ function getCompareBTC3() {
 					if( this.priceGapPercent2 > pre1 ){
 						teleType = '1';
 						resultJsonArray.push(resultVO);
-						console.log('111');
 					}
 				}
 				
@@ -914,7 +919,6 @@ function getCompareBTC3() {
 					if( this.priceGapPercent < pre2 ){
 						teleType = '2';
 						resultJsonArray.push(resultVO);
-						console.log('222');
 					}
 				}
 				

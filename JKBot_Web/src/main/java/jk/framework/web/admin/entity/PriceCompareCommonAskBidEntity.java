@@ -37,6 +37,7 @@ public class PriceCompareCommonAskBidEntity extends RestCommonVO{
 	
 	private String PriceUsdtB;
 	private String PriceKrwB;
+	private String buyRecommend;			// 구매 추천
 	
 	public PriceCompareCommonAskBidEntity() {
 		
@@ -58,5 +59,6 @@ public class PriceCompareCommonAskBidEntity extends RestCommonVO{
 		this.PriceKrwB			= f.PriceKrwB;
 		this.binanceBuySatosiPrice = f.binanceBuySatosiPrice;
 		this.binanceSellSatosiPrice = f.binanceSellSatosiPrice;
+		this.buyRecommend = f.buyRecommend;
 	}
 }
