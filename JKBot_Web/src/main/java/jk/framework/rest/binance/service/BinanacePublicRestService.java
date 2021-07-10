@@ -23,6 +23,17 @@ public class BinanacePublicRestService {
     @Autowired
     SessionService sessionService;
     
+    private Double BTCKRW = 0d;
+    private Double exchangeRate = 0d;
+
+	public void setBTCKRW(Double bTCKRW) {
+		BTCKRW = bTCKRW;
+	}
+
+	public void setExchangeRate(Double exchangeRate) {
+		this.exchangeRate = exchangeRate;
+	}
+
 	public List<BinanceTickerResultEntity> getTicker(String apiUrl){
 		return getAllTicker(apiUrl, null, "USDT");
 	}
@@ -75,8 +86,9 @@ public class BinanacePublicRestService {
 		Api_Client api = new Api_Client(apiUrl, null, null);
 		
 		// BTC-KRW 가격 (해외)
-    	Double BTCKRW = 7474676D;
-    	if(sessionService.getAttributeStr("BTCKRW") != null) {
+    	//Double BTCKRW = 7474676D;
+    	//if(sessionService.getAttributeStr("BTCKRW") != null) {
+    	if(BTCKRW == 0d) {
     		BTCKRW = Double.parseDouble(sessionService.getAttribute("BTCKRW"));
     		System.out.println("[DEBUG]___BTCKRW=" + sessionService.getAttribute("BTCKRW") );
     	}
@@ -149,7 +161,8 @@ public class BinanacePublicRestService {
 				    	if(USDT_LIST.indexOf("|" + str + "|") <= -1) {
 				    		array1 = Double.parseDouble(arrayStr)* (BTCKRW/100000000);				// 사토시 (정수형으로 변환)
 				    	}else {
-				    		array1 = Double.parseDouble(arrayStr)* (  Double.parseDouble(sessionService.getAttributeStr("exchangeRate"))/100000000);	
+				    		//array1 = Double.parseDouble(arrayStr)* (  Double.parseDouble(sessionService.getAttributeStr("exchangeRate"))/100000000);
+				    		array1 = Double.parseDouble(arrayStr)* (  exchangeRate/100000000);
 				    	}
 				    	Double array2 = Double.parseDouble(priceArray[1].trim());	// 구매 가능 수량
 				    	Double temp = JKStringUtil.mathRound(array1*array2,9);
