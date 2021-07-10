@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.util.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,6 @@ import com.google.gson.reflect.TypeToken;
 import jk.framework.common.util.etc.JKStringUtil;
 import jk.framework.common.util.etc.SessionService;
 import jk.framework.common.util.http.Api_Client;
-<<<<<<< HEAD
-import jk.framework.web.admin.entity.ExchangeCoinPriceEntity;
-import jk.framework.web.admin.entity.ExchangeRateEntity;
-import jk.framework.web.admin.entity.KimpEntity;
-=======
 import jk.framework.rest.binance.entity.BinanceAskResultEntity;
 import jk.framework.rest.binance.entity.BinanceTickerResultEntity;
 import jk.framework.rest.binance.service.BinanacePublicRestService;
@@ -39,10 +33,10 @@ import jk.framework.rest.upbit.entity.UpbitResultEntity;
 import jk.framework.rest.upbit.service.UpbitPublicRestService;
 import jk.framework.web.admin.entity.ExchangeCoinPriceEntity;
 import jk.framework.web.admin.entity.ExchangeRateEntity;
+import jk.framework.web.admin.entity.KimpEntity;
 import jk.framework.web.admin.entity.PriceCompareAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity;
 import jk.framework.web.admin.entity.PriceCompareCommonAskBidEntity2;
->>>>>>> 26c26a3a663c2e9ff1f33c9f489dca55e8d9dd6b
 import jk.framework.web.admin.entity.PriceCompareEntity;
 import jk.framework.web.admin.entity.PriceExchangeInfoEntity;
 import jk.framework.web.admin.entity.PriceHistoryEntity;
