@@ -845,8 +845,8 @@ function getCompareBTC3() {
 					resultHtml += '&nbsp;&nbsp; <span class="badge badge-primary"></span>';
 				}
 				
-				if(resultVO.buyRecommend == 'Y'){
-					resultHtml += '&nbsp;<span class="badge">!</span>';
+				if(resultVO.buyRecommend != null){
+					resultHtml += '&nbsp;<span class="badge">' + resultVO.buyRecommend + '</span>';
 				}		
 				
 				resultHtml += "</td>";
