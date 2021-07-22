@@ -6,7 +6,7 @@ var pre1 = 7;
 var pre2 = 0;
 
 
-var audio = new Audio('/shot.mp3');
+var audio = new Audio('/short.mp3');
 audio.loop = true;
 audio.volume = 1.0;
 
