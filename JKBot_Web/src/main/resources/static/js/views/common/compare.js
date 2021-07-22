@@ -2,9 +2,18 @@
 
 var highlightTransferFee = 4000;
 
-var pre1 = 1;
-var pre2 = -5;
+var pre1 = 7;
+var pre2 = 0;
 
+
+var audio = new Audio('/shot.mp3');
+audio.loop = true;
+audio.volume = 1.0;
+
+
+var audio2 = new Audio('/long.mp3');
+audio2.loop = true;
+audio2.volume = 1.0;
 
 // 수익률 계산기 관련 function22
 
@@ -736,6 +745,9 @@ function getCompareBTC3() {
 	var data = {}
 	var teleType = '1';
 	
+	// 김프 역프 알림
+	audio.pause();
+	audio2.pause();
 
 	
 	// 김프 퍼센트
@@ -907,9 +919,11 @@ function getCompareBTC3() {
 				// console.log("pre222!:"+pre2);
 				
 				resultHtml += "</tr>";
+				
 				// 마이너스 빨간색 플러스 파란색 
 				if(exceptCoinList.indexOf(this.coinSymbol2 + '/') <= -1){ 
 					if( this.priceGapPercent2 > pre1 ){
+						audio2.play();
 						teleType = '1';
 						resultJsonArray.push(resultVO);
 					}
@@ -917,6 +931,7 @@ function getCompareBTC3() {
 				
 				if(exceptCoinList.indexOf(this.coinSymbol + '/') <= -1){ 
 					if( this.priceGapPercent < pre2 ){
+						audio.play();
 						teleType = '2';
 						resultJsonArray.push(resultVO);
 					}
@@ -1062,6 +1077,7 @@ function getCompareBTC3() {
 				// 마이너스 빨간색 플러스 파란색 
 				if(exceptCoinList2.indexOf(this.coinSymbol2 + '/') <= -1){ 
 					if( this.priceGapPercent2 > 3 ){
+						audio2.play();
 						teleType = '3';
 						resultJsonArray.push(resultVO);
 					}
@@ -1069,6 +1085,7 @@ function getCompareBTC3() {
 				
 				if(exceptCoinList2.indexOf(this.coinSymbol + '/') <= -1){ 
 					if( this.priceGapPercent < -3 ){
+						audio.play();
 						teleType = '4';
 						resultJsonArray.push(resultVO);
 					}
